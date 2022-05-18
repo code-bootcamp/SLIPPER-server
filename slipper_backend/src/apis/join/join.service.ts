@@ -41,6 +41,17 @@ export class JoinService {
       // image,
     });
   }
+  async createSocial({ email, phone, nickname, pw }) {
+    const user = await this.joinRepository.findOne({ email });
+    if (user) throw new ConflictException('이미 등록된 이메일입니다.');
+    return await this.joinRepository.save({
+      email,
+      pw,
+      phone,
+      nickname,
+    });
+  }
+
   async checkphone({ phone }) {
     if (phone.length !== 10 && phone.length !== 11)
       throw new ConflictException('핸드폰 번호를 확인해주세요.');
