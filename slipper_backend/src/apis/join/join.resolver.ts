@@ -15,7 +15,7 @@ export class JoinResolver {
   ) {}
 
   @Mutation(() => Join)
-  async join(@Args('createUserInput') createUserInput: CreateUserInput) {
+  async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
     const hashedPw = await bcrypt.hash(createUserInput.pw, 10);
     await this.joinService.checkNickname({
       nickname: createUserInput.nickname,
