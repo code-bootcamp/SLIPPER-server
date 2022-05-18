@@ -19,10 +19,6 @@ export class BoardImage {
   @Field(() => String)
   imageUrl: string;
 
-  @ManyToOne(() => Board)
-  @Field(() => Board)
-  board: Board;
-
   @ManyToOne(() => Board, (board) => board.images)
   board: Board;
 }
