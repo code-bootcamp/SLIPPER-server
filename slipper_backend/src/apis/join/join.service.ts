@@ -24,21 +24,21 @@ export class JoinService {
     const userCheck = await this.joinRepository.findOne({
       where: { email: createUserInput.email },
     });
-    const nicknameCheck = await this.joinRepository.findOne({
-      where: { nickname: createUserInput.nickname },
-    });
-    if (nicknameCheck) throw new ConflictException('이미 등록된 닉네임입니다.');
     if (userCheck) throw new ConflictException('이미 등록된 메일 입니다.');
     if (!createUserInput.email.includes('@'))
       throw new ConflictException('email을 확인해주세여');
     return await this.joinRepository.save({
-      // email,
-      // pw,
-      // phone,
       ...createUserInput,
-      // introduce,
-      // nickname,
-      // image,
+    });
+  }
+  async createSocial({ email, phone, nickname, pw }) {
+    const user = await this.joinRepository.findOne({ email });
+    if (user) throw new ConflictException('이미 등록된 이메일입니다.');
+    return await this.joinRepository.save({
+      email,
+      pw,
+      phone,
+      nickname,
     });
   }
   async checkphone({ phone }) {
@@ -48,6 +48,14 @@ export class JoinService {
     if (checkPhone)
       throw new ConflictException('이미 등록된 핸드폰 번호입니다.');
     return await phone;
+  }
+
+  async checkNickname({ nickname }) {
+    const nicknameCheck = await this.joinRepository.findOne({
+      where: { nickname },
+    });
+    if (nicknameCheck) throw new ConflictException('이미 등록된 닉네임입니다.');
+    return await nickname;
   }
 
   async getToken(mycount) {
@@ -142,6 +150,7 @@ export class JoinService {
     const checkNickname = await this.joinRepository.findOne(
       updateUserInput.nickname,
     );
+    if (checkNickname) throw new ConflictException('닉네임을 확인하세요.');
 
     const newUser = {
       ...user,

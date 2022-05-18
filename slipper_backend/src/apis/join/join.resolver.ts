@@ -15,25 +15,14 @@ export class JoinResolver {
   ) {}
 
   @Mutation(() => Join)
-  async join(
-    // @Args('email') email: string,
-    // @Args('pw') pw: string,
-    // @Args('phone') phone: string,
-    // @Args('introduce', { nullable: true }) introduce: string,
-    // @Args('nickname') nickname: string,
-    // @Args('image', { nullable: true }) image: string,
-    @Args('createUserInput') createUserInput: CreateUserInput,
-  ) {
+  async join(@Args('createUserInput') createUserInput: CreateUserInput) {
     const hashedPw = await bcrypt.hash(createUserInput.pw, 10);
+    await this.joinService.checkNickname({
+      nickname: createUserInput.nickname,
+    });
     await this.joinService.checkphone({ phone: createUserInput.phone });
     createUserInput.pw = hashedPw;
     return this.joinService.create({
-      // email,
-      // hashedPw,
-      // phone,
-      // introduce,
-      // nickname,
-      // image,
       createUserInput,
     });
   }
@@ -72,8 +61,9 @@ export class JoinResolver {
   @UseGuards(GqlAuthAccessGuard)
   @Query(() => Join)
   async fetchUser(
-    @CurrentUser() currentUser: any, //
+    @CurrentUser() currentUser: ICurrentUser, //
   ) {
+    console.log(currentUser);
     return await this.joinService.findOne({ email: currentUser.email });
   }
 

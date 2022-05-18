@@ -9,7 +9,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Cache } from 'cache-manager';
 
 @Injectable()
-export class JWtAccessStrategy extends PassportStrategy(Strategy, 'access') {
+export class JwtAccessStrategy extends PassportStrategy(Strategy, 'access') {
   constructor(
     @Inject(CACHE_MANAGER)
     private readonly cachManager: Cache,
@@ -20,11 +20,12 @@ export class JWtAccessStrategy extends PassportStrategy(Strategy, 'access') {
       passReqToCallback: true,
     });
   }
+
   async validate(req, payload) {
     const AccessToken = req.headers.authorization.replace('Bearer ', '');
     const redisAccessToken = await this.cachManager.get(AccessToken);
     if (redisAccessToken) throw new UnauthorizedException();
-
+    console.log(payload);
     return {
       id: payload.sub,
       email: payload.email,
