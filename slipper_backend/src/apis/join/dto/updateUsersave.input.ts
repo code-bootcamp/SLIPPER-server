@@ -4,6 +4,6 @@ import { UpdateUserInput } from './updateUser.input';
 @InputType()
 export class UpdateUserSaveInput extends PickType(
   UpdateUserInput,
-  ['nickname', 'image', 'introduce'],
+  ['nickname', 'imageUrl', 'introduce'],
   InputType,
 ) {}

@@ -7,7 +7,7 @@ type Join {
   email: String!
   nickname: String!
   phone: String!
-  image: String
+  imageUrl: String
   introduce: String
   createAt: DateTime!
 }
@@ -50,7 +50,7 @@ type Query {
 
 input UpdateUserSaveInput {
   nickname: String
-  image: String
+  imageUrl: String
   introduce: String
 }
 
@@ -73,7 +73,7 @@ input CreateUserInput {
   pw: String!
   nickname: String!
   phone: String!
-  image: String
+  imageUrl: String
   introduce: String
 }
 

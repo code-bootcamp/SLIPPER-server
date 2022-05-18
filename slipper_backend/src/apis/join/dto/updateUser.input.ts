@@ -15,7 +15,7 @@ export class UpdateUserInput {
   phone: string;
 
   @Field(() => String, { nullable: true })
-  image: string;
+  imageUrl: string;
 
   @Field(() => String, { nullable: true })
   introduce: string;
