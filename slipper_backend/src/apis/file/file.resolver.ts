@@ -25,10 +25,4 @@ export class FileResolver {
     const type = 'profile';
     return this.fileService.upload({ files, type });
   }
-
-  // // Google Storage Cron Job
-  // @Query(() => [String])
-  // GoogleStorageCronJob() {
-  //   return this.fileService.cronJob();
-  // }
 }

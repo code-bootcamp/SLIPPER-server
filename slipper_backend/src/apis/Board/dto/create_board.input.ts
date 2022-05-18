@@ -3,6 +3,9 @@ import { Field, InputType, Int } from '@nestjs/graphql';
 @InputType()
 export class CreateBoardInput {
   @Field(() => String)
+  category: string;
+
+  @Field(() => String)
   title: string;
 
   @Field(() => String)
@@ -15,7 +18,10 @@ export class CreateBoardInput {
   period: string;
 
   @Field(() => String)
-  coordinates: string;
+  lat: string;
+
+  @Field(() => String)
+  lng: string;
 
   @Field(() => String)
   address: string;
@@ -23,6 +29,11 @@ export class CreateBoardInput {
   @Field(() => String)
   place: string;
 
+  @Field(() => Int, { nullable: true })
+  likeCount: number;
+
+  // @Field(() => [String], { nullable: true })
+  // images: string;
   @Field(() => [String], { nullable: true })
   images: string;
 }

@@ -4,14 +4,22 @@
 
 type Board {
   id: String!
+  category: String!
   title: String!
   contents: String!
   score: Int!
   period: String
-  coordinates: String!
+  lat: String!
+  lng: String!
   address: String!
   place: String!
-  images: [String!]
+  likeCount: Int!
+  images: [BoardImage!]
+}
+
+type BoardImage {
+  id: String!
+  imageUrl: String!
 }
 
 type Join {
@@ -36,7 +44,7 @@ type Query {
   deleteUser: Boolean!
   testAPI: String!
   fetchBoard(boardId: String!): Board!
-  fetchBoardsPage(page: Float!): [Board!]!
+  fetchBoardsPage(page: Float!, category: String!, search: String!): [Board!]!
 }
 
 input UpdateUserSaveInput {
@@ -66,24 +74,30 @@ input CreateUserInput {
 }
 
 input CreateBoardInput {
+  category: String!
   title: String!
   contents: String!
   score: Int!
   period: String
-  coordinates: String!
+  lat: String!
+  lng: String!
   address: String!
   place: String!
+  likeCount: Int
   images: [String!]
 }
 
 input UpdateBoardInput {
+  category: String
   title: String
   contents: String
   score: Int
   period: String
-  coordinates: String
+  lat: String
+  lng: String
   address: String
   place: String
+  likeCount: Int
   images: [String!]
 }
 

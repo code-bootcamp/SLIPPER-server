@@ -8,6 +8,7 @@ export class CrontabService {
 
   @Cron('* * 1 * *')
   runningCron() {
+    console.log('김태영 바보');
     /*
       참고: https://docs.nestjs.com/techniques/task-scheduling
       * * 1 * *   매달 1일

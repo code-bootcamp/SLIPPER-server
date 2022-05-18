@@ -22,8 +22,10 @@ export class BoardResolver {
   @Query(() => [Board])
   fetchBoardsPage(
     @Args('page') page: number, //
+    @Args('category') category: string, //
+    @Args('search') search: string, //
   ) {
-    return this.boardService.loadPage({ page });
+    return this.boardService.loadPage({ page, category, search });
   }
   // fetchBoards() {
   //   return this.boardService.findAll();

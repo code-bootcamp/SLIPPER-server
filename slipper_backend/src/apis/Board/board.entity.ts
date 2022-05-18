@@ -2,9 +2,12 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 import {
   Column,
   Entity,
+  JoinColumn,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { BoardImage } from '../BoardImage/boardImage.entity';
 
 @Entity()
 @ObjectType()
@@ -15,6 +18,10 @@ export class Board {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @Column()
+  @Field(() => String)
+  category: string;
 
   @Column()
   @Field(() => String)
@@ -34,7 +41,11 @@ export class Board {
 
   @Column()
   @Field(() => String)
-  coordinates: string;
+  lat: string;
+
+  @Column()
+  @Field(() => String)
+  lng: string;
 
   @Column()
   @Field(() => String)
@@ -44,7 +55,14 @@ export class Board {
   @Field(() => String)
   place: string;
 
-  @Column()
-  @Field(() => [String], { nullable: true })
-  images: string;
+  @Column({ default: 0 })
+  @Field(() => Int)
+  likeCount: number;
+
+  // @Field(() => [String], { nullable: true })
+  // images: string;
+  @JoinColumn()
+  @OneToMany(() => BoardImage, (board) => board.imageUrl)
+  @Field(() => [BoardImage], { nullable: true })
+  images: BoardImage[];
 }
