@@ -9,13 +9,8 @@ export class JWtRfreshStrategy extends PassportStrategy(Strategy, 'refresh') {
       jwtFromRequest: (req) => {
         return req.headers.cookie.replace('refreshToken=', '');
       },
-      secretOrKey: 'myRefreshKey',
+      secretOrKey: 'myRefresh',
     });
   }
-  validate(req, payload) {
-    return {
-      id: payload.sub,
-      email: payload.email,
-    };
-  }
+
 }
