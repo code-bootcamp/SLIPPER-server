@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
 
 @Injectable()
-export class JWtRfreshStrategy extends PassportStrategy(Strategy, 'refresh') {
+export class JwtRfreshStrategy extends PassportStrategy(Strategy, 'refresh') {
   constructor() {
     super({
       jwtFromRequest: (req) => {
