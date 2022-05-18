@@ -1,14 +1,25 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { Storage } from '@google-cloud/storage';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { BoardImage } from '../BoardImage/boardImage.entity';
+import { Join } from '../join/entities/join.entity';
 
 @Injectable()
 export class CrontabService {
+  constructor(
+    @InjectRepository(BoardImage)
+    private readonly boardImageRepository: Repository<BoardImage>,
+
+    @InjectRepository(Join)
+    private readonly joinRepository: Repository<Join>,
+  ) {}
+
   private readonly logger = new Logger(CrontabService.name);
 
   @Cron('* * 1 * *')
-  runningCron() {
-    console.log('김태영 바보');
+  async runningCron() {
     /*
       참고: https://docs.nestjs.com/techniques/task-scheduling
       * * 1 * *   매달 1일
@@ -22,42 +33,62 @@ export class CrontabService {
     | | hours
     | minutes
     seconds (optional)
-
     */
 
     // Google Storage에 안쓰이는 이미지 한번에 정리하기 (매달 1회)
     const date = new Date();
     console.log(date);
-    console.log('hello!!!!!');
-    const storage = new Storage();
+    const storage = new Storage({
+      keyFilename: process.env.STORAGE_KEY_FILENAME,
+      projectId: process.env.STORAGE_PROJECT_ID,
+    }).bucket(process.env.STORAGE_BUCKET);
 
     async function googleStorageFiles() {
-      const [files] = await storage
-        .bucket(process.env.STORAGE_BUCKET)
-        .getFiles();
+      const [files] = await storage.getFiles();
 
       const result = files.map((e) => {
         return e.name;
       });
-      console.log(result);
+
       return result;
     }
 
-    const googleLinks = googleStorageFiles();
+    const googleLinks = await googleStorageFiles();
 
-    /*
-        이후에는 사용자가 작성한 게시글id 와 이미지 링크들 합친 이미지링크 테이블 전체목록을 불러와서
-        비교 후, 차이나는 이미지들만 삭제하기
-        https://cloud.google.com/storage/docs/deleting-objects#code-samples
+    const boardImageLinks = await this.boardImageRepository
+      .createQueryBuilder('board_image')
+      .select(['board_image.imageUrl'])
+      .getMany();
 
-        const storage = new Storage();
-        async function deleteFile() {
-        await storage.bucket(bucketName).file(fileName).delete();
+    const profileImageLinks = await this.joinRepository
+      .createQueryBuilder('join')
+      .select(['join.imageUrl'])
+      .getMany();
 
-        console.log(`gs://${bucketName}/${fileName} deleted`);
+    const databaseImageLinks = [...boardImageLinks, ...profileImageLinks];
+
+    for (let i = 0; i < googleLinks.length; i++) {
+      let check = true;
+      for (let x = 0; x < databaseImageLinks.length; x++) {
+        if (
+          `https://storage.googleapis.com/slipper-storage/${googleLinks[i]}` ===
+          databaseImageLinks[x].imageUrl
+        ) {
+          check = false;
+          break;
         }
+      }
 
-        deleteFile().catch(console.error);
-    */
+      // DB에 없는 이미지는 구글 스토리지에서 삭제
+      if (check) {
+        const front = googleLinks[i].split('/')[0];
+        const back = googleLinks[i].split('/')[1].split('/')[0];
+        const link = `${front}/${back}/`;
+        console.log(`삭제완료 - ${link}`);
+        await storage.deleteFiles({
+          prefix: link,
+        });
+      }
+    }
   }
 }

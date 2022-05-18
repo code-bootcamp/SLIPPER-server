@@ -1,5 +1,4 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
-import { Join } from 'src/apis/join/entities/join.entity';
 
 @InputType()
 export class CreateBoardInput {

@@ -32,7 +32,7 @@ export class Join {
 
   @Column({ nullable: true })
   @Field(() => String, { nullable: true })
-  image: string;
+  imageUrl: string;
 
   @Column({ nullable: true })
   @Field(() => String, { nullable: true })
