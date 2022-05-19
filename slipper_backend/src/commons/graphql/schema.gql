@@ -40,8 +40,11 @@ type BoardImage {
 
 type Query {
   updateUser(updateUserInput: UpdateUserSaveInput!): Join!
+  updateUserPw(email: String!, pw: String!): Join!
   fetchUser: Join!
   fetchUsers: [Join!]!
+  fetchAllUser: [Join!]!
+  fetchUserEmail(phone: String!): Join!
   deleteUser: Boolean!
   testAPI: String!
   fetchBoard(boardId: String!): Board!
@@ -57,6 +60,7 @@ input UpdateUserSaveInput {
 type Mutation {
   createUser(createUserInput: CreateUserInput!): Join!
   getToken(phone: String!): String!
+  userGetToken(phone: String!): String!
   proofToken(phone: String!, mytoken: String!): String!
   login(email: String!, pw: String!): String!
   restoreAccessToken: String!

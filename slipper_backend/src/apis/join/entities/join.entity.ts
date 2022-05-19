@@ -7,6 +7,12 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+export enum Role {
+  USER = 'USER',
+  BUSINESS = 'BUSINESS',
+  ADMIN = 'ADMIN',
+}
+
 @Entity()
 @ObjectType()
 export class Join {

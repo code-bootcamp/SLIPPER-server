@@ -14,7 +14,7 @@ import { Cache } from 'cache-manager';
 export class JoinService {
   constructor(
     @InjectRepository(Join)
-    private readonly joinRepository: Repository<Join>,
+    private readonly joinRepository: Repository<Join>, //
     @Inject(CACHE_MANAGER)
     private readonly cacheManager: Cache,
   ) {}
@@ -32,15 +32,10 @@ export class JoinService {
     if (!createUserInput.email.includes('@'))
       throw new ConflictException('email을 확인해주세여');
     return await this.joinRepository.save({
-      // email,
-      // pw,
-      // phone,
       ...createUserInput,
-      // introduce,
-      // nickname,
-      // image,
     });
   }
+
   async createSocial({ email, phone, nickname, pw }) {
     const user = await this.joinRepository.findOne({ email });
     if (user) throw new ConflictException('이미 등록된 이메일입니다.');
@@ -75,19 +70,26 @@ export class JoinService {
   async redisToken({ phone, token }) {
     const checkPhone = await this.joinRepository.findOne({ where: { phone } });
     if (checkPhone) throw new ConflictException('핸드폰 번호를 확인해세요.');
-    const redisTokne = await this.cacheManager.get(phone);
-    if (redisTokne) await this.cacheManager.del(phone);
+    const redisToken = await this.cacheManager.get(phone);
+    if (redisToken) await this.cacheManager.del(phone);
     await this.cacheManager.set(phone, token, { ttl: 180 });
     const aa = await this.cacheManager.get(phone);
-    console.log(redisTokne);
+    console.log(redisToken);
     console.log(aa);
-    return '토큰인증완료';
+    return '토큰 3분 타이머 시이작';
+  }
+
+  async userRedisToken({ phone, token }) {
+    const checkPhone = await this.joinRepository.findOne({ where: { phone } });
+    if (!checkPhone) throw new ConflictException('회원이 아니무니다.');
+    const redisToken = await this.cacheManager.get(phone);
+    if (redisToken) await this.cacheManager.del(phone);
+    await this.cacheManager.set(phone, token, { ttl: 180 });
+    return '토큰타이머 돌아간다잉';
   }
 
   async checkToken({ mytoken, phone }) {
     const redisToken = await this.cacheManager.get(phone);
-    const checkPhone = await this.joinRepository.findOne({ where: { phone } });
-    if (checkPhone) throw new ConflictException('핸드폰 번호를 확인해세요.');
     if (mytoken === redisToken) {
       return '인증성공';
     } else {
@@ -143,9 +145,21 @@ export class JoinService {
   async findOne({ email }) {
     return await this.joinRepository.findOne({ where: { email } });
   }
-
+  async emailFindone({ phone }) {
+    return await this.joinRepository.findOne({ where: { phone } });
+  }
   async findAll() {
     return await this.joinRepository.find();
+  }
+
+  async findAllUser() {
+    return await this.joinRepository.find({ withDeleted: true });
+  }
+
+  async checkNickname({ nickname }) {
+    const checkNickname = await this.joinRepository.findOne({ nickname });
+    if (checkNickname) throw new ConflictException('존재하는 닉네임이다.');
+    return '이상무';
   }
 
   async update({ email, updateUserInput }) {
@@ -153,12 +167,21 @@ export class JoinService {
     const checkNickname = await this.joinRepository.findOne(
       updateUserInput.nickname,
     );
-
+    if (checkNickname) throw new ConflictException('닉네임이 존재합니다.');
     const newUser = {
       ...user,
       ...updateUserInput,
     };
     return await this.joinRepository.save(newUser);
+  }
+
+  async updatePw({ email, pw }) {
+    const user = await this.joinRepository.findOne({ where: { email } });
+    const newPw = {
+      ...user,
+      pw,
+    };
+    return await this.joinRepository.save(newPw);
   }
 
   async delete({ email }) {
