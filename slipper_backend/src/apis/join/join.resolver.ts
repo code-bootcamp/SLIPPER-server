@@ -15,25 +15,11 @@ export class JoinResolver {
   ) {}
 
   @Mutation(() => Join)
-  async createUser(
-    // @Args('email') email: string,
-    // @Args('pw') pw: string,
-    // @Args('phone') phone: string,
-    // @Args('introduce', { nullable: true }) introduce: string,
-    // @Args('nickname') nickname: string,
-    // @Args('image', { nullable: true }) image: string,
-    @Args('createUserInput') createUserInput: CreateUserInput,
-  ) {
+  async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
     const hashedPw = await bcrypt.hash(createUserInput.pw, 10);
     await this.joinService.checkphone({ phone: createUserInput.phone });
     createUserInput.pw = hashedPw;
     return this.joinService.create({
-      // email,
-      // hashedPw,
-      // phone,
-      // introduce,
-      // nickname,
-      // image,
       createUserInput,
     });
   }
@@ -46,6 +32,15 @@ export class JoinResolver {
     await this.joinService.redisToken({ phone, token });
     await this.joinService.sendToSMS({ phone, token });
     return '토큰생성 와완료';
+  }
+  @Mutation(() => String)
+  async userGetToken(
+    @Args('phone') phone: string, //
+  ) {
+    const token = await this.joinService.getToken(6);
+    await this.joinService.userRedisToken({ phone, token });
+    await this.joinService.sendToSMS({ phone, token });
+    return '토큰 보냈다 화긴해라';
   }
 
   @Mutation(() => String)
@@ -69,6 +64,19 @@ export class JoinResolver {
     });
   }
 
+  @Query(() => Join)
+  async updateUserPw(
+    @Args('email') email: string,
+    @Args('pw') pw: string, //
+  ) {
+    const hashedPw = await bcrypt.hash(pw, 10);
+    console.log(hashedPw);
+    return await this.joinService.updatePw({
+      email,
+      pw: hashedPw,
+    });
+  }
+
   @UseGuards(GqlAuthAccessGuard)
   @Query(() => Join)
   async fetchUser(
@@ -79,7 +87,19 @@ export class JoinResolver {
 
   @Query(() => [Join])
   async fetchUsers() {
-    return this.joinService.findAll();
+    return await this.joinService.findAll();
+  }
+
+  @Query(() => [Join])
+  async fetchAllUser() {
+    return await this.joinService.findAllUser();
+  }
+
+  @Query(() => Join)
+  async fetchUserEmail(
+    @Args('phone') phone: string, //
+  ) {
+    return this.joinService.emailFindone({ phone });
   }
 
   @UseGuards(GqlAuthAccessGuard)

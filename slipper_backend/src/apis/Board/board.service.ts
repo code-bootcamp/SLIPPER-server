@@ -105,6 +105,7 @@ export class BoardService {
       nickname: createBoardInput.nickname,
     });
 
+
     console.log(getToday());
     createBoardInput.createdAt = getToday();
     console.log(createBoardInput);
@@ -129,6 +130,7 @@ export class BoardService {
       nickname: findUserId.nickname,
       phone: findUserId.phone,
     };
+
 
     const result = await this.boardRepository.save({
       user: findUserId.id,

@@ -19,4 +19,7 @@ export class CreateUserInput {
 
   @Field(() => String, { nullable: true })
   introduce: string;
+
+  @Field(() => String, { nullable: true })
+  businessImageUrl: string;
 }
