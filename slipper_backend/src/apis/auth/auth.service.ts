@@ -21,13 +21,13 @@ export class AuthService {
       { email: user.email, sub: user.id },
       { secret: 'myRefreshKey', expiresIn: '2w' },
     );
-    res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/;`);
+    //res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/;`);
     // 배포환경
-    // res.setHeader('Access-Control-Allow-Origin', 'https://myfrontsite.com')
-    // res.setHeader(
-    //   'Set-Cookie',
-    //   `refreshToken=${refreshToken}; path=/; domain=.mybacksite.com; SameSite=None; Secure; httpOnly;`
-    // )
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader(
+      'Set-Cookie',
+      `refreshToken=${refreshToken}; path=/; domain=.backend.slipperofficial.shop; SameSite=None; Secure; httpOnly;`,
+    );
   }
 
   async login({ req, res }) {
@@ -42,7 +42,6 @@ export class AuthService {
     }
 
     this.setRefreshToken({ user, res });
-    console.log(user);
-    res.redirect('http://localhost:3000/graphql');
+    //console.log(user);
   }
 }

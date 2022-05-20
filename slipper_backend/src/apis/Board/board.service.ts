@@ -4,7 +4,8 @@ import { Repository } from 'typeorm';
 import { Board } from './board.entity';
 import { BoardImage } from '../BoardImage/boardImage.entity';
 import { Join } from '../join/entities/join.entity';
-import { filter } from 'rxjs';
+import { ElasticsearchService } from '@nestjs/elasticsearch';
+import { getToday } from 'src/commons/libraries/utils';
 
 @Injectable()
 export class BoardService {
@@ -17,6 +18,8 @@ export class BoardService {
 
     @InjectRepository(Join)
     private readonly joinRepository: Repository<Join>,
+
+    private readonly elasticsearchService: ElasticsearchService,
   ) {}
 
   async findOne({ boardId }) {
@@ -30,18 +33,70 @@ export class BoardService {
   //   return await this.boardRepository.find();
   // }
 
-  //무한스크롤
+  //검색 결과를 전달해주기 + 무한 스크롤
   async loadPage({ page, category, search }) {
-    console.log(page);
+    const skip = (page - 1) * 10;
 
-    // const result = await this.boardRepository //
-    //   .createQueryBuilder('board')
-    //   .where('board.tag = :tag', { tag: tag });
-    //   .skip(5)
-    // .take(10)
-    // .getMany();
-
-    // console.log(result);
+    //console.time('check');
+    let result;
+    if (search === undefined || search === null || search === '') {
+      //전체 글 기준으로 전달 (검색페이지 메인)
+      result = await this.elasticsearchService.search({
+        index: 'slipper-elasticsearch',
+        sort: 'createdat:asc',
+        query: {
+          match_all: {},
+        },
+        from: skip,
+        size: 10,
+      });
+    } else if (category === undefined || category === null || category === '') {
+      // 검색결과를 기준으로 전달 - 검색키워드
+      result = await this.elasticsearchService.search({
+        index: 'slipper-elasticsearch',
+        sort: 'createdat:asc',
+        query: {
+          bool: {
+            must: [
+              {
+                match_phrase: {
+                  address: search,
+                },
+              },
+            ],
+          },
+        },
+        from: skip,
+        size: 10,
+      });
+    } else {
+      // 검색결과를 기준으로 전달 - 검색키워드 + 카테고리
+      result = await this.elasticsearchService.search({
+        index: 'slipper-elasticsearch',
+        sort: 'createdat:asc',
+        query: {
+          bool: {
+            must: [
+              {
+                match_phrase: {
+                  address: search,
+                },
+              },
+              {
+                match: {
+                  category: category,
+                },
+              },
+            ],
+          },
+        },
+        from: skip,
+        size: 10,
+      });
+    }
+    //console.timeEnd('check');
+    //console.log(JSON.stringify(result, null, ' '));
+    return result.hits.hits;
   }
 
   //게시글 작성
@@ -49,6 +104,26 @@ export class BoardService {
     const findUserId = await this.joinRepository.findOne({
       nickname: createBoardInput.nickname,
     });
+
+
+    console.log(getToday());
+    createBoardInput.createdAt = getToday();
+    console.log(createBoardInput);
+
+    let thumbnail;
+    if (createBoardInput.images.length > 0) {
+      thumbnail = createBoardInput.images[0];
+    } else {
+      thumbnail = null;
+    }
+
+    /*
+    나중에 교체해야할 코드
+    const findUserId = await this.joinRepository.findOne({
+      nickname: currentUser.nickname,
+    });
+    */
+
     const userId = {
       id: findUserId.id,
       email: findUserId.email,
@@ -56,30 +131,20 @@ export class BoardService {
       phone: findUserId.phone,
     };
 
-    console.log('asdfasdfsadf');
 
     const result = await this.boardRepository.save({
       user: findUserId.id,
+      thumbnail: thumbnail,
       ...createBoardInput,
     });
-
-    console.log(result);
 
     const boardId = result.id;
     const images = result.images;
 
     const returnImagelist = [];
-    const saveImage = await Promise.all(
-      images.map(async (el) => {
-        //console.log(el);
-
-        //DB에 이미 존재하는 imageURL 인지 확인하기
-        const checkDuplicates = await this.boardImageRepository.findOne({
-          imageUrl: el,
-        });
-
-        //만약에 DB에 일치하는게 없을 시에만 저장하기
-        if (checkDuplicates === undefined) {
+    if (createBoardInput.images.length > 0) {
+      await Promise.all(
+        images.map(async (el) => {
           return new Promise(async (resolve, reject) => {
             const savedImage = await this.boardImageRepository.save({
               imageUrl: el,
@@ -90,15 +155,13 @@ export class BoardService {
             if (savedImage) resolve(savedImage);
             else reject('에러');
           });
-        } else {
-          returnImagelist.push({ id: boardId, imageUrl: `[중복] ${el}` });
-          return `[중복] ${el}`;
-        }
-      }),
-    );
+        }),
+      );
+    }
 
     result.user = userId;
     result.images = returnImagelist;
+    result.nickname = userId.nickname;
     return result;
   }
 
@@ -106,16 +169,25 @@ export class BoardService {
   async update({ boardId, updateBoardInput }) {
     //----- 기존 데이터와 새로운 데이터를 분리해놓기
     const { images: newImages, ...newData } = updateBoardInput;
+
     const oldBoard = await this.boardRepository.findOne({
       where: { id: boardId },
       relations: ['images', 'user'],
     });
     const { images: oldImages, user, ...oldData } = oldBoard;
 
+    // 첫번째 이미지가 수정되었을 때 썸네일용 이미지도 변경
+    if (newImages[0] !== oldImages[0]) {
+      newData.thumbnail = newImages[0];
+    } else if (newImages.length === 0) {
+      newData.thumbnail = null;
+    }
+
     //----- 수정된 내용 합치기
     const newBoard = {
       ...oldData,
       ...newData,
+      updatedAt: getToday(),
     };
 
     //----- 수정된 내용 게시글로 저장하기
@@ -148,6 +220,7 @@ export class BoardService {
       for (const e of deleteImages) {
         await this.boardImageRepository.delete({ id: e });
       }
+
       for (const e of saveNewImages) {
         const resultImages = await this.boardImageRepository.save({
           imageUrl: e,

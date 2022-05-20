@@ -13,15 +13,6 @@ services:
     ports:
       - 3000:3000
 
-  # my-database:
-  #   platform: linux/x86_64
-  #   image: mysql:latest
-  #   environment:
-  #     MYSQL_DATABASE: 'mydocker02'
-  #     MYSQL_ROOT_PASSWORD: 'root'
-  #   ports:
-  #     - 3306:3306
-
   slipper-redis:
     image: redis:latest
     ports:
@@ -37,6 +28,5 @@ services:
   # logstash:
   #   image: logstash:7.17.0
   #   volumes:
-  #     - ./elk/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+  #     - ./elk/logstash/logstash.prod.conf:/usr/share/logstash/pipeline/logstash.prod.conf
   #     - ./elk/logstash/mysql-connector-java-8.0.28.jar:/usr/share/logstash/mysql-connector-java-8.0.28.jar
-  #     - ./elk/logstash/elastic_template.json:/usr/share/logstash/elastic_template.json

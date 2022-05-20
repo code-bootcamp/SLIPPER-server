@@ -52,7 +52,7 @@ export class JoinResolver {
   }
 
   @UseGuards(GqlAuthAccessGuard)
-  @Query(() => Join)
+  @Mutation(() => Join)
   async updateUser(
     @Args('updateUserInput') updateUserInput: UpdateUserSaveInput, //
     @CurrentUser() currentUser: any,
