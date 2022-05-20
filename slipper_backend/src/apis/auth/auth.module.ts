@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtGoogleStrategy } from 'src/commons/auth/jwt-google.strategy';
 import { JwtKakaoStrategy } from 'src/commons/auth/jwt-kakao.strategy';
 import { JwtNaverStrategy } from 'src/commons/auth/jwt-naver.strategy';
-import { JwtRfreshStrategy } from 'src/commons/auth/jwt-refresh.strategy';
+import { JwtRefreshStrategy } from 'src/commons/auth/jwt-refresh.strategy';
 
 import { Join } from '../join/entities/join.entity';
 import { JoinService } from '../join/join.service';
@@ -18,7 +18,7 @@ import { AuthService } from './auth.service';
     TypeOrmModule.forFeature([Join]),
   ],
   providers: [
-    JwtRfreshStrategy,
+    JwtRefreshStrategy,
     JwtGoogleStrategy,
     JwtKakaoStrategy,
     JwtNaverStrategy,
