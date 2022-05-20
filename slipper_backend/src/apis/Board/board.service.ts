@@ -49,13 +49,13 @@ export class BoardService {
     const findUserId = await this.joinRepository.findOne({
       nickname: createBoardInput.nickname,
     });
-
     const userId = {
       id: findUserId.id,
       email: findUserId.email,
       nickname: findUserId.nickname,
       phone: findUserId.phone,
     };
+
     console.log('asdfasdfsadf');
 
     const result = await this.boardRepository.save({

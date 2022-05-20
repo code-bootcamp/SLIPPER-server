@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import {
   Column,
   CreateDateColumn,
@@ -13,6 +13,7 @@ export enum Role {
   ADMIN = 'ADMIN',
 }
 
+registerEnumType(Role, { name: 'Role' });
 @Entity()
 @ObjectType()
 export class Join {
@@ -44,10 +45,18 @@ export class Join {
   @Field(() => String, { nullable: true })
   introduce: string;
 
+  @Column({ nullable: true })
+  @Field(() => String, { nullable: true })
+  businessImageUrl: string;
+
   @CreateDateColumn()
   @Field(() => Date)
   createAt: Date;
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @Column({ type: 'enum', enum: Role, default: Role.USER })
+  @Field(() => Role)
+  role: Role;
 }
