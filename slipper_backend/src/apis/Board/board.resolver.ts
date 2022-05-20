@@ -18,20 +18,30 @@ export class BoardResolver {
     return this.boardService.findOne({ boardId });
   }
 
-  //무한 스크롤
+  //검색 결과를 전달해주기 + 무한 스크롤
   @Query(() => [Board])
-  fetchBoardsPage(
+  async fetchBoardsPage(
     @Args('page') page: number, //
     @Args('category') category: string, //
     @Args('search') search: string, //
   ) {
-    return this.boardService.loadPage({ page, category, search });
+    const result = await this.boardService.loadPage({ page, category, search });
+    console.log(result);
+    return result;
   }
   // fetchBoards() {
   //   return this.boardService.findAll();
   // }
 
   //--------  Mutation  --------
+
+  /*
+  나중에 교체, 추가해야할 코드
+  @UseGuards(GqlAuthRefreshGuard)
+  @CurrentUser() currentUser: ICurrentUser,
+  검색할 때는 currentUser.nickname
+  */
+
   @Mutation(() => Board)
   createBoard(
     @Args('createBoardInput') createBoardInput: CreateBoardInput, //

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Storage } from '@google-cloud/storage';
 import { FileUpload } from 'graphql-upload';
-import { getToday } from 'src/commons/libraries/utils';
 import { v4 as uuidv4 } from 'uuid';
 
 interface IFile {
@@ -33,7 +32,9 @@ export class FileService {
               storage.file(fname).createWriteStream({ resumable: false }), // { resumable: false } 추가해야 오류발생X
             )
             .on('finish', () =>
-              resolve(`${process.env.STORAGE_PROJECT_ID}/${fname}`),
+              resolve(
+                `https://storage.googleapis.com/${process.env.STORAGE_BUCKET}/${fname}`,
+              ),
             ) // finish 결과는 프론트엔드로 리턴
             .on('error', (err) => reject(err));
         });

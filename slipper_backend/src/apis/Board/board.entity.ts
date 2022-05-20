@@ -18,11 +18,23 @@ export class Board {
   id: string;
 
   @UpdateDateColumn()
+  sortDate: Date;
+
+  @Column() // @UpdateDateColumn()
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Column({ default: null })
+  @Field(() => String, { nullable: true })
   updatedAt: Date;
 
   @ManyToOne(() => Join)
   @Field(() => Join)
   user: Join;
+
+  @Column()
+  @Field(() => String)
+  nickname: string;
 
   @Column()
   @Field(() => String)
@@ -36,13 +48,21 @@ export class Board {
   @Field(() => String)
   contents: string;
 
+  @Column({ default: null })
+  @Field(() => String, { nullable: true })
+  thumbnail: string;
+
   @Column()
   @Field(() => Int)
   score: number;
 
-  @Column({ default: null }) //{ default: null }
-  @Field(() => String, { nullable: true }) //{ nullable: true } / String
-  period: string;
+  @Column({ default: null })
+  @Field(() => String, { nullable: true })
+  startDate: string;
+
+  @Column({ default: null })
+  @Field(() => String, { nullable: true })
+  endDate: string;
 
   @Column()
   @Field(() => String)

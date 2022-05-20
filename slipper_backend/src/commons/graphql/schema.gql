@@ -3,7 +3,6 @@
 # ------------------------------------------------------
 
 type Join {
-  id: String!
   email: String!
   nickname: String!
   phone: String!
@@ -19,12 +18,17 @@ scalar DateTime
 
 type Board {
   id: String!
+  createdAt: DateTime!
+  updatedAt: String
   user: Join!
+  nickname: String!
   category: String!
   title: String!
   contents: String!
+  thumbnail: String
   score: Int!
-  period: String
+  startDate: String
+  endDate: String
   lat: String!
   lng: String!
   address: String!
@@ -39,7 +43,6 @@ type BoardImage {
 }
 
 type Query {
-  updateUser(updateUserInput: UpdateUserSaveInput!): Join!
   fetchUser: Join!
   fetchUsers: [Join!]!
   deleteUser: Boolean!
@@ -48,16 +51,11 @@ type Query {
   fetchBoardsPage(page: Float!, category: String!, search: String!): [Board!]!
 }
 
-input UpdateUserSaveInput {
-  nickname: String
-  imageUrl: String
-  introduce: String
-}
-
 type Mutation {
   createUser(createUserInput: CreateUserInput!): Join!
   getToken(phone: String!): String!
   proofToken(phone: String!, mytoken: String!): String!
+  updateUser(updateUserInput: UpdateUserSaveInput!): Join!
   login(email: String!, pw: String!): String!
   restoreAccessToken: String!
   logout: String!
@@ -77,13 +75,21 @@ input CreateUserInput {
   introduce: String
 }
 
+input UpdateUserSaveInput {
+  nickname: String
+  imageUrl: String
+  introduce: String
+}
+
 input CreateBoardInput {
   nickname: String!
   category: String!
   title: String!
   contents: String!
+  thumbnail: String
   score: Int!
-  period: String
+  startDate: String
+  endDate: String
   lat: String!
   lng: String!
   address: String!
@@ -96,8 +102,10 @@ input UpdateBoardInput {
   category: String
   title: String
   contents: String
+  thumbnail: String
   score: Int
-  period: String
+  startDate: String
+  endDate: String
   lat: String
   lng: String
   address: String

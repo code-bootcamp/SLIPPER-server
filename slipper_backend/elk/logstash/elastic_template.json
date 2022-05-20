@@ -1,0 +1,26 @@
+{
+  "template": "slipper-elasticsearch",
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "type": "standard",
+          "filter": ["lowercase"]
+        }
+      },
+      "filter": {
+        "my_lowercase_filter": {
+          "type": "lowercase"
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "description": {
+        "type": "text",
+        "analyzer": "my_analyzer"
+      }
+    }
+  }
+}

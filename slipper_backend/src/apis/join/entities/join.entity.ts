@@ -11,7 +11,7 @@ import {
 @ObjectType()
 export class Join {
   @PrimaryGeneratedColumn('uuid')
-  @Field(() => String)
+  // @Field(() => String)
   id: string;
 
   @Column()

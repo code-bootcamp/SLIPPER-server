@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BoardImage } from '../BoardImage/boardImage.entity';
 import { Join } from '../join/entities/join.entity';
@@ -7,7 +8,12 @@ import { BoardResolver } from './board.resolver';
 import { BoardService } from './board.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Board, BoardImage, Join])],
+  imports: [
+    TypeOrmModule.forFeature([Board, BoardImage, Join]),
+    ElasticsearchModule.register({
+      node: 'http://elasticsearch:9200',
+    }),
+  ],
   providers: [BoardResolver, BoardService],
 })
 export class BoardModule {}

@@ -1,7 +1,11 @@
 export const getToday = () => {
   const date = new Date();
-  const yyyy = date.getFullYear();
-  const mm = date.getMonth() + 1;
-  const dd = date.getDate();
-  return `${yyyy}/${mm}/${dd}`;
+  const yyyy = String(date.getFullYear());
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  const h = String(date.getHours() + 9).padStart(2, '0');
+  const m = String(date.getMinutes()).padStart(2, '0');
+  const s = String(date.getSeconds()).padStart(2, '0');
+
+  return `${yyyy}-${mm}-${dd} ${h}:${m}:${s}`;
 };
