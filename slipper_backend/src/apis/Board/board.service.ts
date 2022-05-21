@@ -105,7 +105,6 @@ export class BoardService {
       nickname: createBoardInput.nickname,
     });
 
-
     console.log(getToday());
     createBoardInput.createdAt = getToday();
     console.log(createBoardInput);
@@ -130,7 +129,6 @@ export class BoardService {
       nickname: findUserId.nickname,
       phone: findUserId.phone,
     };
-
 
     const result = await this.boardRepository.save({
       user: findUserId.id,
@@ -196,11 +194,11 @@ export class BoardService {
     });
 
     //----- 수정된 이미지 삭제하기
-    let returnImages = [];
+    const returnImages = [];
     if (newImages !== undefined) {
-      let saveNewImages = [];
-      let deleteImages = [];
-      let filteredImages = [];
+      const saveNewImages = [];
+      const deleteImages = [];
+      const filteredImages = [];
 
       for (const e of oldImages) {
         if (!newImages.includes(e.imageUrl)) deleteImages.push(e.id);
