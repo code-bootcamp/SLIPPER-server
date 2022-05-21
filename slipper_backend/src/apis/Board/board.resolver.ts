@@ -19,7 +19,7 @@ export class BoardResolver {
   }
 
   //검색 결과를 전달해주기 + 무한 스크롤
-  @Query(() => [Board])
+  @Query(() => [String])
   async fetchBoardsPage(
     @Args('page') page: number, //
     @Args('category') category: string, //

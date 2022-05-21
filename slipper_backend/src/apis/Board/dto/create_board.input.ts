@@ -41,8 +41,6 @@ export class CreateBoardInput {
   // @Field(() => Int, { nullable: true })
   // likeCount: number;
 
-  // @Field(() => [String], { nullable: true })
-  // images: string;
   @Field(() => [String], { nullable: true })
   images: string;
 }

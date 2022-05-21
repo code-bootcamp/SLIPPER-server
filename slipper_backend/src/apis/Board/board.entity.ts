@@ -20,12 +20,12 @@ export class Board {
   @UpdateDateColumn()
   sortDate: Date;
 
-  @Column() // @UpdateDateColumn()
-  @Field(() => Date)
+  @Column({ default: null })
+  @Field(() => Date, { nullable: true })
   createdAt: Date;
 
   @Column({ default: null })
-  @Field(() => String, { nullable: true })
+  @Field(() => Date, { nullable: true })
   updatedAt: Date;
 
   @ManyToOne(() => Join)
@@ -44,7 +44,7 @@ export class Board {
   @Field(() => String)
   title: string;
 
-  @Column()
+  @Column({ type: 'text', name: 'contents' })
   @Field(() => String)
   contents: string;
 
