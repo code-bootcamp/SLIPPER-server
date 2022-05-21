@@ -59,6 +59,7 @@ type Query {
   fetchUserEmail(phone: String!): Join!
   deleteUser: Boolean!
   testAPI: String!
+  testFetchBoardsPage(page: Float!, category: String!, search: String!): [String!]!
   fetchBoard(boardId: String!): Board!
   fetchBoardsPage(page: Float!, category: String!, search: String!): [String!]!
 }
