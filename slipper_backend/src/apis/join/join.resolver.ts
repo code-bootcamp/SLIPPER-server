@@ -51,7 +51,7 @@ export class JoinResolver {
     return await this.joinService.checkToken({ mytoken, phone });
   }
 
-  @UseGuards(GqlAuthAccessGuard)
+  //@UseGuards(GqlAuthAccessGuard)
   @Mutation(() => Join)
   async updateUser(
     @Args('updateUserInput') updateUserInput: UpdateUserSaveInput, //

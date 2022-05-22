@@ -3,6 +3,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { GqlAuthAccessGuard } from 'src/commons/auth/gql-auth.guard';
 import { RolesGuard } from 'src/commons/auth/gql-role.guard';
 import { Roles } from 'src/commons/auth/gql-role.param';
+import { CurrentUser } from 'src/commons/auth/gql-user.param';
 import { Board } from '../Board/board.entity';
 import { BoardService } from '../Board/board.service';
 import { CreateBoardInput } from '../Board/dto/create_board.input';
@@ -19,9 +20,13 @@ export class BusinessUserResolver {
   @Mutation(() => Board)
   async createBusinessBoard(
     @Args('createBoardInput') createBoardInput: CreateBoardInput,
+    @CurrentUser() currentUser: any, //성환 추가
   ) {
     console.log(createBoardInput);
-    return this.boardService.create({ createBoardInput });
+    return this.boardService.create({
+      createBoardInput,
+      email: currentUser.email, //성환 추가
+    });
   }
 
   // @Roles(Role.BUSINESS)

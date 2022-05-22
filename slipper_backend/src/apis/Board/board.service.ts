@@ -100,9 +100,9 @@ export class BoardService {
   }
 
   //게시글 작성
-  async create({ createBoardInput }) {
+  async create({ createBoardInput, email }) {
     const findUserId = await this.joinRepository.findOne({
-      nickname: createBoardInput.nickname,
+      email: email,
     });
 
     console.log(getToday());
