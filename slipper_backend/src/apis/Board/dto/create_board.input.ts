@@ -2,8 +2,8 @@ import { Field, InputType, Int } from '@nestjs/graphql';
 
 @InputType()
 export class CreateBoardInput {
-  @Field(() => String) //나중에 삭제하고 로그인시 CurrentUser 에서 검색해오는 방법으로 교체
-  nickname: string;
+  //@Field(() => String) //나중에 삭제하고 로그인시 CurrentUser 에서 검색해오는 방법으로 교체
+  //nickname: string;
 
   @Field(() => String)
   category: string;

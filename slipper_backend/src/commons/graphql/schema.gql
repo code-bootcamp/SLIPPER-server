@@ -83,7 +83,6 @@ type Mutation {
 }
 
 input CreateBoardInput {
-  nickname: String!
   category: String!
   title: String!
   contents: String!
@@ -99,7 +98,6 @@ input CreateBoardInput {
 }
 
 input UpdateBoardInput {
-  nickname: String
   category: String
   title: String
   contents: String
