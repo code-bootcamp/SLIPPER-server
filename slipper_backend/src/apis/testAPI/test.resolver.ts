@@ -22,9 +22,9 @@ export class TestAPIResolver {
 
   @Query(() => [GraphQLJSONObject])
   testFetchBoardsPage(
-    @Args('page') page: number, //
-    @Args('category') category: string, //
-    @Args('search') search: string, //
+    @Args('page', { nullable: true }) page: number, //
+    @Args('category', { nullable: true }) category: string, //
+    @Args('search', { nullable: true }) search: string, //
   ) {
     const result = [];
     const data = {

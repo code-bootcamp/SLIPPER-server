@@ -60,9 +60,9 @@ type Query {
   deleteUser: Boolean!
   testAPI: String!
   testFetchBoards: [Board!]!
-  testFetchBoardsPage(page: Float!, category: String!, search: String!): [JSONObject!]!
+  testFetchBoardsPage(page: Float, category: String, search: String): [JSONObject!]!
   fetchBoard(boardId: String!): Board!
-  fetchBoardsPage(page: Float!, category: String!, search: String!): [JSONObject!]!
+  fetchBoardsPage(page: Float, category: String, search: String): [JSONObject!]!
 }
 
 """
