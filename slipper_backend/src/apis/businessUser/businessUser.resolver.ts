@@ -40,6 +40,16 @@ export class BusinessUserResolver {
     return this.boardService.update({ boardId, updateBoardInput });
   }
 
+  // @Roles(Role.BUSINESS)
+  @UseGuards(GqlAuthAccessGuard)
+  // , RolesGuard
+  @Mutation(() => Boolean)
+  async deleteBusinessBoard(
+    @Args('boardId') boardId: string, //
+  ) {
+    return this.boardService.delete({ boardId });
+  }
+
   @Query(() => Board)
   fetchBusinessBoard(
     @Args('boardId') boardId: string, //
