@@ -28,6 +28,10 @@ import { BusinessUserModule } from './apis/businessUser/businessUser.module';
       driver: ApolloDriver,
       autoSchemaFile: 'src/commons/graphql/schema.gql',
       context: ({ req, res }) => ({ req, res }),
+      cors: {
+        origin: true,
+        Credential: true,
+      },
     }),
 
     TypeOrmModule.forRoot({
