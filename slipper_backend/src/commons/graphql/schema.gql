@@ -73,6 +73,7 @@ scalar JSONObject
 type Mutation {
   createBusinessBoard(createBoardInput: CreateBoardInput!): Board!
   updateBusinessBoard(boardId: String!, updateBoardInput: UpdateBoardInput!): Board!
+  deleteBusinessBoard(boardId: String!): Boolean!
   createUser(createUserInput: CreateUserInput!): Join!
   getToken(phone: String!): String!
   userGetToken(phone: String!): String!

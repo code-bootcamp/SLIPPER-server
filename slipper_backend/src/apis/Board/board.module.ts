@@ -11,7 +11,8 @@ import { BoardService } from './board.service';
   imports: [
     TypeOrmModule.forFeature([Board, BoardImage, Join]),
     ElasticsearchModule.register({
-      node: 'http://elasticsearch:9200',
+      //node: 'http://elasticsearch:9200',
+      node: process.env.ELASTICSEARCH_IP,
     }),
   ],
   providers: [BoardResolver, BoardService],
