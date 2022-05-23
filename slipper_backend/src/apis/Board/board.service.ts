@@ -133,6 +133,7 @@ export class BoardService {
     const result = await this.boardRepository.save({
       user: findUserId.id,
       thumbnail: thumbnail,
+      nickname: findUserId.nickname,
       ...createBoardInput,
     });
 
