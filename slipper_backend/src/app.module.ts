@@ -50,7 +50,7 @@ import { BusinessUserModule } from './apis/businessUser/businessUser.module';
 
     CacheModule.register<RedisClientOptions>({
       store: redisStore,
-      url: 'redis://slipper-redis:6379',
+      url: process.env.REDIS_IP,
       isGlobal: true,
     }),
   ],
