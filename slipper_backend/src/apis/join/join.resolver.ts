@@ -70,7 +70,6 @@ export class JoinResolver {
     @Args('pw') pw: string, //
   ) {
     const hashedPw = await bcrypt.hash(pw, 10);
-    console.log(hashedPw);
     return await this.joinService.updatePw({
       email,
       pw: hashedPw,
