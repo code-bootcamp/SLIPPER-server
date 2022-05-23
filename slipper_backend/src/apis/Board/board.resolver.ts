@@ -25,9 +25,9 @@ export class BoardResolver {
   //검색 결과를 전달해주기 + 무한 스크롤
   @Query(() => [GraphQLJSONObject])
   async fetchBoardsPage(
-    @Args('page') page: number, //
-    @Args('category') category: string, //
-    @Args('search') search: string, //
+    @Args('page', { nullable: true }) page: number, //
+    @Args('category', { nullable: true }) category: string, //
+    @Args('search', { nullable: true }) search: string, //
   ) {
     const result = await this.boardService.loadPage({ page, category, search });
     console.log(result);
