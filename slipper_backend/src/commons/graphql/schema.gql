@@ -60,10 +60,15 @@ type Query {
   deleteUser: Boolean!
   testAPI: String!
   testFetchBoards: [Board!]!
-  testFetchBoardsPage(page: Float!, category: String!, search: String!): [String!]!
+  testFetchBoardsPage(page: Float!, category: String!, search: String!): [JSONObject!]!
   fetchBoard(boardId: String!): Board!
-  fetchBoardsPage(page: Float!, category: String!, search: String!): [String!]!
+  fetchBoardsPage(page: Float!, category: String!, search: String!): [JSONObject!]!
 }
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject
 
 type Mutation {
   createBusinessBoard(createBoardInput: CreateBoardInput!): Board!

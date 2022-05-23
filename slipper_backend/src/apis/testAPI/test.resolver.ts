@@ -2,6 +2,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Board } from '../Board/board.entity';
 import { CreateBoardInput } from '../Board/dto/create_board.input';
 import { TestBoardService } from './test.service';
+import { GraphQLJSONObject } from 'graphql-type-json';
 
 @Resolver()
 export class TestAPIResolver {
@@ -19,7 +20,7 @@ export class TestAPIResolver {
     return this.testBoardService.findAll();
   }
 
-  @Query(() => [String])
+  @Query(() => [GraphQLJSONObject])
   testFetchBoardsPage(
     @Args('page') page: number, //
     @Args('category') category: string, //
