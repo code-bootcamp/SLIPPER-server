@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type BoardImage {
+  id: String!
+  imageUrl: String!
+}
+
 type Join {
   email: String!
   nickname: String!
@@ -45,11 +50,6 @@ type Board {
   images: [BoardImage!]
 }
 
-type BoardImage {
-  id: String!
-  imageUrl: String!
-}
-
 type Query {
   fetchBusinessBoard(boardId: String!): Board!
   updateUserPw(email: String!, pw: String!): Join!
@@ -59,6 +59,7 @@ type Query {
   fetchUserEmail(phone: String!): Join!
   deleteUser: Boolean!
   testAPI: String!
+  testFetchBoards: [Board!]!
   testFetchBoardsPage(page: Float!, category: String!, search: String!): [String!]!
   fetchBoard(boardId: String!): Board!
   fetchBoardsPage(page: Float!, category: String!, search: String!): [String!]!
@@ -75,6 +76,7 @@ type Mutation {
   login(email: String!, pw: String!): String!
   restoreAccessToken: String!
   logout: String!
+  testCreateBoard(createBoardInput: CreateBoardInput!, email: String!): Board!
   createBoard(createBoardInput: CreateBoardInput!): Board!
   updateBoard(boardId: String!, updateBoardInput: UpdateBoardInput!): Board!
   deleteBoard(boardId: String!): String!

@@ -1,10 +1,22 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Board } from '../Board/board.entity';
+import { CreateBoardInput } from '../Board/dto/create_board.input';
+import { TestBoardService } from './test.service';
 
 @Resolver()
 export class TestAPIResolver {
+  constructor(
+    private readonly testBoardService: TestBoardService, //
+  ) {}
+
   @Query(() => String)
   testAPI() {
     return '테스트 완료! 접속되었습니다 - slipper!';
+  }
+
+  @Query(() => [Board])
+  testFetchBoards() {
+    return this.testBoardService.findAll();
   }
 
   @Query(() => [String])
@@ -14,7 +26,7 @@ export class TestAPIResolver {
     @Args('search') search: string, //
   ) {
     const result = [];
-    let data = {
+    const data = {
       _index: 'slipper-elasticsearch',
       _type: '_doc',
       _id: '19d1e9aa-ce47-474d-8590-bd618aa4e83a',
@@ -38,6 +50,21 @@ export class TestAPIResolver {
     for (let i = 0; i < 5; i++) {
       result.push(data);
     }
+    console.log(result);
+
+    return result;
+  }
+
+  @Mutation(() => Board)
+  async testCreateBoard(
+    @Args('createBoardInput') createBoardInput: CreateBoardInput, //
+    @Args('email') email: string,
+  ) {
+    const result = await this.testBoardService.create({
+      createBoardInput,
+      email: email,
+    });
+
     console.log(result);
 
     return result;
