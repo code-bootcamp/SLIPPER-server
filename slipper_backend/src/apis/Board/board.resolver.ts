@@ -6,6 +6,7 @@ import { Board } from './board.entity';
 import { BoardService } from './board.service';
 import { CreateBoardInput } from './dto/create_board.input';
 import { UpdateBoardInput } from './dto/update_board.input';
+import { GraphQLJSONObject } from 'graphql-type-json';
 
 @Resolver()
 export class BoardResolver {
@@ -22,7 +23,7 @@ export class BoardResolver {
   }
 
   //검색 결과를 전달해주기 + 무한 스크롤
-  @Query(() => [String])
+  @Query(() => [GraphQLJSONObject])
   async fetchBoardsPage(
     @Args('page') page: number, //
     @Args('category') category: string, //
