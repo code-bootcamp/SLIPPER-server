@@ -28,10 +28,6 @@ export class Board {
   @Field(() => Date, { nullable: true })
   updatedAt: Date;
 
-  @ManyToOne(() => Join)
-  @Field(() => Join)
-  user: Join;
-
   @Column()
   @Field(() => String)
   nickname: string;
@@ -90,4 +86,8 @@ export class Board {
   @OneToMany(() => BoardImage, (images) => images.board)
   @Field(() => [BoardImage], { nullable: true })
   images: BoardImage[];
+
+  @ManyToOne(() => Join, { cascade: true, onDelete: 'CASCADE' })
+  @Field(() => Join)
+  user: Join;
 }
