@@ -5,7 +5,18 @@
       "analyzer": {
         "my_analyzer": {
           "type": "standard",
+          "tokenizer": ["my_ngram_tokenizer", "my_standard_tokenizer"],
           "filter": ["lowercase"]
+        }
+      },
+      "tokenizer": {
+        "my_standard_tokenizer": {
+          "type": "standard"
+        },
+        "my_ngram_tokenizer": {
+          "type": "nGram",
+          "min_gram": "1",
+          "max_gram": "10"
         }
       },
       "filter": {
@@ -13,7 +24,8 @@
           "type": "lowercase"
         }
       }
-    }
+    },
+    "max_ngram_diff": "10"
   },
   "mappings": {
     "properties": {

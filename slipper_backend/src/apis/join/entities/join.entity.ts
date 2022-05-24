@@ -1,9 +1,11 @@
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Payment } from 'src/apis/Payment/payment.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -59,4 +61,20 @@ export class Join {
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   @Field(() => Role)
   role: Role;
+
+  @Column({ nullable: true })
+  @Field(() => String, { nullable: true })
+  subStart: string;
+
+  @Column({ nullable: true })
+  @Field(() => String, { nullable: true })
+  subEnd: string;
+
+  @Column({ nullable: true })
+  @Field(() => String, { nullable: true })
+  subType: string;
+
+  @OneToMany(() => Payment, (payment) => payment.user)
+  @Field(() => [Payment], { nullable: true })
+  payment: Payment[];
 }

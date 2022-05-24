@@ -7,6 +7,25 @@ type BoardImage {
   imageUrl: String!
 }
 
+type Payment {
+  id: String!
+  paymentDate: DateTime!
+  paymentAmount: Int!
+  impUid: String!
+  subType: PAYMENT_STATUS_ENUM!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+enum PAYMENT_STATUS_ENUM {
+  DAY7
+  DAY30
+  DAY90
+}
+
 type Join {
   email: String!
   nickname: String!
@@ -16,12 +35,11 @@ type Join {
   businessImageUrl: String
   createAt: DateTime!
   role: Role!
+  subStart: String
+  subEnd: String
+  subType: String
+  payment: [Payment!]
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 enum Role {
   USER
@@ -60,6 +78,7 @@ type Query {
   testAPI: String!
   testFetchBoards: [Board!]!
   testFetchBoardsPage(page: Float, category: String, search: String): [JSONObject!]!
+  testFetchUser(email: String!): Join!
   fetchBoard(boardId: String!): Board!
   fetchBoardsPage(page: Float, category: String, search: String): [JSONObject!]!
 }
@@ -84,6 +103,9 @@ type Mutation {
   deleteBoard(boardId: String!): String!
   uploadBoardImage(files: [Upload!]!): [String!]!
   uploadProfileImage(files: [Upload!]!): [String!]!
+  uploadBusinessImage(files: [Upload!]!): [String!]!
+  createPayment(impUid: String!, amount: Float!): Payment!
+  deletePayment(userId: String!): Payment!
 }
 
 input CreateUserInput {

@@ -12,17 +12,18 @@ import { FileModule } from './apis/file/file.module';
 import { CrontabModule } from './apis/crontab/crontab.module';
 import { JoinModule } from './apis/join/join.module';
 import { AuthModule } from './apis/auth/auth.module';
-// import { BusinessUserModule } from './apis/businessBoard/businessUser.module';
+import { PaymentModule } from './apis/Payment/payment.module';
 
 @Module({
   imports: [
-    //BusinessUserModule,
+    
     JoinModule,
     AuthModule,
     TestAPIModule,
     CrontabModule,
     BoardModule,
     FileModule,
+    PaymentModule,
 
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
