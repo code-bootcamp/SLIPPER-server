@@ -2,7 +2,10 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Join } from './entities/join.entity';
 import { JoinService } from './join.service';
 import * as bcrypt from 'bcrypt';
-import { GqlAuthAccessGuard } from 'src/commons/auth/gql-auth.guard';
+import {
+  GqlAuthAccessGuard,
+  GqlAuthRefreshGuard,
+} from 'src/commons/auth/gql-auth.guard';
 import { UseGuards } from '@nestjs/common';
 import { CurrentUser, ICurrentUser } from 'src/commons/auth/gql-user.param';
 import { CreateUserInput } from './dto/createUser.input';
@@ -76,7 +79,8 @@ export class JoinResolver {
     });
   }
 
-  @UseGuards(GqlAuthAccessGuard)
+  // @UseGuards(GqlAuthAccessGuard)
+  @UseGuards(GqlAuthRefreshGuard)
   @Query(() => Join)
   async fetchUser(
     @CurrentUser() currentUser: any, //
