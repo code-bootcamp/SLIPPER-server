@@ -25,4 +25,13 @@ export class FileResolver {
     const type = 'profile';
     return this.fileService.upload({ files, type });
   }
+
+  // 사업자등록증 이미지 업로드
+  @Mutation(() => [String])
+  uploadBusinessImage(
+    @Args({ name: 'files', type: () => [GraphQLUpload] }) files: FileUpload[],
+  ) {
+    const type = 'business';
+    return this.fileService.upload({ files, type });
+  }
 }

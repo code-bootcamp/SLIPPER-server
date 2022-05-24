@@ -3,6 +3,7 @@ import { Board } from '../Board/board.entity';
 import { CreateBoardInput } from '../Board/dto/create_board.input';
 import { TestBoardService } from './test.service';
 import { GraphQLJSONObject } from 'graphql-type-json';
+import { Join } from '../join/entities/join.entity';
 
 @Resolver()
 export class TestAPIResolver {
@@ -69,5 +70,12 @@ export class TestAPIResolver {
     console.log(result);
 
     return result;
+  }
+
+  @Query(() => Join)
+  async testFetchUser(
+    @Args('email') email: string, //
+  ) {
+    return await this.testBoardService.findUser({ email });
   }
 }

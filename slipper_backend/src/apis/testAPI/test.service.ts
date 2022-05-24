@@ -27,6 +27,17 @@ export class TestBoardService {
     return result;
   }
 
+  async findUser({ email }) {
+    const result = await this.joinRepository
+      .createQueryBuilder('join') //
+      .leftJoinAndSelect('join.payment', 'payment')
+      .where('join.email = :email', { email })
+      .getOne();
+
+    console.log(result);
+    return result;
+  }
+
   async create({ createBoardInput, email }) {
     const findUserId = await this.joinRepository.findOne({
       email: email,
@@ -56,9 +67,6 @@ export class TestBoardService {
       nickname: findUserId.nickname,
       phone: findUserId.phone,
     };
-
-    console.log('-=-=-=-=-=-');
-    console.log(createBoardInput);
 
     const result = await this.boardRepository.save({
       user: findUserId.id,

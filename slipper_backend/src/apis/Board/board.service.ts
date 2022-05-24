@@ -41,6 +41,7 @@ export class BoardService {
     let result;
     if (search === undefined || search === null || search === '') {
       //전체 글 기준으로 전달 (검색페이지 메인)
+      console.log(1);
       result = await this.elasticsearchService.search({
         index: 'slipper-elasticsearch',
         sort: 'createdat:asc',
@@ -52,18 +53,16 @@ export class BoardService {
       });
     } else if (category === undefined || category === null || category === '') {
       // 검색결과를 기준으로 전달 - 검색키워드
+      console.log(2);
       result = await this.elasticsearchService.search({
         index: 'slipper-elasticsearch',
         sort: 'createdat:asc',
         query: {
+          // match: {
+          //   address: search,
+          // },
           bool: {
-            must: [
-              {
-                match_phrase: {
-                  address: search,
-                },
-              },
-            ],
+            should: [{ prefix: { address: search } }],
           },
         },
         from: skip,
@@ -71,22 +70,15 @@ export class BoardService {
       });
     } else {
       // 검색결과를 기준으로 전달 - 검색키워드 + 카테고리
+      console.log(3);
       result = await this.elasticsearchService.search({
         index: 'slipper-elasticsearch',
         sort: 'createdat:asc',
         query: {
           bool: {
             must: [
-              {
-                match_phrase: {
-                  address: search,
-                },
-              },
-              {
-                match: {
-                  category: category,
-                },
-              },
+              { prefix: { address: search } },
+              { prefix: { category: category } },
             ],
           },
         },

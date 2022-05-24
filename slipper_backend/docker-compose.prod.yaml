@@ -30,3 +30,4 @@ services:
   #   volumes:
   #     - ./elk/logstash/logstash.prod.conf:/usr/share/logstash/pipeline/logstash.prod.conf
   #     - ./elk/logstash/mysql-connector-java-8.0.28.jar:/usr/share/logstash/mysql-connector-java-8.0.28.jar
+  #     - ./elk/logstash/elastic_template.json:/usr/share/logstash/elastic_template.json
