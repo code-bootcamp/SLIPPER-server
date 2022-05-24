@@ -79,7 +79,8 @@ export class JoinResolver {
     });
   }
 
-  // @UseGuards(GqlAuthAccessGuard)
+
+  //@UseGuards(GqlAuthAccessGuard)
   @UseGuards(GqlAuthRefreshGuard)
   @Query(() => Join)
   async fetchUser(
