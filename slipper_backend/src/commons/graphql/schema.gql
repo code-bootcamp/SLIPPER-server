@@ -51,7 +51,6 @@ type Board {
 }
 
 type Query {
-  fetchBusinessBoard(boardId: String!): Board!
   updateUserPw(email: String!, pw: String!): Join!
   fetchUser: Join!
   fetchUsers: [Join!]!
@@ -71,9 +70,6 @@ The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](
 scalar JSONObject
 
 type Mutation {
-  createBusinessBoard(createBoardInput: CreateBoardInput!): Board!
-  updateBusinessBoard(boardId: String!, updateBoardInput: UpdateBoardInput!): Board!
-  deleteBusinessBoard(boardId: String!): Boolean!
   createUser(createUserInput: CreateUserInput!): Join!
   getToken(phone: String!): String!
   userGetToken(phone: String!): String!
@@ -88,6 +84,22 @@ type Mutation {
   deleteBoard(boardId: String!): String!
   uploadBoardImage(files: [Upload!]!): [String!]!
   uploadProfileImage(files: [Upload!]!): [String!]!
+}
+
+input CreateUserInput {
+  email: String!
+  pw: String!
+  nickname: String!
+  phone: String!
+  imageUrl: String
+  introduce: String
+  businessImageUrl: String
+}
+
+input UpdateUserSaveInput {
+  nickname: String
+  imageUrl: String
+  introduce: String
 }
 
 input CreateBoardInput {
@@ -118,22 +130,6 @@ input UpdateBoardInput {
   address: String
   place: String
   images: [String!]
-}
-
-input CreateUserInput {
-  email: String!
-  pw: String!
-  nickname: String!
-  phone: String!
-  imageUrl: String
-  introduce: String
-  businessImageUrl: String
-}
-
-input UpdateUserSaveInput {
-  nickname: String
-  imageUrl: String
-  introduce: String
 }
 
 """The `Upload` scalar type represents a file upload."""

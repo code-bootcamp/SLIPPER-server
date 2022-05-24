@@ -12,11 +12,11 @@ import { FileModule } from './apis/file/file.module';
 import { CrontabModule } from './apis/crontab/crontab.module';
 import { JoinModule } from './apis/join/join.module';
 import { AuthModule } from './apis/auth/auth.module';
-import { BusinessUserModule } from './apis/businessBoard/businessUser.module';
+// import { BusinessUserModule } from './apis/businessBoard/businessUser.module';
 
 @Module({
   imports: [
-    BusinessUserModule,
+    //BusinessUserModule,
     JoinModule,
     AuthModule,
     TestAPIModule,
