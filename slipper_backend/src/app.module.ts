@@ -31,7 +31,7 @@ import { PaymentModule } from './apis/Payment/payment.module';
       context: ({ req, res }) => ({ req, res }),
       cors: {
         origin: 'http://localhost:3000',
-        Credential: true,
+        credential: true,
       },
     }),
 
