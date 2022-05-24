@@ -14,9 +14,9 @@ import { Role } from '../join/entities/join.entity';
 export class BusinessUserResolver {
   constructor(private readonly boardService: BoardService) {}
 
-  // @Roles(Role.BUSINESS)
+  //@Roles(Role.BUSINESS)
+  //@UseGuards(GqlAuthAccessGuard, RolesGuard)
   @UseGuards(GqlAuthAccessGuard)
-  // , RolesGuard
   @Mutation(() => Board)
   async createBusinessBoard(
     @Args('createBoardInput') createBoardInput: CreateBoardInput,
@@ -30,8 +30,8 @@ export class BusinessUserResolver {
   }
 
   // @Roles(Role.BUSINESS)
+  // @UseGuards(GqlAuthAccessGuard, RolesGuard)
   @UseGuards(GqlAuthAccessGuard)
-  // , RolesGuard
   @Mutation(() => Board)
   async updateBusinessBoard(
     @Args('boardId') boardId: string,
@@ -41,8 +41,8 @@ export class BusinessUserResolver {
   }
 
   // @Roles(Role.BUSINESS)
+  // @UseGuards(GqlAuthAccessGuard, RolesGuard)
   @UseGuards(GqlAuthAccessGuard)
-  // , RolesGuard
   @Mutation(() => Boolean)
   async deleteBusinessBoard(
     @Args('boardId') boardId: string, //

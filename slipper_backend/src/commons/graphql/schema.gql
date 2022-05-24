@@ -33,7 +33,6 @@ type Board {
   id: String!
   createdAt: DateTime
   updatedAt: DateTime
-  user: Join!
   nickname: String!
   category: String!
   title: String!
@@ -48,6 +47,7 @@ type Board {
   place: String!
   likeCount: Int!
   images: [BoardImage!]
+  user: Join!
 }
 
 type Query {
