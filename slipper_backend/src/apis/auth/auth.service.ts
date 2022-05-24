@@ -22,13 +22,13 @@ export class AuthService {
       { email: user.email, sub: user.id, role: user.role },
       { secret: 'myRefreshKey', expiresIn: '2w' },
     );
-    res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/;`);
-    // 배포환경
-    // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-    // res.setHeader(
-    //   'Set-Cookie',
-    //   `refreshToken=${refreshToken}; path=/; domain=.backend.slipperofficial.shop; SameSite=None; Secure; httpOnly;`,
-    // );
+    //res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/;`);
+    //배포환경
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader(
+      'Set-Cookie',
+      `refreshToken=${refreshToken}; path=/; domain=.backend.slipperofficial.shop; SameSite=None; Secure; httpOnly;`,
+    );
   }
 
   async login({ req, res }) {
