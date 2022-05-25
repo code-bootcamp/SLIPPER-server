@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 import { Board } from './board.entity';
 import { BoardImage } from '../BoardImage/boardImage.entity';
 import { Join } from '../join/entities/join.entity';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { getToday } from 'src/commons/libraries/utils';
+import { CurrentUser } from 'src/commons/auth/gql-user.param';
 
 @Injectable()
 export class BoardService {
@@ -183,10 +184,6 @@ export class BoardService {
       updatedAt: getToday(),
     };
 
-    console.log('⛑⛑⛑⛑⛑⛑⛑⛑');
-    // console.log(oldImages[0] === newImages[0]);
-    console.log(newBoard);
-    console.log('⛑⛑⛑⛑⛑⛑⛑⛑');
     //----- 수정된 내용 게시글로 저장하기
     const result = await this.boardRepository.save({
       ...newBoard,
@@ -265,5 +262,16 @@ export class BoardService {
     return result.affected
       ? `[삭제 성공] ${boardId}`
       : `[삭제 실패] ${boardId}`;
+  }
+
+  async fetchUserBoards({ currentUser, page }) {
+    return await getRepository(Board)
+      .createQueryBuilder('board')
+      .innerJoinAndSelect('board.user', 'user')
+      .where('user.id = :userId', { userId: currentUser.id })
+      .orderBy('board.createdAt', 'DESC')
+      .limit(10)
+      .offset(10 * (page - 1))
+      .getMany();
   }
 }

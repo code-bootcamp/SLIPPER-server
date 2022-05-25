@@ -98,7 +98,7 @@ export class JoinResolver {
     return await this.joinService.findAllUser();
   }
 
-  @Query(() => Join)
+  @Mutation(() => Join)
   async fetchUserEmail(
     @Args('phone') phone: string, //
   ) {
@@ -106,7 +106,7 @@ export class JoinResolver {
   }
 
   @UseGuards(GqlAuthAccessGuard)
-  @Query(() => Boolean)
+  @Mutation(() => Boolean)
   async deleteUser(
     @CurrentUser() currentUser: any, //
   ) {
