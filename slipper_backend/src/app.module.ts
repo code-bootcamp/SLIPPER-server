@@ -13,10 +13,14 @@ import { CrontabModule } from './apis/crontab/crontab.module';
 import { JoinModule } from './apis/join/join.module';
 import { AuthModule } from './apis/auth/auth.module';
 import { PaymentModule } from './apis/Payment/payment.module';
+import { BusinessBoardImage } from './apis/BusinessBoardImage/entities/BusinessBoardImage.entity';
+import { BusinessBoard } from './apis/businessBoard/entities/businessBoard.entity';
+import { BusinessBoardModule } from './apis/businessBoard/businessBoard.module';
 
 @Module({
   imports: [
-    
+    BusinessBoardModule,
+    BusinessBoardImage,
     JoinModule,
     AuthModule,
     TestAPIModule,

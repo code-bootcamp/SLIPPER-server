@@ -1,5 +1,4 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { BoardImage } from 'src/apis/BoardImage/boardImage.entity';
 import { BusinessBoardImage } from 'src/apis/BusinessBoardImage/entities/BusinessBoardImage.entity';
 import { Join } from 'src/apis/join/entities/join.entity';
 import {
@@ -29,6 +28,10 @@ export class BusinessBoard {
   @Column()
   @Field(() => String)
   category: string;
+
+  @Column()
+  @Field(() => String)
+  nickname: string;
 
   @Column()
   @Field(() => String)
@@ -69,15 +72,16 @@ export class BusinessBoard {
   @UpdateDateColumn()
   sortDate: Date;
 
-  @Column()
+  @Column({ default: null })
   @Field(() => String, { nullable: true })
   startDate: string;
 
-  @Column()
+  @Column({ default: null })
   @Field(() => String, { nullable: true })
   endDate: string;
 
   @OneToMany(() => BusinessBoardImage, (images) => images.businessBoard)
+  @Field(() => [BusinessBoardImage], { nullable: true })
   images: BusinessBoardImage[];
 
   @ManyToOne(() => Join, { cascade: true, onDelete: 'CASCADE' })

@@ -87,7 +87,7 @@ export class BoardService {
       });
     }
     //console.timeEnd('check');
-    //console.log(JSON.stringify(result, null, ' '));
+    //console.log(JSON.stringify(result, null, ' '));`
     return result.hits.hits;
   }
 
@@ -143,6 +143,8 @@ export class BoardService {
             });
             returnImagelist.push(savedImage);
 
+            console.log(returnImagelist);
+
             if (savedImage) resolve(savedImage);
             else reject('에러');
           });
@@ -181,6 +183,10 @@ export class BoardService {
       updatedAt: getToday(),
     };
 
+    console.log('⛑⛑⛑⛑⛑⛑⛑⛑');
+    // console.log(oldImages[0] === newImages[0]);
+    console.log(newBoard);
+    console.log('⛑⛑⛑⛑⛑⛑⛑⛑');
     //----- 수정된 내용 게시글로 저장하기
     const result = await this.boardRepository.save({
       ...newBoard,

@@ -52,6 +52,7 @@ export class BoardResolver {
     @Args('createBoardInput') createBoardInput: CreateBoardInput, //
     @CurrentUser() currentUser: any, //추가
   ) {
+    console.log(currentUser);
     return this.boardService.create({
       createBoardInput,
       email: currentUser.email,
