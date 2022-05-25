@@ -67,7 +67,7 @@ export class JoinResolver {
     });
   }
 
-  @Query(() => Join)
+  @Mutation(() => Join)
   async updateUserPw(
     @Args('email') email: string,
     @Args('pw') pw: string, //

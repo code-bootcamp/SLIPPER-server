@@ -5,10 +5,9 @@ import { BoardImage } from '../BoardImage/boardImage.entity';
 import { Join } from '../join/entities/join.entity';
 import { AdminResolver } from './admin.resiolver';
 
-
 @Module({
   imports: [TypeOrmModule.forFeature([Board, BoardImage, Join])],
-  providers: [ 
+  providers: [
     AdminResolver, //
   ],
 })

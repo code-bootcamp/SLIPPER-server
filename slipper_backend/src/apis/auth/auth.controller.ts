@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Redirect, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
 import { Join } from '../join/entities/join.entity';
@@ -16,7 +16,7 @@ export class AuthController {
     @Req() req: Request & IOAuthUser, //
     @Res() res: Response,
   ) {
-    this.authService.login({ req, res });
+    return this.authService.login({ req, res });
   }
 
   @Get('/login/naver')
