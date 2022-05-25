@@ -18,7 +18,7 @@ import { CommentModule } from './apis/Comment/comment.module';
 
 @Module({
   imports: [
-    BusinessUserModule,
+    
     JoinModule,
     AuthModule,
     TestAPIModule,
