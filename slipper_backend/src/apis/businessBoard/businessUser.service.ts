@@ -29,7 +29,7 @@ export class BusinessUserService {
       nickname: checkBusinessUser.nickname,
     };
 
-    createBusinessBoardInput.createAt = getToday();
+    createBusinessBoardInput.createAt = new Date(getToday());
 
     let thumbnail;
 

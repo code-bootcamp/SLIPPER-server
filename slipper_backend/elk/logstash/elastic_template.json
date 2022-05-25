@@ -3,24 +3,21 @@
   "settings": {
     "analysis": {
       "analyzer": {
-        "my_analyzer": {
-          "type": "standard",
-          "tokenizer": ["my_ngram_tokenizer", "my_standard_tokenizer"],
+        "slipper_analyzer": {
+          "type": "custom",
+          "tokenizer": ["slipper_ngram_tokenizer"],
           "filter": ["lowercase"]
         }
       },
       "tokenizer": {
-        "my_standard_tokenizer": {
-          "type": "standard"
-        },
-        "my_ngram_tokenizer": {
+        "slipper_ngram_tokenizer": {
           "type": "nGram",
           "min_gram": "1",
           "max_gram": "10"
         }
       },
       "filter": {
-        "my_lowercase_filter": {
+        "slipper_lowercase_filter": {
           "type": "lowercase"
         }
       }
@@ -29,9 +26,9 @@
   },
   "mappings": {
     "properties": {
-      "description": {
+      "address": {
         "type": "text",
-        "analyzer": "my_analyzer"
+        "analyzer": "slipper_analyzer"
       }
     }
   }

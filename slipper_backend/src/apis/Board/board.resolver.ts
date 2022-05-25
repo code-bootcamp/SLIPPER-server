@@ -1,7 +1,7 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
 import { GqlAuthAccessGuard } from 'src/commons/auth/gql-auth.guard';
-import { CurrentUser } from 'src/commons/auth/gql-user.param';
+import { CurrentUser, ICurrentUser } from 'src/commons/auth/gql-user.param';
 import { Board } from './board.entity';
 import { BoardService } from './board.service';
 import { CreateBoardInput } from './dto/create_board.input';
@@ -46,11 +46,11 @@ export class BoardResolver {
   검색할 때는 currentUser.nickname
   */
 
-  @UseGuards(GqlAuthAccessGuard) //추가
+  @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => Board)
   createBoard(
     @Args('createBoardInput') createBoardInput: CreateBoardInput, //
-    @CurrentUser() currentUser: any, //추가
+    @CurrentUser() currentUser: ICurrentUser,
   ) {
     return this.boardService.create({
       createBoardInput,

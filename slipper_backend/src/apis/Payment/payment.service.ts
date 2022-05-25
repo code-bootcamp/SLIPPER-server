@@ -73,8 +73,6 @@ export class PaymentService {
     }
   }
 
-  //---------------------------------------
-
   // DB에 중복된 기록인지 체크
   async checkDuplicate({ impUid }) {
     const result = await this.paymentRepository.findOne({ impUid });
@@ -82,6 +80,9 @@ export class PaymentService {
       throw new ConflictException(`이미 결제된 아이디입니다. [${impUid}]`);
   }
 
+  //----------------
+
+  // 구독권 내역 추가하기
   async create({ impUid, amount, currentUser }) {
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.connect();
@@ -101,8 +102,8 @@ export class PaymentService {
         period = 7;
       }
 
-      const today = getToday();
-      const end = getToday(period);
+      const today = new Date(getToday());
+      const end = new Date(getToday(period));
 
       // 결제 내역에 기록
       const paymentHistory = this.paymentRepository.create({
@@ -136,8 +137,8 @@ export class PaymentService {
     }
   }
 
-  // DB에 중복된 기록인지 체크
-  async delete({ userId, currentUser }) {
+  // 구독권 내역 만료시키기
+  async update({ userId, currentUser }) {
     console.log(userId, currentUser);
     const result = await this.joinRepository.save({
       id: currentUser,

@@ -29,7 +29,7 @@ export class CommentService {
     const result = await this.commentRepository.save({
       nickname: user.nickname,
       contents: contents,
-      createdAt: getToday(),
+      createdAt: new Date(getToday()),
       imageUrl: user.imageUrl,
       board: boardId,
     });

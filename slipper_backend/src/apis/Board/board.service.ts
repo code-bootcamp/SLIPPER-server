@@ -24,21 +24,16 @@ export class BoardService {
 
   async findOne({ boardId }) {
     return await this.boardRepository.findOne({
-      where: { id: boardId }, //
+      where: { id: boardId, isdeleted: false }, //
       relations: ['images', 'user'],
     });
   }
-
-  // async findAll() {
-  //   return await this.boardRepository.find();
-  // }
 
   //검색 결과를 전달해주기 + 무한 스크롤
   async loadPage({ page, category, search }) {
     const skip = (page - 1) * 10;
 
-    //console.time('check');
-    let result;
+    let result: any;
     if (search === undefined || search === null || search === '') {
       //전체 글 기준으로 전달 (검색페이지 메인)
       console.log(1);
@@ -46,30 +41,34 @@ export class BoardService {
         index: 'slipper-elasticsearch',
         sort: 'createdat:desc',
         query: {
-          match_all: {},
+          bool: {
+            must: [{ match: { isdeleted: 'N' } }],
+          },
+          //match_all: {},
         },
         from: skip,
         size: 10,
       });
     } else if (category === undefined || category === null || category === '') {
-      // 검색결과를 기준으로 전달 - 검색키워드
+      // 검색결과를 기준으로 전달 = 검색키워드
       console.log(2);
       result = await this.elasticsearchService.search({
         index: 'slipper-elasticsearch',
         sort: 'createdat:desc',
         query: {
-          // match: {
-          //   address: search,
-          // },
           bool: {
-            should: [{ prefix: { address: search } }],
+            must: [
+              { match: { isdeleted: 'N' } },
+              { prefix: { address: search } },
+            ],
           },
         },
+
         from: skip,
         size: 10,
       });
     } else {
-      // 검색결과를 기준으로 전달 - 검색키워드 + 카테고리
+      // 검색결과를 기준으로 전달 = 검색키워드 + 카테고리
       console.log(3);
       result = await this.elasticsearchService.search({
         index: 'slipper-elasticsearch',
@@ -77,6 +76,7 @@ export class BoardService {
         query: {
           bool: {
             must: [
+              { match: { isdeleted: 'N' } },
               { prefix: { address: search } },
               { prefix: { category: category } },
             ],
@@ -86,7 +86,7 @@ export class BoardService {
         size: 10,
       });
     }
-    //console.timeEnd('check');
+
     //console.log(JSON.stringify(result, null, ' '));
     return result.hits.hits;
   }
@@ -98,8 +98,7 @@ export class BoardService {
     });
 
     console.log(getToday());
-    createBoardInput.createdAt = getToday();
-    console.log(createBoardInput);
+    createBoardInput.createdAt = new Date(getToday());
 
     let thumbnail;
     if (createBoardInput.images.length > 0) {
@@ -107,13 +106,6 @@ export class BoardService {
     } else {
       thumbnail = null;
     }
-
-    /*
-    나중에 교체해야할 코드
-    const findUserId = await this.joinRepository.findOne({
-      nickname: currentUser.nickname,
-    });
-    */
 
     const userId = {
       id: findUserId.id,
@@ -178,7 +170,7 @@ export class BoardService {
     const newBoard = {
       ...oldData,
       ...newData,
-      updatedAt: getToday(),
+      updatedAt: new Date(getToday()),
     };
 
     //----- 수정된 내용 게시글로 저장하기
@@ -241,23 +233,33 @@ export class BoardService {
 
   //게시글 삭제
   async delete({ boardId }) {
+    // const findBoard = await this.boardRepository.findOne({
+    //   where: { id: boardId },
+    //   relations: ['images'],
+    // });
+    // const findImages = findBoard.images;
+
+    // //이미지 먼저 삭제
+    // for (const e of findImages) {
+    //   console.log(e.id);
+    //   await this.boardImageRepository.delete({ id: e.id });
+    // }
+
+    // //최종 게시글 삭제
+    // const result = await this.boardRepository.delete({ id: boardId });
+
+    // softDelete 방식
     const findBoard = await this.boardRepository.findOne({
       where: { id: boardId },
-      relations: ['images'],
     });
-    const findImages = findBoard.images;
-
-    //이미지 먼저 삭제
-    for (const e of findImages) {
-      console.log(e.id);
-      await this.boardImageRepository.delete({ id: e.id });
+    if (findBoard.isDeleted !== 'N') {
+      return `[이미 삭제된 글 입니다] 제목: ${findBoard.title}`;
     }
 
-    //최종 게시글 삭제
-    const result = await this.boardRepository.delete({ id: boardId });
-
-    return result.affected
-      ? `[삭제 성공] ${boardId}`
-      : `[삭제 실패] ${boardId}`;
+    await this.boardRepository.save({
+      id: boardId,
+      isDeleted: 'Y',
+    });
+    return `[삭제 성공] 제목: ${findBoard.title}`;
   }
 }
