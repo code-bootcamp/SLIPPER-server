@@ -3,7 +3,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { GqlAuthAccessGuard } from 'src/commons/auth/gql-auth.guard';
 import { RolesGuard } from 'src/commons/auth/gql-role.guard';
 import { Roles } from 'src/commons/auth/gql-role.param';
-import { CurrentUser } from 'src/commons/auth/gql-user.param';
+import { CurrentUser, ICurrentUser } from 'src/commons/auth/gql-user.param';
 import { Board } from '../Board/board.entity';
 import { Role } from '../join/entities/join.entity';
 import { BusinessUserService } from './businessBoard.service';
@@ -51,17 +51,32 @@ export class BusinessUserResolver {
   // @Roles(Role.BUSINESS)
   // @UseGuards(GqlAuthAccessGuard, RolesGuard)
   // @UseGuards(GqlAuthAccessGuard)
-  // @Mutation(() => Boolean)
-  // async deleteBusinessBoard(
-  //   @Args('boardId') boardId: string, //
-  // ) {
-  //   return this.businessUserService.delete({ boardId });
-  // }
+  @Mutation(() => Boolean)
+  async deleteBusinessBoard(
+    @Args('businessBoardId') businessBoardId: string, //
+  ) {
+    return this.businessUserService.delete({ businessBoardId });
+  }
 
   @Query(() => BusinessBoard)
   fetchBusinessBoard(
     @Args('businessBoardId') businessBoardId: string, //
   ) {
     return this.businessUserService.findOne({ businessBoardId });
+  }
+
+  // @Roles(Role.BUSINESS)
+  // @UseGuards(GqlAuthAccessGuard, RolesGuard)
+  @UseGuards(GqlAuthAccessGuard)
+  @Query(() => [BusinessBoard])
+  async fetchBusinessBoards(
+    @CurrentUser() currentUser: ICurrentUser, //
+    @Args('page', { nullable: true }) page: number,
+  ) {
+    if (page <= 0) page = 1;
+    return await this.businessUserService.fetchBusinessBoards({
+      currentUser,
+      page,
+    });
   }
 }

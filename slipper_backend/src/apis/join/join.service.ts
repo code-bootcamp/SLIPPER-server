@@ -177,6 +177,7 @@ export class JoinService {
 
   async updatePw({ email, pw }) {
     const user = await this.joinRepository.findOne({ where: { email } });
+    if (!user) throw new ConflictException('회원없다.');
     const newPw = {
       ...user,
       pw,

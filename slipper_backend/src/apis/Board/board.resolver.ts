@@ -1,7 +1,7 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
 import { GqlAuthAccessGuard } from 'src/commons/auth/gql-auth.guard';
-import { CurrentUser } from 'src/commons/auth/gql-user.param';
+import { CurrentUser, ICurrentUser } from 'src/commons/auth/gql-user.param';
 import { Board } from './board.entity';
 import { BoardService } from './board.service';
 import { CreateBoardInput } from './dto/create_board.input';
@@ -32,6 +32,18 @@ export class BoardResolver {
     const result = await this.boardService.loadPage({ page, category, search });
     console.log(result);
     return result;
+  }
+
+  // @Roles(Role.USER)
+  // @UseGuards(GqlAuthAccessGuard, RolesGuard)
+  @UseGuards(GqlAuthAccessGuard)
+  @Query(() => [Board])
+  async fetchUserBoards(
+    @CurrentUser() currentUser: ICurrentUser, //
+    @Args('page', { nullable: true }) page: number,
+  ) {
+    if (page <= 0) page = 1;
+    return await this.boardService.fetchUserBoards({ currentUser, page });
   }
   // fetchBoards() {
   //   return this.boardService.findAll();

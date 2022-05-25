@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { getToday } from 'src/commons/libraries/utils';
-import { Repository } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 import { BusinessBoardImage } from '../BusinessBoardImage/entities/BusinessBoardImage.entity';
 import { Join } from '../join/entities/join.entity';
 import { BusinessBoard } from './entities/businessBoard.entity';
@@ -74,9 +74,7 @@ export class BusinessUserService {
     });
     const newImages = updateBusinessBoardInput.images;
     const oldImages = oldBoard.images;
-    console.log('⛑⛑⛑⛑⛑⛑⛑⛑');
-    console.log(oldBoard.user);
-    console.log('⛑⛑⛑⛑⛑⛑⛑⛑');
+
     console.log(newImages[0]);
     if (newImages === 0) updateBusinessBoardInput.thumbnail = null;
     const newBusinessBoard = {
@@ -85,9 +83,6 @@ export class BusinessUserService {
       ...updateBusinessBoardInput,
       update: getToday(),
     };
-    console.log('🌂🌂🌂🌂🌂🌂🌂🌂🌂🌂');
-    console.log(newBusinessBoard);
-    console.log('🌂🌂🌂🌂🌂🌂🌂🌂🌂🌂');
     const result = await this.businessBoardRepository.save({
       ...newBusinessBoard,
     });
@@ -157,5 +152,16 @@ export class BusinessUserService {
     return result.affected
       ? `[삭제 성공] ${businessBoardId}`
       : `[삭제실패] ${businessBoardId}`;
+  }
+
+  async fetchBusinessBoards({ currentUser, page }) {
+    return await getRepository(BusinessBoard)
+      .createQueryBuilder('businessBoard')
+      .innerJoinAndSelect('businessBoard.user', 'user')
+      .where('user.id = :userId', { userId: currentUser.id })
+      .orderBy('businessBoard.createdAt', 'DESC')
+      .limit(10)
+      .offset(10 * (page - 1))
+      .getMany();
   }
 }

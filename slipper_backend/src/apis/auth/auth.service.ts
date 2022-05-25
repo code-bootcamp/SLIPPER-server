@@ -54,6 +54,7 @@ export class AuthService {
     }
 
     this.setRefreshToken({ user, res });
-    //console.log(user);
+
+    res.redirect('http://localhost:3000/mypage');
   }
 }
