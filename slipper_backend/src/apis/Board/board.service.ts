@@ -25,7 +25,7 @@ export class BoardService {
   async findOne({ boardId }) {
     return await this.boardRepository.findOne({
       where: { id: boardId }, //
-      relations: ['images'],
+      relations: ['images', 'user'],
     });
   }
 
@@ -44,7 +44,7 @@ export class BoardService {
       console.log(1);
       result = await this.elasticsearchService.search({
         index: 'slipper-elasticsearch',
-        sort: 'createdat:asc',
+        sort: 'createdat:desc',
         query: {
           match_all: {},
         },
@@ -56,7 +56,7 @@ export class BoardService {
       console.log(2);
       result = await this.elasticsearchService.search({
         index: 'slipper-elasticsearch',
-        sort: 'createdat:asc',
+        sort: 'createdat:desc',
         query: {
           // match: {
           //   address: search,
@@ -73,7 +73,7 @@ export class BoardService {
       console.log(3);
       result = await this.elasticsearchService.search({
         index: 'slipper-elasticsearch',
-        sort: 'createdat:asc',
+        sort: 'createdat:desc',
         query: {
           bool: {
             must: [
