@@ -34,8 +34,8 @@ type Join {
   businessImageUrl: String
   createAt: DateTime!
   role: Role!
-  subStart: String
-  subEnd: String
+  subStart: DateTime
+  subEnd: DateTime
   subType: String
   payment: [Payment!]
 }
@@ -137,7 +137,7 @@ type Mutation {
   uploadProfileImage(files: [Upload!]!): [String!]!
   uploadBusinessImage(files: [Upload!]!): [String!]!
   createPayment(impUid: String!, amount: Float!): Payment!
-  deletePayment(userId: String!): Payment!
+  updatePayment(userId: String!): Payment!
   createComment(boardId: String!, content: String!): Comment!
   updateComment(boardId: String!): Comment!
   deleteComment(boardId: String!): Comment!

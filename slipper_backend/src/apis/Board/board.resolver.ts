@@ -58,11 +58,11 @@ export class BoardResolver {
   검색할 때는 currentUser.nickname
   */
 
-  @UseGuards(GqlAuthAccessGuard) //추가
+  @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => Board)
   createBoard(
     @Args('createBoardInput') createBoardInput: CreateBoardInput, //
-    @CurrentUser() currentUser: any, //추가
+    @CurrentUser() currentUser: ICurrentUser,
   ) {
     console.log(currentUser);
     return this.boardService.create({

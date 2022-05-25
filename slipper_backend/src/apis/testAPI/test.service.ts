@@ -43,8 +43,8 @@ export class TestBoardService {
       email: email,
     });
 
-    console.log(getToday());
-    createBoardInput.createdAt = getToday();
+    console.log(new Date(getToday()));
+    createBoardInput.createdAt = new Date(getToday());
     //console.log(createBoardInput);
 
     let thumbnail;
