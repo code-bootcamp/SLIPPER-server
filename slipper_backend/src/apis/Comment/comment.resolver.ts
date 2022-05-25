@@ -1,47 +1,55 @@
-// import { Args, Mutation, Resolver } from '@nestjs/graphql';
-// import { CurrentUser, ICurrentUser } from 'src/commons/auth/gql-user.param';
-// import { Payment } from './payment.entity';
-// import { PaymentService } from './payment.service';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { CurrentUser, ICurrentUser } from 'src/commons/auth/gql-user.param';
+import { Comment } from './comment.entity';
+import { CommentService } from './comment.service';
 
-// @Resolver()
-// export class PaymentResolver {
-//   constructor(
-//     private readonly paymentService: PaymentService, //
-//   ) {}
+@Resolver()
+export class CommentResolver {
+  constructor(
+    private readonly commentService: CommentService, //
+  ) {}
 
-//   @Mutation(() => Payment)
-//   async createPayment(
-//     @Args('impUid') impUid: string,
-//     @Args('amount') amount: number,
-//     @CurrentUser() currentUser: ICurrentUser,
-//   ) {
-//     // 결제 정보 체크
-//     const token = await this.paymentService.getToken();
-//     await this.paymentService.checkPaid({ impUid, token, amount });
+  @Mutation(() => Comment)
+  async createComment(
+    @Args('boardId') boardId: string,
+    @Args('content') contents: string,
+    @CurrentUser() currentUser: ICurrentUser,
+  ) {
+    const result = await this.commentService.create({
+      boardId,
+      contents,
+      currentUser: '43afe5a9-1ec9-4811-85b6-80bbe370586f',
+      //currentUser: currentUser.id,
+    });
 
-//     // DB에 중복된 기록인지 체크
-//     await this.paymentService.checkDuplicate({ impUid });
+    return result;
+  }
 
-//     // DB에 저장
-//     return await this.paymentService.create({
-//       impUid,
-//       amount,
-//       currentUser: currentUser.id,
-//       //currentUser: '6a712267-e15e-4c4d-ba16-164aa41a3aa4',
-//     });
-//   }
+  @Mutation(() => Comment)
+  async updateComment(
+    @Args('boardId') boardId: string,
+    @CurrentUser() currentUser: ICurrentUser,
+  ) {
+    const result = await this.commentService.update({
+      boardId,
+      currentUser: '43afe5a9-1ec9-4811-85b6-80bbe370586f',
+      //currentUser: currentUser.id,
+    });
 
-//   @Mutation(() => Payment)
-//   async deletePayment(
-//     @Args('userId') userId: string,
-//     @CurrentUser() currentUser: ICurrentUser,
-//   ) {
-//     const result = await this.paymentService.delete({
-//       userId,
-//       currentUser: currentUser.id,
-//       //currentUser: '6a712267-e15e-4c4d-ba16-164aa41a3aa4',
-//     });
+    return result;
+  }
 
-//     return result;
-//   }
-// }
+  @Mutation(() => Comment)
+  async deleteComment(
+    @Args('boardId') boardId: string,
+    @CurrentUser() currentUser: ICurrentUser,
+  ) {
+    const result = await this.commentService.delete({
+      boardId,
+      currentUser: '43afe5a9-1ec9-4811-85b6-80bbe370586f',
+      //currentUser: currentUser.id,
+    });
+
+    return result;
+  }
+}
