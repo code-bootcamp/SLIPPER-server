@@ -7,12 +7,13 @@ type BoardImage {
   imageUrl: String!
 }
 
-type Payment {
+type Comment {
   id: String!
-  paymentDate: DateTime!
-  paymentAmount: Int!
-  impUid: String!
-  subType: PAYMENT_STATUS_ENUM!
+  nickname: String!
+  contents: String!
+  createdAt: DateTime!
+  imageUrl: String
+  board: Board!
 }
 
 """
@@ -20,10 +21,8 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-enum PAYMENT_STATUS_ENUM {
-  DAY7
-  DAY30
-  DAY90
+type Payment {
+  impUid: String!
 }
 
 type Join {
@@ -66,6 +65,7 @@ type Board {
   likeCount: Int!
   images: [BoardImage!]
   user: Join!
+  comment: [Comment!]
 }
 
 type BusinessBoard {
@@ -135,6 +135,9 @@ type Mutation {
   uploadBusinessImage(files: [Upload!]!): [String!]!
   createPayment(impUid: String!, amount: Float!): Payment!
   deletePayment(userId: String!): Payment!
+  createComment(boardId: String!, content: String!): Comment!
+  updateComment(boardId: String!): Comment!
+  deleteComment(boardId: String!): Comment!
 }
 
 input CreateBusinessBoardInput {

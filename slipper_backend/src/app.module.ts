@@ -14,8 +14,9 @@ import { JoinModule } from './apis/join/join.module';
 import { AuthModule } from './apis/auth/auth.module';
 import { PaymentModule } from './apis/Payment/payment.module';
 import { BusinessBoardImage } from './apis/BusinessBoardImage/entities/BusinessBoardImage.entity';
-import { BusinessBoard } from './apis/businessBoard/entities/businessBoard.entity';
 import { BusinessBoardModule } from './apis/businessBoard/businessBoard.module';
+import { CommentModule } from './apis/Comment/comment.module';
+
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { BusinessBoardModule } from './apis/businessBoard/businessBoard.module';
     BoardModule,
     FileModule,
     PaymentModule,
+    CommentModule,
 
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
@@ -35,7 +37,7 @@ import { BusinessBoardModule } from './apis/businessBoard/businessBoard.module';
       context: ({ req, res }) => ({ req, res }),
       cors: {
         origin: 'http://localhost:3000',
-        credential: true,
+        credentials: true,
       },
     }),
 

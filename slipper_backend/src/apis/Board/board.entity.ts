@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { BoardImage } from '../BoardImage/boardImage.entity';
+import { Comment } from '../Comment/comment.entity';
 import { Join } from '../join/entities/join.entity';
 
 @Entity()
@@ -90,4 +91,10 @@ export class Board {
   @ManyToOne(() => Join, { cascade: true, onDelete: 'CASCADE' })
   @Field(() => Join)
   user: Join;
+
+  @OneToMany(() => Comment, (comment) => comment.board, {
+    onDelete: 'CASCADE',
+  })
+  @Field(() => [Comment], { nullable: true })
+  comment: Comment[];
 }

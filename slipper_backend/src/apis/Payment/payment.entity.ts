@@ -16,15 +16,15 @@ registerEnumType(PAYMENT_STATUS_ENUM, {
 @ObjectType()
 export class Payment {
   @PrimaryGeneratedColumn('uuid')
-  @Field(() => String)
+  //@Field(() => String)
   id: string;
 
   @Column()
-  @Field(() => Date)
+  //@Field(() => Date)
   paymentDate: Date;
 
   @Column()
-  @Field(() => Int)
+  //@Field(() => Int)
   paymentAmount: number;
 
   @Column()
@@ -32,7 +32,7 @@ export class Payment {
   impUid: string;
 
   @Column({ type: 'enum', enum: PAYMENT_STATUS_ENUM }) //
-  @Field(() => PAYMENT_STATUS_ENUM)
+  //@Field(() => PAYMENT_STATUS_ENUM)
   subType: string;
 
   @ManyToOne(() => Join, (user) => user.payment)
