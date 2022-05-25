@@ -63,12 +63,12 @@ export class Join {
   role: Role;
 
   @Column({ nullable: true })
-  @Field(() => String, { nullable: true })
-  subStart: string;
+  @Field(() => Date, { nullable: true })
+  subStart: Date;
 
   @Column({ nullable: true })
-  @Field(() => String, { nullable: true })
-  subEnd: string;
+  @Field(() => Date, { nullable: true })
+  subEnd: Date;
 
   @Column({ nullable: true })
   @Field(() => String, { nullable: true })
