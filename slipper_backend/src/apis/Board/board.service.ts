@@ -49,6 +49,7 @@ export class BoardService {
         },
 
         // from: skip,
+        from: 0,
         size: 10000,
       });
     } else if (category === undefined || category === null || category === '') {
@@ -67,6 +68,7 @@ export class BoardService {
         },
 
         // from: skip,
+        from: 0,
         size: 10000,
       });
     } else {
@@ -86,6 +88,7 @@ export class BoardService {
         },
 
         // from: skip,
+        from: 0,
         size: 10000,
       });
     }
