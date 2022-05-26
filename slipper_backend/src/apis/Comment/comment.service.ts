@@ -28,31 +28,36 @@ export class CommentService {
 
     const result = await this.commentRepository.save({
       nickname: user.nickname,
+      imageUrl: user.imageUrl,
       contents: contents,
       createdAt: new Date(getToday()),
-      imageUrl: user.imageUrl,
       board: boardId,
     });
 
     console.log(result);
-
     return result;
   }
 
-  async update({ boardId, currentUser }) {
-    const result = await this.commentRepository.findOne({
-      where: { id: boardId }, //
-      relations: ['images'],
+  async update({ commentId, contents, currentUser }) {
+    const oldComment = await this.commentRepository.findOne({
+      where: { id: commentId }, //
+    });
+
+    const result = await this.commentRepository.save({
+      ...oldComment,
+      contents,
     });
 
     return result;
   }
 
-  async delete({ boardId, currentUser }) {
+  async delete({ commentId, currentUser }) {
     const result = await this.commentRepository.findOne({
-      where: { id: boardId }, //
-      relations: ['images'],
+      where: { id: commentId }, //
+      relations: ['subComment'],
     });
+
+    console.log(result);
 
     return result;
   }

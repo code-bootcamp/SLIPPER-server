@@ -40,15 +40,15 @@ export class PaymentResolver {
   }
 
   // 구독권 내역 만료시키기
-  @UseGuards(GqlAuthAccessGuard)
-  @Mutation(() => Payment)
+  //@UseGuards(GqlAuthAccessGuard)
+  @Mutation(() => String)
   async updatePayment(
     @Args('userId') userId: string,
-    @CurrentUser() currentUser: ICurrentUser,
+    //@CurrentUser() currentUser: ICurrentUser,
   ) {
     const result = await this.paymentService.update({
       userId,
-      currentUser: currentUser.id,
+      //currentUser: currentUser.id,
       //currentUser: '6a712267-e15e-4c4d-ba16-164aa41a3aa4',
     });
 

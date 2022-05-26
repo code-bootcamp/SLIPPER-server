@@ -16,7 +16,7 @@ import { PaymentModule } from './apis/Payment/payment.module';
 import { BusinessBoardImage } from './apis/BusinessBoardImage/entities/BusinessBoardImage.entity';
 import { BusinessBoardModule } from './apis/businessBoard/businessBoard.module';
 import { CommentModule } from './apis/Comment/comment.module';
-
+import { SubCommentModule } from './apis/SubComment/subcomment.module';
 
 @Module({
   imports: [
@@ -30,6 +30,7 @@ import { CommentModule } from './apis/Comment/comment.module';
     FileModule,
     PaymentModule,
     CommentModule,
+    SubCommentModule,
 
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,

@@ -25,14 +25,14 @@ export class BoardService {
 
   async findOne({ boardId }) {
     return await this.boardRepository.findOne({
-      where: { id: boardId, isdeleted: false }, //
+      where: { id: boardId, isDeleted: 'N' }, //
       relations: ['images', 'user'],
     });
   }
 
-  //검색 결과를 전달해주기 + 무한 스크롤
-  async loadPage({ page, category, search }) {
-    const skip = (page - 1) * 10;
+  //검색 결과를 전달해주기 + (X 무한 스크롤)
+  async loadPage({ category, search }) {
+    //const skip = (page - 1) * 10;
 
     let result: any;
     if (search === undefined || search === null || search === '') {
@@ -47,8 +47,9 @@ export class BoardService {
           },
           //match_all: {},
         },
-        from: skip,
-        size: 10,
+
+        // from: skip,
+        size: 10000,
       });
     } else if (category === undefined || category === null || category === '') {
       // 검색결과를 기준으로 전달 = 검색키워드
@@ -65,8 +66,8 @@ export class BoardService {
           },
         },
 
-        from: skip,
-        size: 10,
+        // from: skip,
+        size: 10000,
       });
     } else {
       // 검색결과를 기준으로 전달 = 검색키워드 + 카테고리
@@ -83,8 +84,9 @@ export class BoardService {
             ],
           },
         },
-        from: skip,
-        size: 10,
+
+        // from: skip,
+        size: 10000,
       });
     }
 

@@ -1,45 +1,72 @@
-// import axios from 'axios';
-// import {
-//   ConflictException,
-//   HttpException,
-//   Injectable,
-//   UnprocessableEntityException,
-// } from '@nestjs/common';
-// import { InjectRepository } from '@nestjs/typeorm';
-// import { Connection, Repository } from 'typeorm';
-// import { Join } from '../join/entities/join.entity';
-// import { Payment, PAYMENT_STATUS_ENUM } from './payment.entity';
-// import { getToday } from 'src/commons/libraries/utils';
+import axios from 'axios';
+import {
+  ConflictException,
+  HttpException,
+  Injectable,
+  UnprocessableEntityException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Join } from '../join/entities/join.entity';
+import { getToday } from 'src/commons/libraries/utils';
+import { Comment } from '../Comment/comment.entity';
+import { SubComment } from './subcomment.entity';
 
-// @Injectable()
-// export class PaymentService {
-//   constructor(
-//     @InjectRepository(Payment)
-//     private readonly paymentRepository: Repository<Payment>,
+@Injectable()
+export class SubCommentService {
+  constructor(
+    @InjectRepository(Comment)
+    private readonly commentRepository: Repository<Comment>,
 
-//     @InjectRepository(Join)
-//     private readonly joinRepository: Repository<Join>,
+    @InjectRepository(SubComment)
+    private readonly subCommentRepository: Repository<SubComment>,
 
-//     private readonly connection: Connection,
-//   ) {}
+    @InjectRepository(Join)
+    private readonly joinRepository: Repository<Join>,
+  ) {}
 
-//   async getToken() {
-//     try {
-//       const result = await axios.post('https://api.iamport.kr/users/getToken', {
-//         imp_key: process.env.IAMPORT_API_KEY,
-//         imp_secret: process.env.IAMPORT_SECRET,
-//       });
-//       console.log(
-//         `[success] 토큰 받기 성공!! ${result.data.response.access_token}`,
-//       );
+  async create({ commentId, contents, currentUser }) {
+    const user = await this.joinRepository.findOne({
+      where: { id: currentUser }, //
+    });
 
-//       return result.data.response.access_token;
-//     } catch (error) {
-//       console.log('🚨🚨  getToken 오류 발생  🚨🚨');
-//       throw new HttpException(
-//         error.response.data.message,
-//         error.response.status,
-//       );
-//     }
-//   }
-// }
+    const result = await this.subCommentRepository.save({
+      nickname: user.nickname,
+      imageUrl: user.imageUrl,
+      contents: contents,
+      createdAt: new Date(getToday()),
+      comment: commentId,
+    });
+
+    console.log(result);
+    return result;
+  }
+
+  async update({ subCommentId, contents, currentUser }) {
+    const oldSubComment = await this.subCommentRepository.findOne({
+      where: { id: subCommentId }, //
+    });
+
+    console.log(oldSubComment);
+
+    const result = await this.subCommentRepository.save({
+      ...oldSubComment,
+      contents,
+    });
+
+    console.log(result);
+
+    return result;
+  }
+
+  async delete({ commentId, currentUser }) {
+    const result = await this.commentRepository.findOne({
+      where: { id: commentId }, //
+      relations: ['subComment'],
+    });
+
+    console.log(result);
+
+    return result;
+  }
+}
