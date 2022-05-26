@@ -71,12 +71,9 @@ export class BusinessUserResolver {
   @Query(() => [BusinessBoard])
   async fetchBusinessBoards(
     @CurrentUser() currentUser: ICurrentUser, //
-    @Args('page', { nullable: true }) page: number,
   ) {
-    if (page <= 0) page = 1;
     return await this.businessUserService.fetchBusinessBoards({
       currentUser,
-      page,
     });
   }
 }

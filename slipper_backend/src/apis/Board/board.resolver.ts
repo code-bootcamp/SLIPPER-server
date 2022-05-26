@@ -42,10 +42,8 @@ export class BoardResolver {
   @Query(() => [Board])
   async fetchUserBoards(
     @CurrentUser() currentUser: ICurrentUser, //
-    @Args('page', { nullable: true }) page: number,
   ) {
-    if (page <= 0) page = 1;
-    return await this.boardService.fetchUserBoards({ currentUser, page });
+    return await this.boardService.fetchUserBoards({ currentUser });
   }
   // fetchBoards() {
   //   return this.boardService.findAll();

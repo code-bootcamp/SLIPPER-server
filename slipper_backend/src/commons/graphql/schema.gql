@@ -33,6 +33,7 @@ type Join {
   imageUrl: String
   introduce: String
   businessImageUrl: String
+  likeList: Int!
   createAt: DateTime!
   role: Role!
   subStart: DateTime
@@ -97,7 +98,7 @@ type BusinessBoardImage {
 
 type Query {
   fetchBusinessBoard(businessBoardId: String!): BusinessBoard!
-  fetchBusinessBoards(page: Float): [BusinessBoard!]!
+  fetchBusinessBoards: [BusinessBoard!]!
   fetchUser: Join!
   fetchUsers: [Join!]!
   fetchAllUser: [Join!]!
@@ -125,7 +126,7 @@ type Mutation {
   proofToken(phone: String!, mytoken: String!): String!
   updateUser(updateUserInput: UpdateUserSaveInput!): Join!
   updateUserPw(email: String!, pw: String!): Join!
-  fetchUserEmail(phone: String!): Join!
+  searchUserEmail(phone: String!): Join!
   deleteUser: Boolean!
   login(email: String!, pw: String!): String!
   restoreAccessToken: String!

@@ -99,7 +99,7 @@ export class JoinResolver {
   }
 
   @Mutation(() => Join)
-  async fetchUserEmail(
+  async searchUserEmail(
     @Args('phone') phone: string, //
   ) {
     return this.joinService.emailFindone({ phone });
