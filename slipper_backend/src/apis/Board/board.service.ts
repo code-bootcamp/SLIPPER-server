@@ -24,15 +24,35 @@ export class BoardService {
   ) {}
 
   async findOne({ boardId }) {
-    return await this.boardRepository.findOne({
+    // const result = await this.boardRepository.findOne({
+    //   where: { id: boardId, isDeleted: 'N' }, //
+    //   relations: ['images', 'user', 'comment'],
+    // });
+
+    const result = await this.boardRepository
+      .createQueryBuilder('board')
+      .leftJoinAndSelect('board.images', 'images')
+      .leftJoinAndSelect('board.user', 'user')
+      .leftJoinAndSelect('board.comment', 'comment')
+      //.where('board.id = :id', { boardId })
+      .getOne();
+    /*
       where: { id: boardId, isDeleted: 'N' }, //
-      relations: ['images', 'user'],
-    });
+      relations: ['images', 'user', 'comment'],
+    */
+
+    // const result = await this.joinRepository
+    //   .createQueryBuilder('join') //
+    //   .leftJoinAndSelect('join.payment', 'payment')
+    //   .where('join.email = :email', { email })
+    //   .getOne();
+
+    return result;
   }
 
   //검색 결과를 전달해주기 + (X 무한 스크롤)
-  async loadPage({ category, search }) {
-    //const skip = (page - 1) * 10;
+  async loadPage({ category, search, page }) {
+    const skip = (page - 1) * 10;
 
     let result: any;
     if (search === undefined || search === null || search === '') {
@@ -48,8 +68,8 @@ export class BoardService {
           //match_all: {},
         },
 
-        // from: skip,
-        size: 10000,
+        from: skip,
+        size: 10,
       });
     } else if (category === undefined || category === null || category === '') {
       // 검색결과를 기준으로 전달 = 검색키워드
@@ -66,8 +86,8 @@ export class BoardService {
           },
         },
 
-        // from: skip,
-        size: 10000,
+        from: skip,
+        size: 10,
       });
     } else {
       // 검색결과를 기준으로 전달 = 검색키워드 + 카테고리
@@ -85,8 +105,8 @@ export class BoardService {
           },
         },
 
-        // from: skip,
-        size: 10000,
+        from: skip,
+        size: 10,
       });
     }
 

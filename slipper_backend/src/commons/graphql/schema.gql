@@ -115,7 +115,7 @@ type Query {
   testFetchBoardsPage(page: Float, category: String, search: String): [JSONObject!]!
   testFetchUser(email: String!): Join!
   fetchBoard(boardId: String!): Board!
-  fetchBoardsPage(category: String, search: String): [JSONObject!]!
+
   fetchUserBoards: [Board!]!
 }
 
