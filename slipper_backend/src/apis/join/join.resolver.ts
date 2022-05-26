@@ -51,7 +51,7 @@ export class JoinResolver {
     @Args('phone') phone: string, //
     @Args('mytoken') mytoken: string,
   ) {
-    return await this.joinService.checkToken({ mytoken, phone });
+    await this.joinService.checkToken({ mytoken, phone });
   }
 
   @UseGuards(GqlAuthAccessGuard)
@@ -67,16 +67,17 @@ export class JoinResolver {
     });
   }
 
-  @Mutation(() => Join)
+  @Mutation(() => String)
   async updateUserPw(
     @Args('email') email: string,
     @Args('pw') pw: string, //
   ) {
     const hashedPw = await bcrypt.hash(pw, 10);
-    return await this.joinService.updatePw({
+    await this.joinService.updatePw({
       email,
       pw: hashedPw,
     });
+    return '비밀번호 변경 완료성공';
   }
 
   //@UseGuards(GqlAuthAccessGuard)

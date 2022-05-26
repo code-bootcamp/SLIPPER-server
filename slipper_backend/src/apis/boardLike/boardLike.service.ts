@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import e from 'express';
+import { getRepository, Repository } from 'typeorm';
 import { Board } from '../Board/board.entity';
 import { Join } from '../join/entities/join.entity';
 import { BoardLike } from './entities/boardLike.entity';
@@ -27,7 +28,7 @@ export class BoardLikeService {
       where: { id: boardId },
     });
     const likeBoard = await this.boardLikeRepository.findOne({
-      where: { board: boardId, user: currentUser.id },
+      where: { board: boardId, join: currentUser.id },
     });
     if (!likeBoard) {
       const newLikeBoard = await this.boardLikeRepository.save({
@@ -35,6 +36,46 @@ export class BoardLikeService {
         board: board,
         join: user,
       });
+
+      const likeCount = await this.boardLikeRepository.count({
+        board: boardId,
+      });
+      console.log('👞👞👞👞👞👞👞');
+      console.log(likeCount);
+      console.log('👞👞👞👞👞👞👞');
+      // const likeCount = board.likeCount + 1;
+
+      const newBoard = await this.boardRepository.save({
+        ...board,
+        likeCount,
+      });
+      console.log(newBoard);
+
+      return newBoard;
     }
+    if (likeBoard) {
+      const newLikeBoard = await this.boardLikeRepository.delete({
+        id: likeBoard.id,
+      });
+      const likeCount = board.likeCount - 1;
+      await this.boardRepository.save({
+        ...board,
+        likeCount,
+      });
+      return newLikeBoard.affected
+        ? `[삭제 성공] ${likeBoard.id}`
+        : `[삭제실패] ${likeBoard.id}`;
+    }
+  }
+
+  async fetchLikeBoards({ currentUser }) {
+    return await getRepository(BoardLike)
+      .createQueryBuilder('boardLike')
+      .innerJoinAndSelect('boardLike.join', 'join')
+      .innerJoinAndSelect('boardLike.board', 'board')
+      .where('join.id = :userId', { userId: currentUser.id })
+      .orderBy('boardLike.createAt', 'DESC')
+      .getMany();
+    // console.log(aaa);
   }
 }

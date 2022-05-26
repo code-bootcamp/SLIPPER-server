@@ -164,14 +164,17 @@ export class JoinService {
 
   async update({ email, updateUserInput }) {
     const user = await this.joinRepository.findOne({ where: { email } });
-    const checkNickname = await this.joinRepository.findOne(
-      updateUserInput.nickname,
-    );
+    const checkNickname = await this.joinRepository.findOne({
+      where: { nickname: updateUserInput.nickname },
+    });
+    console.log(updateUserInput.nickname);
+
     if (checkNickname) throw new ConflictException('닉네임이 존재합니다.');
     const newUser = {
       ...user,
       ...updateUserInput,
     };
+
     return await this.joinRepository.save(newUser);
   }
 
