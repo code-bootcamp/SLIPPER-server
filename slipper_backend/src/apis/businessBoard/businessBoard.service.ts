@@ -154,14 +154,12 @@ export class BusinessUserService {
       : `[삭제실패] ${businessBoardId}`;
   }
 
-  async fetchBusinessBoards({ currentUser, page }) {
+  async fetchBusinessBoards({ currentUser }) {
     return await getRepository(BusinessBoard)
       .createQueryBuilder('businessBoard')
       .innerJoinAndSelect('businessBoard.user', 'user')
       .where('user.id = :userId', { userId: currentUser.id })
       .orderBy('businessBoard.createdAt', 'DESC')
-      .limit(10)
-      .offset(10 * (page - 1))
       .getMany();
   }
 }

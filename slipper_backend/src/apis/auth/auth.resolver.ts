@@ -65,8 +65,20 @@ export class AuthResolver {
     } catch {
       throw new UnprocessableEntityException();
     }
+    const res = context.res;
     await this.cacheManager.set(accessToken, 'accessToken', { ttl: 120 });
     await this.cacheManager.set(refreshToken, 'refreshToken', { ttl: 120 });
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
+    );
+    res.setHeader(
+      'Set-Cookie',
+      `refreshToken=${'0'}; path=/; domain=.backend.slipperofficial.shop; Secure; httpOnly; SameSite=None;`,
+    );
     return '로그아웃 성공!!';
   }
 }
