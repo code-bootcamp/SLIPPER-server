@@ -1,4 +1,4 @@
-import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Field, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Payment } from 'src/apis/Payment/payment.entity';
 import {
   Column,
@@ -50,6 +50,10 @@ export class Join {
   @Column({ nullable: true })
   @Field(() => String, { nullable: true })
   businessImageUrl: string;
+
+  @Column({ default: 0 })
+  @Field(() => Int)
+  likeList: number;
 
   @CreateDateColumn()
   @Field(() => Date)
