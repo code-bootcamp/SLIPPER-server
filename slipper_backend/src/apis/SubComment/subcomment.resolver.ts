@@ -18,7 +18,7 @@ export class SubCommentResolver {
     const result = await this.subCommentService.create({
       commentId,
       contents,
-      currentUser: 'b8eeeaf4-f24d-4587-9c7f-fa5846b878de',
+      currentUser: '51129fc3-5826-4cc6-853f-329f5a679f63',
       //currentUser: currentUser.id,
     });
 
@@ -34,7 +34,7 @@ export class SubCommentResolver {
     const result = await this.subCommentService.update({
       subCommentId,
       contents,
-      currentUser: 'b8eeeaf4-f24d-4587-9c7f-fa5846b878de',
+      currentUser: '51129fc3-5826-4cc6-853f-329f5a679f63',
       //currentUser: currentUser.id,
     });
 
@@ -48,7 +48,7 @@ export class SubCommentResolver {
   //   ) {
   //     const result = await this.subCommentService.delete({
   //       commentId,
-  //       currentUser: 'b8eeeaf4-f24d-4587-9c7f-fa5846b878de',
+  //       currentUser: '51129fc3-5826-4cc6-853f-329f5a679f63',
   //       //currentUser: currentUser.id,
   //     });
 

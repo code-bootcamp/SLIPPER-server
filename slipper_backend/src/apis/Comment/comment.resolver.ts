@@ -19,7 +19,7 @@ export class CommentResolver {
     const result = await this.commentService.create({
       boardId,
       contents,
-      currentUser: '29149b29-5d39-4bbc-8e44-3c8cb6352757',
+      currentUser: '51129fc3-5826-4cc6-853f-329f5a679f63',
       //currentUser: currentUser.id,
     });
 
@@ -35,7 +35,7 @@ export class CommentResolver {
     const result = await this.commentService.update({
       commentId,
       contents,
-      currentUser: '29149b29-5d39-4bbc-8e44-3c8cb6352757',
+      currentUser: '51129fc3-5826-4cc6-853f-329f5a679f63',
       //currentUser: currentUser.id,
     });
 
@@ -49,7 +49,7 @@ export class CommentResolver {
   ) {
     const result = await this.commentService.delete({
       commentId,
-      currentUser: '29149b29-5d39-4bbc-8e44-3c8cb6352757',
+      currentUser: '51129fc3-5826-4cc6-853f-329f5a679f63',
       //currentUser: currentUser.id,
     });
 
