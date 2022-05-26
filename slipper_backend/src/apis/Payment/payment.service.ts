@@ -138,15 +138,16 @@ export class PaymentService {
   }
 
   // 구독권 내역 만료시키기
-  async update({ userId, currentUser }) {
-    console.log(userId, currentUser);
-    const result = await this.joinRepository.save({
-      id: currentUser,
+  async update({ userId }) {
+    console.log(userId);
+    await this.joinRepository.save({
+      id: userId,
+      //id: currentUser,
       subStart: null,
       subEnd: null,
       subType: null,
     });
 
-    return result;
+    return `구독권 만료처리 ${userId}`;
   }
 }

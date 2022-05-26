@@ -149,7 +149,7 @@ export class JoinService {
     return await this.joinRepository.findOne({ where: { phone } });
   }
   async findAll() {
-    return await this.joinRepository.find();
+    return await this.joinRepository.find({ relations: ['payment'] });
   }
 
   async findAllUser() {

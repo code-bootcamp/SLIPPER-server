@@ -1,47 +1,57 @@
-// import { Args, Mutation, Resolver } from '@nestjs/graphql';
-// import { CurrentUser, ICurrentUser } from 'src/commons/auth/gql-user.param';
-// import { Payment } from './payment.entity';
-// import { PaymentService } from './payment.service';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { CurrentUser, ICurrentUser } from 'src/commons/auth/gql-user.param';
+import { GraphQLJSONObject } from 'graphql-type-json';
+import { SubCommentService } from './subcomment.service';
 
-// @Resolver()
-// export class PaymentResolver {
-//   constructor(
-//     private readonly paymentService: PaymentService, //
-//   ) {}
+@Resolver()
+export class SubCommentResolver {
+  constructor(
+    private readonly subCommentService: SubCommentService, //
+  ) {}
 
-//   @Mutation(() => Payment)
-//   async createPayment(
-//     @Args('impUid') impUid: string,
-//     @Args('amount') amount: number,
-//     @CurrentUser() currentUser: ICurrentUser,
-//   ) {
-//     // 결제 정보 체크
-//     const token = await this.paymentService.getToken();
-//     await this.paymentService.checkPaid({ impUid, token, amount });
+  @Mutation(() => GraphQLJSONObject)
+  async createSubComment(
+    @Args('commentId') commentId: string,
+    @Args('content') contents: string,
+    @CurrentUser() currentUser: ICurrentUser,
+  ) {
+    const result = await this.subCommentService.create({
+      commentId,
+      contents,
+      currentUser: 'b8eeeaf4-f24d-4587-9c7f-fa5846b878de',
+      //currentUser: currentUser.id,
+    });
 
-//     // DB에 중복된 기록인지 체크
-//     await this.paymentService.checkDuplicate({ impUid });
+    return result;
+  }
 
-//     // DB에 저장
-//     return await this.paymentService.create({
-//       impUid,
-//       amount,
-//       currentUser: currentUser.id,
-//       //currentUser: '6a712267-e15e-4c4d-ba16-164aa41a3aa4',
-//     });
-//   }
+  @Mutation(() => GraphQLJSONObject)
+  async updateSubComment(
+    @Args('subCommentId') subCommentId: string,
+    @Args('content') contents: string,
+    @CurrentUser() currentUser: ICurrentUser,
+  ) {
+    const result = await this.subCommentService.update({
+      subCommentId,
+      contents,
+      currentUser: 'b8eeeaf4-f24d-4587-9c7f-fa5846b878de',
+      //currentUser: currentUser.id,
+    });
 
-//   @Mutation(() => Payment)
-//   async deletePayment(
-//     @Args('userId') userId: string,
-//     @CurrentUser() currentUser: ICurrentUser,
-//   ) {
-//     const result = await this.paymentService.delete({
-//       userId,
-//       currentUser: currentUser.id,
-//       //currentUser: '6a712267-e15e-4c4d-ba16-164aa41a3aa4',
-//     });
+    return result;
+  }
 
-//     return result;
-//   }
-// }
+  //   @Mutation(() => GraphQLJSONObject)
+  //   async deleteSubComment(
+  //     @Args('commentId') commentId: string,
+  //     @CurrentUser() currentUser: ICurrentUser,
+  //   ) {
+  //     const result = await this.subCommentService.delete({
+  //       commentId,
+  //       currentUser: 'b8eeeaf4-f24d-4587-9c7f-fa5846b878de',
+  //       //currentUser: currentUser.id,
+  //     });
+
+  //     return result;
+  //   }
+}
