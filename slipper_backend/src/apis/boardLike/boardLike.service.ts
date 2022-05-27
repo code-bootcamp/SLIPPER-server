@@ -31,7 +31,7 @@ export class BoardLikeService {
       where: { board: boardId, join: currentUser.id },
     });
     if (!likeBoard) {
-      const newLikeBoard = await this.boardLikeRepository.save({
+      await this.boardLikeRepository.save({
         isLike: true,
         board: board,
         join: user,
@@ -40,16 +40,20 @@ export class BoardLikeService {
       const likeCount = await this.boardLikeRepository.count({
         board: boardId,
       });
-      console.log('👞👞👞👞👞👞👞');
-      console.log(likeCount);
-      console.log('👞👞👞👞👞👞👞');
-      // const likeCount = board.likeCount + 1;
+
+      const userCount = await this.boardLikeRepository.count({
+        join: currentUser.id,
+      });
+
+      await this.joinRepository.save({
+        ...user,
+        likeList: userCount,
+      });
 
       const newBoard = await this.boardRepository.save({
         ...board,
         likeCount,
       });
-      console.log(newBoard);
 
       return newBoard;
     }
@@ -62,9 +66,24 @@ export class BoardLikeService {
         ...board,
         likeCount,
       });
-      return newLikeBoard.affected
+
+      const userCount = await this.boardLikeRepository.count({
+        join: currentUser.id,
+      });
+
+      await this.joinRepository.save({
+        ...user,
+        likeList: userCount,
+      });
+
+      newLikeBoard.affected
         ? `[삭제 성공] ${likeBoard.id}`
         : `[삭제실패] ${likeBoard.id}`;
+      const newBoard = await this.boardRepository.save({
+        ...board,
+        likeCount,
+      });
+      return newBoard;
     }
   }
 
@@ -76,6 +95,5 @@ export class BoardLikeService {
       .where('join.id = :userId', { userId: currentUser.id })
       .orderBy('boardLike.createAt', 'DESC')
       .getMany();
-    // console.log(aaa);
   }
 }
