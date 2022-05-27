@@ -114,9 +114,10 @@ type Query {
   testFetchBoards: [Board!]!
   testFetchBoardsPage(page: Float, category: String, search: String): [JSONObject!]!
   testFetchUser(email: String!): Join!
-  fetchBoard(boardId: String!): Board!
+  fetchBoard(boardId: String!): JSONObject!
   fetchBoardsPage(category: String, search: String, page: Int): [JSONObject!]!
-  fetchUserBoards: [Board!]!
+  fetchUserBoards(page: Int): [Board!]!
+  likeBoardsArray(page: Int): [Board!]!
 }
 
 """
@@ -150,10 +151,11 @@ type Mutation {
   createPayment(impUid: String!, amount: Float!): Payment!
   updatePayment(userId: String!): String!
   createComment(boardId: String!, content: String!): JSONObject!
-  updateComment(commentId: String!, content: String!): JSONObject!
-  deleteComment(commentId: String!): JSONObject!
+  updateComment(commentId: String!, content: String!): String!
+  deleteComment(commentId: String!): String!
   createSubComment(commentId: String!, content: String!): JSONObject!
-  updateSubComment(subCommentId: String!, content: String!): JSONObject!
+  updateSubComment(subCommentId: String!, content: String!): String!
+  deleteSubComment(subCommentId: String!): String!
 }
 
 input CreateBusinessBoardInput {

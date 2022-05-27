@@ -33,13 +33,13 @@ export class Comment {
   imageUrl: string;
 
   @ManyToOne(() => Board, (board) => board.comment, {
-    cascade: true,
+    onDelete: 'CASCADE',
   })
   @Field(() => Board)
   board: Board;
 
   @OneToMany(() => SubComment, (subComment) => subComment.comment, {
-    onDelete: 'CASCADE',
+    cascade: true,
   })
   //@Field(() => [SubComment], { nullable: true })
   subComment: SubComment[];

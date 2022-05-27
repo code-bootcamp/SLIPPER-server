@@ -29,8 +29,8 @@ export class Board {
   @Field(() => Date, { nullable: true })
   updatedAt: Date;
 
-  @Column({ default: 'N' })
-  isDeleted: string;
+  // @Column({ default: 'N' })
+  // isDeleted: string;
 
   @Column()
   @Field(() => String)
@@ -84,10 +84,7 @@ export class Board {
   @Field(() => Int)
   likeCount: number;
 
-  // @Field(() => [String], { nullable: true })
-  // images: string;
-
-  @OneToMany(() => BoardImage, (images) => images.board)
+  @OneToMany(() => BoardImage, (images) => images.board, { cascade: true })
   @Field(() => [BoardImage], { nullable: true })
   images: BoardImage[];
 
@@ -96,7 +93,7 @@ export class Board {
   user: Join;
 
   @OneToMany(() => Comment, (comment) => comment.board, {
-    onDelete: 'CASCADE',
+    cascade: true,
   })
   @Field(() => [Comment], { nullable: true })
   comment: Comment[];
