@@ -295,14 +295,24 @@ export class BoardService {
     }
   }
 
-  async fetchUserBoards({ currentUser }) {
+  async fetchUserBoards({ currentUser, page }) {
     return await getRepository(Board)
       .createQueryBuilder('board')
       .innerJoinAndSelect('board.user', 'user')
       .where('user.id = :userId', { userId: currentUser.id })
       .orderBy('board.createdAt', 'DESC')
-      // .limit(10)
-      // .offset(10 * (page - 1))
+      .limit(10)
+      .offset(10 * (page - 1))
+      .getMany();
+  }
+
+  async likeBoardsArray({ page }) {
+    return await getRepository(Board)
+      .createQueryBuilder('board')
+      .orderBy('board.likeCount', 'DESC')
+      .addOrderBy('board.createdAt', 'DESC')
+      .limit(10)
+      .offset(10 * (page - 1))
       .getMany();
   }
 }
