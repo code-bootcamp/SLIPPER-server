@@ -30,8 +30,9 @@ export class BoardResolver {
     //@Args('page', { nullable: true }) page: number, //
     @Args('category', { nullable: true }) category: string, //
     @Args('search', { nullable: true }) search: string, //
+    @Args('page', { nullable: true }) page: number, //
   ) {
-    const result = await this.boardService.loadPage({ category, search });
+    const result = await this.boardService.loadPage({ category, search, page });
     console.log(result);
     return result;
   }

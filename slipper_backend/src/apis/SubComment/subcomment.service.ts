@@ -38,7 +38,6 @@ export class SubCommentService {
       comment: commentId,
     });
 
-    console.log(result);
     return result;
   }
 
@@ -47,26 +46,22 @@ export class SubCommentService {
       where: { id: subCommentId }, //
     });
 
-    console.log(oldSubComment);
-
     const result = await this.subCommentRepository.save({
       ...oldSubComment,
       contents,
     });
 
-    console.log(result);
-
     return result;
   }
 
-  async delete({ commentId, currentUser }) {
-    const result = await this.commentRepository.findOne({
-      where: { id: commentId }, //
-      relations: ['subComment'],
-    });
+  //   async delete({ commentId, currentUser }) {
+  //     const result = await this.commentRepository.findOne({
+  //       where: { id: commentId }, //
+  //       relations: ['subComment'],
+  //     });
 
-    console.log(result);
+  //     console.log(result);
 
-    return result;
-  }
+  //     return result;
+  //   }
 }
