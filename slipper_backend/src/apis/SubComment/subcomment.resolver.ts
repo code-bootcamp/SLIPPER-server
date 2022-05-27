@@ -18,14 +18,13 @@ export class SubCommentResolver {
     const result = await this.subCommentService.create({
       commentId,
       contents,
-      currentUser: '51129fc3-5826-4cc6-853f-329f5a679f63',
-      //currentUser: currentUser.id,
+      currentUser: currentUser.id,
     });
 
     return result;
   }
 
-  @Mutation(() => GraphQLJSONObject)
+  @Mutation(() => String)
   async updateSubComment(
     @Args('subCommentId') subCommentId: string,
     @Args('content') contents: string,
@@ -34,24 +33,20 @@ export class SubCommentResolver {
     const result = await this.subCommentService.update({
       subCommentId,
       contents,
-      currentUser: '51129fc3-5826-4cc6-853f-329f5a679f63',
-      //currentUser: currentUser.id,
     });
 
     return result;
   }
 
-  //   @Mutation(() => GraphQLJSONObject)
-  //   async deleteSubComment(
-  //     @Args('commentId') commentId: string,
-  //     @CurrentUser() currentUser: ICurrentUser,
-  //   ) {
-  //     const result = await this.subCommentService.delete({
-  //       commentId,
-  //       currentUser: '51129fc3-5826-4cc6-853f-329f5a679f63',
-  //       //currentUser: currentUser.id,
-  //     });
+  @Mutation(() => String)
+  async deleteSubComment(
+    @Args('subCommentId') subCommentId: string,
+    @CurrentUser() currentUser: ICurrentUser,
+  ) {
+    const result = await this.subCommentService.delete({
+      subCommentId,
+    });
 
-  //     return result;
-  //   }
+    return result;
+  }
 }

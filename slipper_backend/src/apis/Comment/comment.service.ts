@@ -1,10 +1,4 @@
-import axios from 'axios';
-import {
-  ConflictException,
-  HttpException,
-  Injectable,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Join } from '../join/entities/join.entity';
@@ -34,31 +28,27 @@ export class CommentService {
       board: boardId,
     });
 
-    console.log(result);
     return result;
   }
 
-  async update({ commentId, contents, currentUser }) {
+  async update({ commentId, contents }) {
     const oldComment = await this.commentRepository.findOne({
       where: { id: commentId }, //
     });
 
-    const result = await this.commentRepository.save({
+    await this.commentRepository.save({
       ...oldComment,
       contents,
     });
 
-    return result;
+    return `수정 완료 - ${commentId} - ${contents}`;
   }
 
-  async delete({ commentId, currentUser }) {
-    const result = await this.commentRepository.findOne({
-      where: { id: commentId }, //
-      relations: ['subComment'],
+  async delete({ commentId }) {
+    await this.commentRepository.delete({
+      id: commentId,
     });
 
-    console.log(result);
-
-    return result;
+    return `삭제 완료 - ${commentId}`;
   }
 }

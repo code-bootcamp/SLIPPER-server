@@ -26,7 +26,7 @@ export class SubComment {
   imageUrl: string;
 
   @ManyToOne(() => Comment, (comment) => comment.subComment, {
-    cascade: true,
+    onDelete: 'CASCADE',
   })
   @Field(() => Comment)
   comment: Comment;

@@ -27,7 +27,7 @@ export class Join {
   @Field(() => String)
   email: string;
 
-  @Column()
+  @Column({ select: false })
   // @Field(() => String) 일단 해싱전이니까 그냥 두고 해봅시당!!!
   pw: string;
 

@@ -14,20 +14,16 @@ export class BoardResolver {
     private readonly boardService: BoardService, //
   ) {}
 
-  //--------  Query  --------
-  @Query(() => Board)
+  @Query(() => GraphQLJSONObject)
   async fetchBoard(
     @Args('boardId') boardId: string, //
   ) {
-    // const result = await this.boardService.findOne({ boardId });
-    // console.log(result);
     return await this.boardService.findOne({ boardId });
   }
 
   //검색 결과를 전달해주기 + 무한 스크롤
   @Query(() => [GraphQLJSONObject])
   async fetchBoardsPage(
-    //@Args('page', { nullable: true }) page: number, //
     @Args('category', { nullable: true }) category: string, //
     @Args('search', { nullable: true }) search: string, //
     @Args({ name: 'page', nullable: true, type: () => Int }) page: number,

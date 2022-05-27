@@ -6,7 +6,6 @@ import { BoardImage } from '../BoardImage/boardImage.entity';
 import { Join } from '../join/entities/join.entity';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { getToday } from 'src/commons/libraries/utils';
-import { CurrentUser } from 'src/commons/auth/gql-user.param';
 
 @Injectable()
 export class BoardService {
@@ -24,28 +23,14 @@ export class BoardService {
   ) {}
 
   async findOne({ boardId }) {
-    const result = await this.boardRepository.findOne({
-      where: { id: boardId, isDeleted: 'N' }, //
-      relations: ['images', 'user'],
-    });
-
-    // const result = await this.boardRepository
-    //   .createQueryBuilder('board')
-    //   .leftJoinAndSelect('board.images', 'images')
-    //   .leftJoinAndSelect('board.user', 'user')
-    //   .leftJoinAndSelect('board.comment', 'comment')
-    //   //.where('board.id = :id', { boardId })
-    //   .getOne();
-    /*
-      where: { id: boardId, isDeleted: 'N' }, //
-      relations: ['images', 'user', 'comment'],
-    */
-
-    // const result = await this.joinRepository
-    //   .createQueryBuilder('join') //
-    //   .leftJoinAndSelect('join.payment', 'payment')
-    //   .where('join.email = :email', { email })
-    //   .getOne();
+    const result = await this.boardRepository
+      .createQueryBuilder('board')
+      .leftJoinAndSelect('board.images', 'images')
+      .leftJoinAndSelect('board.user', 'user')
+      .leftJoinAndSelect('board.comment', 'comment')
+      .leftJoinAndSelect('comment.subComment', 'subComment')
+      .where('board.id = :id', { id: boardId })
+      .getOne();
 
     return result;
   }
@@ -62,11 +47,7 @@ export class BoardService {
         index: 'slipper-elasticsearch',
         sort: 'createdat:desc',
         query: {
-          // bool: {
-          //   must: [{ match: { isdeleted: 'N' } }],
-          // },
-          //match_all: {},
-          match: { isdeleted: 'N' },
+          match_all: {},
         },
 
         from: skip,
@@ -79,12 +60,7 @@ export class BoardService {
         index: 'slipper-elasticsearch',
         sort: 'createdat:desc',
         query: {
-          bool: {
-            must: [
-              { match: { isdeleted: 'N' } },
-              { prefix: { address: search } },
-            ],
-          },
+          prefix: { address: search },
         },
 
         from: skip,
@@ -99,9 +75,8 @@ export class BoardService {
         query: {
           bool: {
             must: [
-              { match: { isdeleted: 'N' } },
               { prefix: { address: search } },
-              { prefix: { category: category } },
+              { match: { category: category } },
             ],
           },
         },
@@ -258,22 +233,6 @@ export class BoardService {
 
   //게시글 삭제
   async delete({ boardId }) {
-    // const findBoard = await this.boardRepository.findOne({
-    //   where: { id: boardId },
-    //   relations: ['images'],
-    // });
-    // const findImages = findBoard.images;
-
-    // //이미지 먼저 삭제
-    // for (const e of findImages) {
-    //   console.log(e.id);
-    //   await this.boardImageRepository.delete({ id: e.id });
-    // }
-
-    // //최종 게시글 삭제
-    // const result = await this.boardRepository.delete({ id: boardId });
-
-    // softDelete 방식
     try {
       const findBoard = await this.boardRepository.findOne({
         where: { id: boardId },
@@ -284,9 +243,8 @@ export class BoardService {
         id: boardId,
       });
 
-      await this.boardRepository.save({
+      await this.boardRepository.delete({
         id: boardId,
-        isDeleted: 'Y',
       });
 
       return `[삭제 성공] 제목: ${findBoard.title}`;

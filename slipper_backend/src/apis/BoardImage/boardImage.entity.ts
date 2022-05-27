@@ -13,6 +13,6 @@ export class BoardImage {
   @Field(() => String)
   imageUrl: string;
 
-  @ManyToOne(() => Board, (board) => board.images)
+  @ManyToOne(() => Board, (board) => board.images, { onDelete: 'CASCADE' })
   board: Board;
 }
