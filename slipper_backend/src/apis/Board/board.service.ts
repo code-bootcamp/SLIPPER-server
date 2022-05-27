@@ -24,18 +24,18 @@ export class BoardService {
   ) {}
 
   async findOne({ boardId }) {
-    // const result = await this.boardRepository.findOne({
-    //   where: { id: boardId, isDeleted: 'N' }, //
-    //   relations: ['images', 'user', 'comment'],
-    // });
+    const result = await this.boardRepository.findOne({
+      where: { id: boardId, isDeleted: 'N' }, //
+      relations: ['images', 'user'],
+    });
 
-    const result = await this.boardRepository
-      .createQueryBuilder('board')
-      .leftJoinAndSelect('board.images', 'images')
-      .leftJoinAndSelect('board.user', 'user')
-      .leftJoinAndSelect('board.comment', 'comment')
-      //.where('board.id = :id', { boardId })
-      .getOne();
+    // const result = await this.boardRepository
+    //   .createQueryBuilder('board')
+    //   .leftJoinAndSelect('board.images', 'images')
+    //   .leftJoinAndSelect('board.user', 'user')
+    //   .leftJoinAndSelect('board.comment', 'comment')
+    //   //.where('board.id = :id', { boardId })
+    //   .getOne();
     /*
       where: { id: boardId, isDeleted: 'N' }, //
       relations: ['images', 'user', 'comment'],
@@ -62,10 +62,11 @@ export class BoardService {
         index: 'slipper-elasticsearch',
         sort: 'createdat:desc',
         query: {
-          bool: {
-            must: [{ match: { isdeleted: 'N' } }],
-          },
+          // bool: {
+          //   must: [{ match: { isdeleted: 'N' } }],
+          // },
           //match_all: {},
+          match: { isdeleted: 'N' },
         },
 
         from: skip,
@@ -273,18 +274,25 @@ export class BoardService {
     // const result = await this.boardRepository.delete({ id: boardId });
 
     // softDelete 방식
-    const findBoard = await this.boardRepository.findOne({
-      where: { id: boardId },
-    });
-    if (findBoard.isDeleted !== 'N') {
-      return `[이미 삭제된 글 입니다] 제목: ${findBoard.title}`;
-    }
+    try {
+      const findBoard = await this.boardRepository.findOne({
+        where: { id: boardId },
+      });
 
-    await this.boardRepository.save({
-      id: boardId,
-      isDeleted: 'Y',
-    });
-    return `[삭제 성공] 제목: ${findBoard.title}`;
+      await this.elasticsearchService.delete({
+        index: 'slipper-elasticsearch',
+        id: boardId,
+      });
+
+      await this.boardRepository.save({
+        id: boardId,
+        isDeleted: 'Y',
+      });
+
+      return `[삭제 성공] 제목: ${findBoard.title}`;
+    } catch (e) {
+      return `[이미 삭제된 글 입니다] ${boardId}`;
+    }
   }
 
   async fetchUserBoards({ currentUser, page }) {
