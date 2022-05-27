@@ -63,7 +63,6 @@ export class BusinessUserService {
         }),
       );
     }
-    console.log(result);
     return result;
   }
 }

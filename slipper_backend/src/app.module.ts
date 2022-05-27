@@ -17,9 +17,11 @@ import { BusinessBoardImage } from './apis/BusinessBoardImage/entities/BusinessB
 import { BusinessBoardModule } from './apis/businessBoard/businessBoard.module';
 import { CommentModule } from './apis/Comment/comment.module';
 import { SubCommentModule } from './apis/SubComment/subcomment.module';
+import { BoardLikeModule } from './apis/boardLike/boardLike.module';
 
 @Module({
   imports: [
+    BoardLikeModule,
     BusinessBoardModule,
     BusinessBoardImage,
     JoinModule,

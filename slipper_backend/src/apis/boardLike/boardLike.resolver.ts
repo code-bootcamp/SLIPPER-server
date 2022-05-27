@@ -1,8 +1,10 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { GqlAuthAccessGuard } from 'src/commons/auth/gql-auth.guard';
 import { CurrentUser, ICurrentUser } from 'src/commons/auth/gql-user.param';
+import { Board } from '../Board/board.entity';
 import { BoardLikeService } from './boardLike.service';
+import { BoardLike } from './entities/boardLike.entity';
 
 @Resolver()
 export class BoardLikeResolver {
@@ -11,11 +13,19 @@ export class BoardLikeResolver {
   ) {}
 
   @UseGuards(GqlAuthAccessGuard)
-  @Mutation(() => String)
+  @Mutation(() => Board)
   async clickLike(
     @Args('boardId') boardId: string,
     @CurrentUser() currentUser: ICurrentUser, //
   ) {
-    await this.boardLikeService.like({ boardId, currentUser });
+    return await this.boardLikeService.like({ boardId, currentUser });
+  }
+
+  @UseGuards(GqlAuthAccessGuard)
+  @Query(() => [BoardLike])
+  async fetchLikeBoards(
+    @CurrentUser() currentUser: ICurrentUser, //
+  ) {
+    return await this.boardLikeService.fetchLikeBoards({ currentUser });
   }
 }
