@@ -116,7 +116,6 @@ type Query {
   testFetchUser(email: String!): Join!
   fetchBoard(boardId: String!): Board!
 
-  fetchUserBoards: [Board!]!
 }
 
 """
