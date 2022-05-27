@@ -95,7 +95,6 @@ export class BoardService {
       email: email,
     });
 
-    console.log(getToday());
     createBoardInput.createdAt = new Date(getToday());
 
     let thumbnail;

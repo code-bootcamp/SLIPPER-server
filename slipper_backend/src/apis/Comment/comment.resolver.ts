@@ -2,6 +2,8 @@ import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { CurrentUser, ICurrentUser } from 'src/commons/auth/gql-user.param';
 import { CommentService } from './comment.service';
 import { GraphQLJSONObject } from 'graphql-type-json';
+import { GqlAuthAccessGuard } from 'src/commons/auth/gql-auth.guard';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver()
 export class CommentResolver {
@@ -9,6 +11,7 @@ export class CommentResolver {
     private readonly commentService: CommentService, //
   ) {}
 
+  @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => GraphQLJSONObject)
   async createComment(
     @Args('boardId') boardId: string,
@@ -24,11 +27,11 @@ export class CommentResolver {
     return result;
   }
 
+  @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => String)
   async updateComment(
     @Args('commentId') commentId: string,
     @Args('content') contents: string,
-    @CurrentUser() currentUser: ICurrentUser,
   ) {
     const result = await this.commentService.update({
       commentId,
@@ -38,10 +41,10 @@ export class CommentResolver {
     return result;
   }
 
+  @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => String)
   async deleteComment(
-    @Args('commentId') commentId: string,
-    @CurrentUser() currentUser: ICurrentUser,
+    @Args('commentId') commentId: string, //
   ) {
     const result = await this.commentService.delete({
       commentId,
