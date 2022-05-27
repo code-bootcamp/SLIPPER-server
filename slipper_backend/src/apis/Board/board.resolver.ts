@@ -1,5 +1,5 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
+import { Args, Mutation, Resolver, Query, Int } from '@nestjs/graphql';
 import { GqlAuthAccessGuard } from 'src/commons/auth/gql-auth.guard';
 import { CurrentUser, ICurrentUser } from 'src/commons/auth/gql-user.param';
 import { Board } from './board.entity';
@@ -19,9 +19,9 @@ export class BoardResolver {
   async fetchBoard(
     @Args('boardId') boardId: string, //
   ) {
-    const result = await this.boardService.findOne({ boardId });
-    console.log(result);
-    return result;
+    // const result = await this.boardService.findOne({ boardId });
+    // console.log(result);
+    return await this.boardService.findOne({ boardId });
   }
 
   //검색 결과를 전달해주기 + 무한 스크롤
@@ -30,7 +30,7 @@ export class BoardResolver {
     //@Args('page', { nullable: true }) page: number, //
     @Args('category', { nullable: true }) category: string, //
     @Args('search', { nullable: true }) search: string, //
-    @Args('page', { nullable: true }) page: number, //
+    @Args({ name: 'page', nullable: true, type: () => Int }) page: number,
   ) {
     const result = await this.boardService.loadPage({ category, search, page });
     console.log(result);
@@ -84,7 +84,7 @@ export class BoardResolver {
     });
   }
 
-  @UseGuards(GqlAuthAccessGuard)
+  //@UseGuards(GqlAuthAccessGuard)
   @Mutation(() => String)
   deleteBoard(
     @Args('boardId') boardId: string, //
