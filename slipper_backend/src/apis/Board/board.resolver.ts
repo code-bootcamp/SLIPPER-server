@@ -51,18 +51,6 @@ export class BoardResolver {
   ) {
     return await this.boardService.likeBoardsArray({ page });
   }
-  // fetchBoards() {
-  //   return this.boardService.findAll();
-  // }
-
-  //--------  Mutation  --------
-
-  /*
-  나중에 교체, 추가해야할 코드
-  @UseGuards(GqlAuthRefreshGuard)
-  @CurrentUser() currentUser: ICurrentUser,
-  검색할 때는 currentUser.nickname
-  */
 
   @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => Board)
@@ -70,7 +58,6 @@ export class BoardResolver {
     @Args('createBoardInput') createBoardInput: CreateBoardInput, //
     @CurrentUser() currentUser: ICurrentUser,
   ) {
-    console.log(currentUser);
     return this.boardService.create({
       createBoardInput,
       email: currentUser.email,
@@ -89,11 +76,11 @@ export class BoardResolver {
     });
   }
 
-  //@UseGuards(GqlAuthAccessGuard)
+  @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => String)
-  deleteBoard(
+  async deleteBoard(
     @Args('boardId') boardId: string, //
   ) {
-    return this.boardService.delete({ boardId });
+    return await this.boardService.delete({ boardId });
   }
 }

@@ -3,15 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Join } from '../join/entities/join.entity';
 import { getToday } from 'src/commons/libraries/utils';
-import { Comment } from '../Comment/comment.entity';
 import { SubComment } from './subcomment.entity';
 
 @Injectable()
 export class SubCommentService {
   constructor(
-    @InjectRepository(Comment)
-    private readonly commentRepository: Repository<Comment>,
-
     @InjectRepository(SubComment)
     private readonly subCommentRepository: Repository<SubComment>,
 
