@@ -28,6 +28,6 @@ export class SubComment {
   @ManyToOne(() => Comment, (comment) => comment.subComment, {
     onDelete: 'CASCADE',
   })
-  @Field(() => Comment)
+  //@Field(() => Comment)
   comment: Comment;
 }

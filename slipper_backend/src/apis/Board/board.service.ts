@@ -27,8 +27,13 @@ export class BoardService {
       .createQueryBuilder('board')
       .leftJoinAndSelect('board.images', 'images')
       .leftJoinAndSelect('board.user', 'user')
-      .leftJoinAndSelect('board.comment', 'comment')
-      .leftJoinAndSelect('comment.subComment', 'subComment')
+      // .leftJoinAndSelect('board.comment', 'comment')
+      // .leftJoinAndSelect('comment.subComment', 'subComment')
+      // .orderBy({
+      //   'comment.createdAt': 'ASC',
+      //   'subComment.createdAt': 'ASC',
+      // })
+
       .where('board.id = :id', { id: boardId })
       .getOne();
 

@@ -1,15 +1,30 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser, ICurrentUser } from 'src/commons/auth/gql-user.param';
 import { GraphQLJSONObject } from 'graphql-type-json';
 import { SubCommentService } from './subcomment.service';
 import { GqlAuthAccessGuard } from 'src/commons/auth/gql-auth.guard';
 import { UseGuards } from '@nestjs/common';
+import { SubComment } from './subcomment.entity';
 
 @Resolver()
 export class SubCommentResolver {
   constructor(
     private readonly subCommentService: SubCommentService, //
   ) {}
+
+  @UseGuards(GqlAuthAccessGuard)
+  @Query(() => SubComment)
+  async fetchSubComment(
+    @CurrentUser() currentUser: ICurrentUser,
+    @Args('commentId') commentId: string,
+  ) {
+    const result = await this.subCommentService.find({
+      commentId,
+      currentUser: currentUser.id,
+    });
+
+    return result;
+  }
 
   @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => GraphQLJSONObject)

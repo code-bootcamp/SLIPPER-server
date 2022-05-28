@@ -1,15 +1,30 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser, ICurrentUser } from 'src/commons/auth/gql-user.param';
 import { CommentService } from './comment.service';
 import { GraphQLJSONObject } from 'graphql-type-json';
 import { GqlAuthAccessGuard } from 'src/commons/auth/gql-auth.guard';
 import { UseGuards } from '@nestjs/common';
+import { Comment } from './comment.entity';
 
 @Resolver()
 export class CommentResolver {
   constructor(
     private readonly commentService: CommentService, //
   ) {}
+
+  @UseGuards(GqlAuthAccessGuard)
+  @Query(() => [Comment])
+  async fetchComments(
+    @CurrentUser() currentUser: ICurrentUser,
+    @Args('boardId') boardId: string,
+  ) {
+    const result = await this.commentService.findAll({
+      boardId,
+      currentUser: currentUser.id,
+    });
+
+    return result;
+  }
 
   @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => GraphQLJSONObject)
