@@ -7,19 +7,26 @@ type BoardImage {
   imageUrl: String!
 }
 
-type Comment {
+type SubComment {
   id: String!
   nickname: String!
   contents: String!
   createdAt: DateTime!
   imageUrl: String
-  board: Board!
 }
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type Comment {
+  id: String!
+  nickname: String!
+  contents: String!
+  createdAt: DateTime!
+  imageUrl: String
+}
 
 type Payment {
   impUid: String!
@@ -69,7 +76,6 @@ type Board {
   likeCount: Int!
   images: [BoardImage!]
   user: Join!
-  comment: [Comment!]
 }
 
 type BusinessBoard {
@@ -121,6 +127,8 @@ type Query {
   fetchBoardsPage(category: String, search: String, sortType: String, page: Int): [JSONObject!]!
   fetchUserBoards(page: Int): [Board!]!
   likeBoardsArray(page: Int): [Board!]!
+  fetchComments(boardId: String!): [Comment!]!
+  fetchSubComment(commentId: String!): SubComment!
 }
 
 """

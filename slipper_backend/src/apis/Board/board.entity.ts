@@ -100,6 +100,6 @@ export class Board {
   @OneToMany(() => Comment, (comment) => comment.board, {
     cascade: true,
   })
-  @Field(() => [Comment], { nullable: true })
+  //@Field(() => [Comment], { nullable: true })
   comment: Comment[];
 }
