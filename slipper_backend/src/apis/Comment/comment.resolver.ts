@@ -14,9 +14,9 @@ export class CommentResolver {
   @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => GraphQLJSONObject)
   async createComment(
+    @CurrentUser() currentUser: ICurrentUser,
     @Args('boardId') boardId: string,
     @Args('content') contents: string,
-    @CurrentUser() currentUser: ICurrentUser,
   ) {
     const result = await this.commentService.create({
       boardId,
@@ -30,6 +30,7 @@ export class CommentResolver {
   @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => String)
   async updateComment(
+    @CurrentUser() currentUser: ICurrentUser,
     @Args('commentId') commentId: string,
     @Args('content') contents: string,
   ) {
@@ -44,6 +45,7 @@ export class CommentResolver {
   @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => String)
   async deleteComment(
+    @CurrentUser() currentUser: ICurrentUser,
     @Args('commentId') commentId: string, //
   ) {
     const result = await this.commentService.delete({
