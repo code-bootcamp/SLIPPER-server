@@ -64,6 +64,8 @@ type Board {
   lng: String!
   address: String!
   place: String!
+  placePhone: String!
+  placeUrl: String!
   likeCount: Int!
   images: [BoardImage!]
   user: Join!
@@ -216,6 +218,8 @@ input CreateBoardInput {
   lng: String!
   address: String!
   place: String!
+  placePhone: String!
+  placeUrl: String!
   images: [String!]
 }
 
@@ -231,6 +235,8 @@ input UpdateBoardInput {
   lng: String
   address: String
   place: String
+  placePhone: String
+  placeUrl: String
   images: [String!]
 }
 

@@ -77,6 +77,14 @@ export class Board {
   @Field(() => String)
   place: string;
 
+  @Column()
+  @Field(() => String)
+  placePhone: string;
+
+  @Column()
+  @Field(() => String)
+  placeUrl: string;
+
   @Column({ default: 0 })
   @Field(() => Int)
   likeCount: number;
