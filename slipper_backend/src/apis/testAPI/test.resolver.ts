@@ -12,20 +12,20 @@ export class TestAPIResolver {
   ) {}
 
   @Query(() => String)
-  testAPI() {
+  TEST_API() {
     return '테스트 완료! 접속되었습니다 - slipper!';
   }
 
   @Query(() => [Board])
-  testFetchBoards() {
+  TEST_fetchBoards() {
     return this.testBoardService.findAll();
   }
 
   @Query(() => [GraphQLJSONObject])
-  testFetchBoardsPage(
+  TEST_fetchBoardsPage(
     @Args('page', { nullable: true }) page: number, //
-    @Args('category', { nullable: true }) category: string, //
-    @Args('search', { nullable: true }) search: string, //
+    @Args('category', { nullable: true }) category: string,
+    @Args('search', { nullable: true }) search: string,
   ) {
     const result = [];
     const data = {
@@ -52,13 +52,12 @@ export class TestAPIResolver {
     for (let i = 0; i < 5; i++) {
       result.push(data);
     }
-    console.log(result);
 
     return result;
   }
 
   @Mutation(() => Board)
-  async testCreateBoard(
+  async TEST_createBoard(
     @Args('createBoardInput') createBoardInput: CreateBoardInput, //
     @Args('email') email: string,
   ) {
@@ -67,13 +66,11 @@ export class TestAPIResolver {
       email: email,
     });
 
-    console.log(result);
-
     return result;
   }
 
   @Query(() => Join)
-  async testFetchUser(
+  async TEST_fetchUser(
     @Args('email') email: string, //
   ) {
     return await this.testBoardService.findUser({ email });
