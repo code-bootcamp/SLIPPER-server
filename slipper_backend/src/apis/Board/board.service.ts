@@ -36,8 +36,15 @@ export class BoardService {
   }
 
   //검색 결과를 전달해주기 + (X 무한 스크롤)
-  async loadPage({ category, search, page }) {
+  async loadPage({ category, search, sortType, page }) {
     const skip = (page - 1) * 10;
+
+    let type: any;
+    if (sortType === 'like') {
+      type = 'likecount:desc';
+    } else {
+      type = 'createdat:desc';
+    }
 
     let result: any;
     if (search === undefined || search === null || search === '') {
@@ -45,7 +52,7 @@ export class BoardService {
       console.log(1);
       result = await this.elasticsearchService.search({
         index: 'slipper-elasticsearch',
-        sort: 'createdat:desc',
+        sort: type,
         query: {
           match_all: {},
         },
@@ -58,7 +65,7 @@ export class BoardService {
       console.log(2);
       result = await this.elasticsearchService.search({
         index: 'slipper-elasticsearch',
-        sort: 'createdat:desc',
+        sort: type,
         query: {
           prefix: { address: search },
         },
@@ -71,7 +78,7 @@ export class BoardService {
       console.log(3);
       result = await this.elasticsearchService.search({
         index: 'slipper-elasticsearch',
-        sort: 'createdat:desc',
+        sort: type,
         query: {
           bool: {
             must: [

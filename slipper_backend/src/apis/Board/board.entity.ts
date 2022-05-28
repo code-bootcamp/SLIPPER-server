@@ -29,9 +29,6 @@ export class Board {
   @Field(() => Date, { nullable: true })
   updatedAt: Date;
 
-  // @Column({ default: 'N' })
-  // isDeleted: string;
-
   @Column()
   @Field(() => String)
   nickname: string;

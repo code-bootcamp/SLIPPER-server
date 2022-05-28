@@ -24,11 +24,17 @@ export class BoardResolver {
   //검색 결과를 전달해주기 + 무한 스크롤
   @Query(() => [GraphQLJSONObject])
   async fetchBoardsPage(
-    @Args('category', { nullable: true }) category: string, //
-    @Args('search', { nullable: true }) search: string, //
+    @Args('category', { nullable: true }) category: string,
+    @Args('search', { nullable: true }) search: string,
+    @Args('sortType', { nullable: true }) sortType: string,
     @Args({ name: 'page', nullable: true, type: () => Int }) page: number,
   ) {
-    const result = await this.boardService.loadPage({ category, search, page });
+    const result = await this.boardService.loadPage({
+      category,
+      search,
+      sortType,
+      page,
+    });
     console.log(result);
     return result;
   }
@@ -55,7 +61,7 @@ export class BoardResolver {
   @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => Board)
   createBoard(
-    @Args('createBoardInput') createBoardInput: CreateBoardInput, //
+    @Args('createBoardInput') createBoardInput: CreateBoardInput,
     @CurrentUser() currentUser: ICurrentUser,
   ) {
     return this.boardService.create({

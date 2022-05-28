@@ -110,12 +110,12 @@ type Query {
   fetchUser: Join!
   fetchUsers: [Join!]!
   fetchAllUser: [Join!]!
-  testAPI: String!
-  testFetchBoards: [Board!]!
-  testFetchBoardsPage(page: Float, category: String, search: String): [JSONObject!]!
-  testFetchUser(email: String!): Join!
+  TEST_API: String!
+  TEST_fetchBoards: [Board!]!
+  TEST_fetchBoardsPage(page: Float, category: String, search: String): [JSONObject!]!
+  TEST_fetchUser(email: String!): Join!
   fetchBoard(boardId: String!): JSONObject!
-  fetchBoardsPage(category: String, search: String, page: Int): [JSONObject!]!
+  fetchBoardsPage(category: String, search: String, sortType: String, page: Int): [JSONObject!]!
   fetchUserBoards(page: Int): [Board!]!
   likeBoardsArray(page: Int): [Board!]!
 }
@@ -141,7 +141,7 @@ type Mutation {
   login(email: String!, pw: String!): String!
   restoreAccessToken: String!
   logout: String!
-  testCreateBoard(createBoardInput: CreateBoardInput!, email: String!): Board!
+  TEST_createBoard(createBoardInput: CreateBoardInput!, email: String!): Board!
   createBoard(createBoardInput: CreateBoardInput!): Board!
   updateBoard(boardId: String!, updateBoardInput: UpdateBoardInput!): Board!
   deleteBoard(boardId: String!): String!
