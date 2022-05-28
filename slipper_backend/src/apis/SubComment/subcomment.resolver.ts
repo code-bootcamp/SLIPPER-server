@@ -14,9 +14,9 @@ export class SubCommentResolver {
   @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => GraphQLJSONObject)
   async createSubComment(
+    @CurrentUser() currentUser: ICurrentUser,
     @Args('commentId') commentId: string,
     @Args('content') contents: string,
-    @CurrentUser() currentUser: ICurrentUser,
   ) {
     const result = await this.subCommentService.create({
       commentId,
@@ -30,6 +30,7 @@ export class SubCommentResolver {
   @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => String)
   async updateSubComment(
+    @CurrentUser() currentUser: ICurrentUser,
     @Args('subCommentId') subCommentId: string,
     @Args('content') contents: string,
   ) {
@@ -44,6 +45,7 @@ export class SubCommentResolver {
   @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => String)
   async deleteSubComment(
+    @CurrentUser() currentUser: ICurrentUser,
     @Args('subCommentId') subCommentId: string, //
   ) {
     const result = await this.subCommentService.delete({
