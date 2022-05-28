@@ -21,7 +21,6 @@ export class BoardResolver {
     return await this.boardService.findOne({ boardId });
   }
 
-  //검색 결과를 전달해주기 + 무한 스크롤
   @Query(() => [GraphQLJSONObject])
   async fetchBoardsPage(
     @Args('category', { nullable: true }) category: string,
