@@ -63,7 +63,6 @@ export class BusinessUserService {
         }),
       );
     }
-    console.log(result);
     return result;
   }
 
@@ -75,7 +74,6 @@ export class BusinessUserService {
     const newImages = updateBusinessBoardInput.images;
     const oldImages = oldBoard.images;
 
-    console.log(newImages[0]);
     if (newImages === 0) updateBusinessBoardInput.thumbnail = null;
     const newBusinessBoard = {
       ...oldBoard,
@@ -143,7 +141,6 @@ export class BusinessUserService {
       relations: ['images'],
     });
     for (const e of findBusinessBoard.images) {
-      console.log(e.id);
       await this.businessBoardImageRepository.delete({ id: e.id });
     }
     const result = await this.businessBoardRepository.delete({

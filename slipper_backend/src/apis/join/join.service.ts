@@ -74,8 +74,6 @@ export class JoinService {
     if (redisToken) await this.cacheManager.del(phone);
     await this.cacheManager.set(phone, token, { ttl: 180 });
     const aa = await this.cacheManager.get(phone);
-    console.log(redisToken);
-    console.log(aa);
     return '토큰 3분 타이머 시이작';
   }
 
@@ -102,7 +100,7 @@ export class JoinService {
     const XSecretKey = process.env.SMS_X_SECRET_KEY;
     const sender = process.env.SMS_SENDER;
 
-    const result = await axios.post(
+    await axios.post(
       `https://api-sms.cloud.toast.com/sms/v3.0/appKeys/${appKey}/sender/sms`,
       {
         body: `안녕하세요. 인증번호는 ${token}`,
@@ -167,7 +165,6 @@ export class JoinService {
     const checkNickname = await this.joinRepository.findOne({
       where: { nickname: updateUserInput.nickname },
     });
-    console.log(updateUserInput.nickname);
 
     if (checkNickname) throw new ConflictException('닉네임이 존재합니다.');
     const newUser = {

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import e from 'express';
 import { getRepository, Repository } from 'typeorm';
+import { resourceLimits } from 'worker_threads';
 import { Board } from '../Board/board.entity';
 import { Join } from '../join/entities/join.entity';
 import { BoardLike } from './entities/boardLike.entity';
@@ -63,11 +64,6 @@ export class BoardLikeService {
       const newLikeBoard = await this.boardLikeRepository.delete({
         id: likeBoard.id,
       });
-      const likeCount = board.likeCount - 1;
-      await this.boardRepository.save({
-        ...board,
-        likeCount,
-      });
 
       const userCount = await this.boardLikeRepository.count({
         join: currentUser.id,
@@ -83,7 +79,7 @@ export class BoardLikeService {
         : `[삭제실패] ${likeBoard.id}`;
       const newBoard = await this.boardRepository.save({
         ...board,
-        likeCount,
+        userCount,
       });
       return newBoard;
     }
@@ -97,5 +93,9 @@ export class BoardLikeService {
       .where('join.id = :userId', { userId: currentUser.id })
       .orderBy('boardLike.createAt', 'DESC')
       .getMany();
+  }
+
+  async fetchLikeBoardsLength({ boardId }) {
+    return await this.boardLikeRepository.count({ board: boardId });
   }
 }

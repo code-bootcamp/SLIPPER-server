@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { use } from 'passport';
 import { JoinService } from '../join/join.service';
 
 @Injectable()
