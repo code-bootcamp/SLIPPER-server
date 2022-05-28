@@ -15,12 +15,12 @@ export class SubCommentService {
     private readonly joinRepository: Repository<Join>,
   ) {}
 
-  async find({ commentId, currentUser }) {
+  async findAll({ commentId, currentUser }) {
     const user = await this.joinRepository.findOne({
       id: currentUser,
     });
 
-    const result = await this.subCommentRepository.findOne({
+    const result = await this.subCommentRepository.find({
       nickname: user.nickname,
       comment: commentId,
     });
