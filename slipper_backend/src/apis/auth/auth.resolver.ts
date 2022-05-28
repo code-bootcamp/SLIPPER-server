@@ -7,6 +7,7 @@ import {
 import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
 import { JoinService } from '../join/join.service';
 import { AuthService } from './auth.service';
+// import * as bcrypt from 'bcrypt';
 import * as bcrypt from 'bcrypt';
 import { CurrentUser, ICurrentUser } from 'src/commons/auth/gql-user.param';
 import { GqlAuthRefreshGuard } from 'src/commons/auth/gql-auth.guard';
@@ -29,6 +30,7 @@ export class AuthResolver {
     @Context() context: any,
   ) {
     const user = await this.joinservice.findOne({ email });
+
     if (!user) throw new UnprocessableEntityException('이메일을 확인하세요.');
     const isAuthPw = await bcrypt.compare(pw, user.pw);
     if (!isAuthPw)
