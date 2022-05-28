@@ -30,18 +30,16 @@ export class BoardLikeService {
     const board = await this.boardRepository.findOne({
       where: { id: boardId },
     });
+
     const likeBoard = await this.boardLikeRepository.findOne({
       where: { board: boardId, join: currentUser.id },
     });
+
     if (!likeBoard) {
       await this.boardLikeRepository.save({
         isLike: true,
         board: board,
         join: user,
-      });
-
-      const likeCount = await this.boardLikeRepository.count({
-        board: boardId,
       });
 
       const userCount = await this.boardLikeRepository.count({
@@ -53,16 +51,25 @@ export class BoardLikeService {
         likeList: userCount,
       });
 
+      const likeCount = await this.boardLikeRepository.count({
+        board: boardId,
+      });
+
       const newBoard = await this.boardRepository.save({
         ...board,
         likeCount,
       });
 
-      return newBoard;
+      //return newBoard;
+      return likeCount; // 성환 추가
     }
     if (likeBoard) {
       const newLikeBoard = await this.boardLikeRepository.delete({
         id: likeBoard.id,
+      });
+
+      const likeCount = await this.boardLikeRepository.count({
+        board: boardId,
       });
 
       const userCount = await this.boardLikeRepository.count({
@@ -81,7 +88,9 @@ export class BoardLikeService {
         ...board,
         userCount,
       });
-      return newBoard;
+
+      //return newBoard;
+      return likeCount; // 성환 추가
     }
   }
 
@@ -95,7 +104,7 @@ export class BoardLikeService {
       .getMany();
   }
 
-  async fetchLikeBoardsLength({ boardId }) {
-    return await this.boardLikeRepository.count({ board: boardId });
-  }
+  // async fetchLikeBoardsLength({ boardId }) {
+  //   return await this.boardLikeRepository.count({ board: boardId });
+  // }
 }

@@ -6,19 +6,19 @@ import { Comment } from '../Comment/comment.entity';
 @ObjectType()
 export class SubComment {
   @PrimaryGeneratedColumn('uuid')
-  @Field(() => String)
+  //@Field(() => String)
   id: string;
 
   @Column()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   nickname: string;
 
   @Column()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   contents: string;
 
   @Column()
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   createdAt: Date;
 
   @Column({ nullable: true })
