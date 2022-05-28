@@ -28,4 +28,13 @@ export class BoardLikeResolver {
   ) {
     return await this.boardLikeService.fetchLikeBoards({ currentUser });
   }
+
+  @Query(() => String)
+  async fetchLikeBoardsCount(@Args('boardId') boardId: string) {
+    const result = await this.boardLikeService.fetchLikeBoardsLength({
+      boardId,
+    });
+    console.log(result);
+    return result;
+  }
 }

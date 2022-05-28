@@ -60,7 +60,6 @@ export class JoinResolver {
     @Args('updateUserInput') updateUserInput: UpdateUserSaveInput, //
     @CurrentUser() currentUser: any,
   ) {
-    console.log(updateUserInput);
     return await this.joinService.update({
       email: currentUser.email,
       updateUserInput,

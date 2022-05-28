@@ -26,7 +26,6 @@ export class BusinessUserResolver {
     createBusinessBoardInput: CreateBusinessBoardInput,
     @CurrentUser() currentUser: any, //성환 추가
   ) {
-    console.log(createBusinessBoardInput);
     return await this.businessUserService.create({
       createBusinessBoardInput,
       email: currentUser.email, //성환 추가

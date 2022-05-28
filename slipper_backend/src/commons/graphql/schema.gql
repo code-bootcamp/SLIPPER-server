@@ -105,6 +105,7 @@ type BoardLike {
 
 type Query {
   fetchLikeBoards: [BoardLike!]!
+  fetchLikeBoardsCount(boardId: String!): String!
   fetchBusinessBoard(businessBoardId: String!): BusinessBoard!
   fetchBusinessBoards: [BusinessBoard!]!
   fetchUser: Join!
@@ -126,6 +127,10 @@ The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](
 scalar JSONObject
 
 type Mutation {
+  deleteAdminUserBoard(boardId: String!): String!
+  deleteAdiminBusinessBoard(businessBoardId: String!): String!
+  deleteAdminUserComment(commentId: String!): String!
+  deleteAdminUserSubComment(subCommentId: String!): String!
   clickLike(boardId: String!): Board!
   createBusinessBoard(createBusinessBoardInput: CreateBusinessBoardInput!): BusinessBoard!
   updateBusinessBoard(businessBoardId: String!, updateBusinessBoardInput: updateBusinessBoardInput!): BusinessBoard!

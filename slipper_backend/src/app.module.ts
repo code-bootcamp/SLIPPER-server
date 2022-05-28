@@ -18,9 +18,11 @@ import { BusinessBoardModule } from './apis/businessBoard/businessBoard.module';
 import { CommentModule } from './apis/Comment/comment.module';
 import { SubCommentModule } from './apis/SubComment/subcomment.module';
 import { BoardLikeModule } from './apis/boardLike/boardLike.module';
+import { AdminModule } from './apis/admin/admin.module';
 
 @Module({
   imports: [
+    AdminModule,
     BoardLikeModule,
     BusinessBoardModule,
     BusinessBoardImage,
