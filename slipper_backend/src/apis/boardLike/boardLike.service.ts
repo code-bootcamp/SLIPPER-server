@@ -20,6 +20,8 @@ export class BoardLikeService {
   ) {}
 
   async like({ boardId, currentUser }) {
+    try {
+    } catch {}
     const user = await this.joinRepository.findOne({
       where: { id: currentUser.id },
     });
