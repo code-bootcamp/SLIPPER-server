@@ -123,12 +123,12 @@ type Query {
   TEST_fetchBoards: [Board!]!
   TEST_fetchBoardsPage(page: Float, category: String, search: String): [JSONObject!]!
   TEST_fetchUser(email: String!): Join!
-  fetchBoard(boardId: String!): JSONObject!
+  fetchBoard(boardId: String!): Board!
   fetchBoardsPage(category: String, search: String, sortType: String, page: Int): [JSONObject!]!
   fetchUserBoards(page: Int): [Board!]!
   likeBoardsArray(page: Int): [Board!]!
   fetchComments(boardId: String!): [Comment!]!
-  fetchSubComment(commentId: String!): SubComment!
+  fetchSubComment(commentId: String!): [SubComment!]!
 }
 
 """

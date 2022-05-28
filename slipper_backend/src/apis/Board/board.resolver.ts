@@ -14,7 +14,7 @@ export class BoardResolver {
     private readonly boardService: BoardService, //
   ) {}
 
-  @Query(() => GraphQLJSONObject)
+  @Query(() => Board)
   async fetchBoard(
     @Args('boardId') boardId: string, //
   ) {
