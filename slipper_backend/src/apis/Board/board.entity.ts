@@ -77,12 +77,12 @@ export class Board {
   @Field(() => String)
   place: string;
 
-  @Column()
-  @Field(() => String)
+  @Column({ default: null })
+  @Field(() => String, { nullable: true })
   placePhone: string;
 
-  @Column()
-  @Field(() => String)
+  @Column({ default: null })
+  @Field(() => String, { nullable: true })
   placeUrl: string;
 
   @Column({ default: 0 })

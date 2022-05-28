@@ -35,10 +35,10 @@ export class CreateBoardInput {
   @Field(() => String)
   place: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   placePhone: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   placeUrl: string;
 
   @Field(() => [String], { nullable: true })
