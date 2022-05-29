@@ -8,6 +8,7 @@ type BoardImage {
 }
 
 type SubComment {
+  id: String!
   nickname: String
   contents: String
   createdAt: DateTime
@@ -20,6 +21,7 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Comment {
+  id: String!
   nickname: String
   contents: String
   createdAt: DateTime
@@ -140,6 +142,8 @@ type Mutation {
   deleteAdminUserComment(commentId: String!): String!
   deleteAdminUserSubComment(subCommentId: String!): String!
   clickLike(boardId: String!): Int!
+  boardlike(boardId: String!): String!
+  boardlikeCount(boardId: String!): Int!
   createBusinessBoard(createBusinessBoardInput: CreateBusinessBoardInput!): BusinessBoard!
   updateBusinessBoard(businessBoardId: String!, updateBusinessBoardInput: updateBusinessBoardInput!): BusinessBoard!
   deleteBusinessBoard(businessBoardId: String!): Boolean!
