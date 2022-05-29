@@ -26,7 +26,7 @@ export class BoardLikeCountResolver {
   }
 
   @UseGuards(GqlAuthAccessGuard)
-  @Mutation(() => Int)
+  @Query(() => Int)
   async boardlikeCount(
     @Args('boardId') boardId: string, //
   ) {
