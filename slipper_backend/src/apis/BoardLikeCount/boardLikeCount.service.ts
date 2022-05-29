@@ -60,9 +60,9 @@ export class BoardLikeCountService {
     }
   }
 
-  async likeCountTotal({ boardId, currentUser }) {
+  async likeCountTotal({ boardId }) {
     const findBoard = await this.boardRepository.findOne({
-      where: { id: boardId, user: currentUser.id },
+      where: { id: boardId },
     });
 
     return findBoard.likeCount;
