@@ -4,7 +4,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Board } from '../Board/board.entity';
 import { BoardService } from '../Board/board.service';
 import { BoardImage } from '../BoardImage/boardImage.entity';
-import { BoardLike } from '../boardLike/entities/boardLike.entity';
 import { BusinessUserService } from '../businessBoard/businessBoard.service';
 import { BusinessBoard } from '../businessBoard/entities/businessBoard.entity';
 import { BusinessBoardImage } from '../BusinessBoardImage/entities/BusinessBoardImage.entity';

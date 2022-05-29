@@ -40,7 +40,7 @@ export class BoardLikeCountService {
         likeCount: findBoard.likeCount + 1,
       });
 
-      return `${boardId} 좋아요 + 1`;
+      return 1;
     } else {
       await this.boardLikeCountRepository.delete({
         board: boardId,
@@ -56,7 +56,7 @@ export class BoardLikeCountService {
         likeCount: findBoard.likeCount - 1,
       });
 
-      return `${boardId} 좋아요 - 1`;
+      return -1;
     }
   }
 
@@ -65,6 +65,8 @@ export class BoardLikeCountService {
       where: { id: boardId },
     });
 
+    console.log('hi');
+    console.log(findBoard.likeCount);
     return findBoard.likeCount;
   }
 
