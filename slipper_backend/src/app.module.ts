@@ -19,11 +19,13 @@ import { CommentModule } from './apis/Comment/comment.module';
 import { SubCommentModule } from './apis/SubComment/subcomment.module';
 import { BoardLikeModule } from './apis/boardLike/boardLike.module';
 import { AdminModule } from './apis/admin/admin.module';
+import { BoardLikeCountModule } from './apis/BoardLikeCount/boardLikeCount.module';
 
 @Module({
   imports: [
     AdminModule,
     BoardLikeModule,
+    BoardLikeCountModule,
     BusinessBoardModule,
     BusinessBoardImage,
     JoinModule,

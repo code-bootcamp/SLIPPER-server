@@ -6,7 +6,7 @@ import { Comment } from '../Comment/comment.entity';
 @ObjectType()
 export class SubComment {
   @PrimaryGeneratedColumn('uuid')
-  //@Field(() => String)
+  @Field(() => String)
   id: string;
 
   @Column()
