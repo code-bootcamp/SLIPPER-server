@@ -131,7 +131,7 @@ type Mutation {
   deleteAdiminBusinessBoard(businessBoardId: String!): String!
   deleteAdminUserComment(commentId: String!): String!
   deleteAdminUserSubComment(subCommentId: String!): String!
-  clickLike(boardId: String!): Board!
+  clickLike(boardId: String!): BoardLike!
   createBusinessBoard(createBusinessBoardInput: CreateBusinessBoardInput!): BusinessBoard!
   updateBusinessBoard(businessBoardId: String!, updateBusinessBoardInput: updateBusinessBoardInput!): BusinessBoard!
   deleteBusinessBoard(businessBoardId: String!): Boolean!

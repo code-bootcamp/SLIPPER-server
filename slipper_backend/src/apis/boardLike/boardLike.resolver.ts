@@ -13,7 +13,7 @@ export class BoardLikeResolver {
   ) {}
 
   @UseGuards(GqlAuthAccessGuard)
-  @Mutation(() => Board)
+  @Mutation(() => BoardLike)
   async clickLike(
     @Args('boardId') boardId: string,
     @CurrentUser() currentUser: ICurrentUser, //
