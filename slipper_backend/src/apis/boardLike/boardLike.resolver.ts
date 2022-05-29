@@ -1,5 +1,5 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { GqlAuthAccessGuard } from 'src/commons/auth/gql-auth.guard';
 import { CurrentUser, ICurrentUser } from 'src/commons/auth/gql-user.param';
 import { Board } from '../Board/board.entity';
@@ -13,7 +13,8 @@ export class BoardLikeResolver {
   ) {}
 
   @UseGuards(GqlAuthAccessGuard)
-  @Mutation(() => Board)
+  //@Mutation(() => Board)
+  @Mutation(() => Int) // 성환 추가
   async clickLike(
     @Args('boardId') boardId: string,
     @CurrentUser() currentUser: ICurrentUser, //
