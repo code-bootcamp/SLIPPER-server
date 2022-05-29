@@ -21,8 +21,6 @@ export class BoardLikeService {
   ) {}
 
   async like({ boardId, currentUser }) {
-    try {
-    } catch {}
     const user = await this.joinRepository.findOne({
       where: { id: currentUser.id },
     });
@@ -30,16 +28,18 @@ export class BoardLikeService {
     const board = await this.boardRepository.findOne({
       where: { id: boardId },
     });
-
     const likeBoard = await this.boardLikeRepository.findOne({
       where: { board: boardId, join: currentUser.id },
     });
-
     if (!likeBoard) {
-      await this.boardLikeRepository.save({
+      const newLikeBoard = await this.boardLikeRepository.save({
         isLike: true,
         board: board,
         join: user,
+      });
+
+      const likeCount = await this.boardLikeRepository.count({
+        board: boardId,
       });
 
       const userCount = await this.boardLikeRepository.count({
@@ -51,17 +51,12 @@ export class BoardLikeService {
         likeList: userCount,
       });
 
-      const likeCount = await this.boardLikeRepository.count({
-        board: boardId,
-      });
-
-      const newBoard = await this.boardRepository.save({
+      await this.boardRepository.save({
         ...board,
         likeCount,
       });
 
-      console.log(likeCount);
-      return newBoard;
+      return newLikeBoard;
     }
     if (likeBoard) {
       const newLikeBoard = await this.boardLikeRepository.delete({
@@ -72,6 +67,10 @@ export class BoardLikeService {
         join: currentUser.id,
       });
 
+      const likeCount = await this.boardLikeRepository.count({
+        board: boardId,
+      });
+
       await this.joinRepository.save({
         ...user,
         likeList: userCount,
@@ -80,12 +79,11 @@ export class BoardLikeService {
       newLikeBoard.affected
         ? `[삭제 성공] ${likeBoard.id}`
         : `[삭제실패] ${likeBoard.id}`;
-      const newBoard = await this.boardRepository.save({
+      await this.boardRepository.save({
         ...board,
-        userCount,
+        likeCount: likeCount,
       });
-
-      return newBoard;
+      return newLikeBoard;
     }
   }
 
