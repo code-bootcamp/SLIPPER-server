@@ -35,12 +35,12 @@ export class Comment {
   @ManyToOne(() => Board, (board) => board.comment, {
     onDelete: 'CASCADE',
   })
-  //@Field(() => Board)
+  @Field(() => Board)
   board: Board;
 
   @OneToMany(() => SubComment, (subComment) => subComment.comment, {
     cascade: true,
   })
-  //@Field(() => [SubComment], { nullable: true })
+  @Field(() => [SubComment], { nullable: true })
   subComment: SubComment[];
 }

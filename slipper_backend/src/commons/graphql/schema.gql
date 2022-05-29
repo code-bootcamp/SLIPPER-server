@@ -13,6 +13,7 @@ type SubComment {
   contents: String
   createdAt: DateTime
   imageUrl: String
+  comment: Comment!
 }
 
 """
@@ -26,6 +27,8 @@ type Comment {
   contents: String
   createdAt: DateTime
   imageUrl: String
+  board: Board!
+  subComment: [SubComment!]
 }
 
 type Payment {
@@ -78,10 +81,6 @@ type Board {
   user: Join!
 }
 
-type BoardLikeCount {
-  board: Board
-}
-
 type BusinessBoard {
   id: String!
   title: String!
@@ -108,8 +107,16 @@ type BusinessBoardImage {
   businessImageUrl: String!
 }
 
+type BoardLike {
+  isLike: Boolean!
+  createAt: DateTime!
+  board: Board!
+  join: Join!
+}
+
 type Query {
-  boardlikeCount(boardId: String!): Int!
+  fetchLikeBoards: [BoardLike!]!
+  fetchLikeBoardsCount(boardId: String!): String!
   fetchBusinessBoard(businessBoardId: String!): BusinessBoard!
   fetchBusinessBoards: [BusinessBoard!]!
   fetchUser: Join!
@@ -122,7 +129,7 @@ type Query {
   fetchBoard(boardId: String!): Board!
   fetchBoardsPage(category: String, search: String, sortType: String, page: Int): [JSONObject!]!
   fetchUserBoards(page: Int): [Board!]!
-  fetchUserLikeBoards(page: Int): [BoardLikeCount!]!
+  likeBoardsArray(page: Int): [Board!]!
   fetchComments(boardId: String!): [Comment!]!
   fetchSubComment(commentId: String!): [SubComment!]!
 }
@@ -137,7 +144,7 @@ type Mutation {
   deleteAdiminBusinessBoard(businessBoardId: String!): String!
   deleteAdminUserComment(commentId: String!): String!
   deleteAdminUserSubComment(subCommentId: String!): String!
-  boardlike(boardId: String!): String!
+  clickLike(boardId: String!): Board!
   createBusinessBoard(createBusinessBoardInput: CreateBusinessBoardInput!): BusinessBoard!
   updateBusinessBoard(businessBoardId: String!, updateBusinessBoardInput: updateBusinessBoardInput!): BusinessBoard!
   deleteBusinessBoard(businessBoardId: String!): Boolean!

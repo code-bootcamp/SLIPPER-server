@@ -6,7 +6,6 @@ import { BoardImage } from '../BoardImage/boardImage.entity';
 import { Join } from '../join/entities/join.entity';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { getToday } from 'src/commons/libraries/utils';
-import { BoardLikeCount } from '../BoardLikeCount/boardLikeCount.entity';
 
 @Injectable()
 export class BoardService {
@@ -259,24 +258,24 @@ export class BoardService {
       .getMany();
   }
 
-  // async likeBoardsArray({ page }) {
-  //   return await getRepository(Board)
-  //     .createQueryBuilder('board')
-  //     .orderBy('board.likeCount', 'DESC')
-  //     .addOrderBy('board.createdAt', 'DESC')
-  //     .limit(10)
-  //     .offset(10 * (page - 1))
-  //     .getMany();
-  // }
-
-  async fetchUserLikeBoards({ currentUser, page }) {
-    return await getRepository(BoardLikeCount)
-      .createQueryBuilder('likeBoard')
-      .innerJoinAndSelect('likeBoard.board', 'board')
-      .where('likeBoard.join = :joinId', { joinId: currentUser.id })
-      .orderBy('board.createdAt', 'DESC')
+  async likeBoardsArray({ page }) {
+    return await getRepository(Board)
+      .createQueryBuilder('board')
+      .orderBy('board.likeCount', 'DESC')
+      .addOrderBy('board.createdAt', 'DESC')
       .limit(10)
       .offset(10 * (page - 1))
       .getMany();
   }
+
+  // async fetchUserLikeBoards({ currentUser, page }) {
+  //   return await getRepository(BoardLikeCount)
+  //     .createQueryBuilder('likeBoard')
+  //     .innerJoinAndSelect('likeBoard.board', 'board')
+  //     .where('likeBoard.join = :joinId', { joinId: currentUser.id })
+  //     .orderBy('board.createdAt', 'DESC')
+  //     .limit(10)
+  //     .offset(10 * (page - 1))
+  //     .getMany();
+  // }
 }
