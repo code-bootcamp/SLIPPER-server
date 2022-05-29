@@ -7,7 +7,6 @@ import { BoardService } from './board.service';
 import { CreateBoardInput } from './dto/create_board.input';
 import { UpdateBoardInput } from './dto/update_board.input';
 import { GraphQLJSONObject } from 'graphql-type-json';
-import { BoardLikeCount } from '../BoardLikeCount/boardLikeCount.entity';
 
 @Resolver()
 export class BoardResolver {
@@ -51,21 +50,11 @@ export class BoardResolver {
     return await this.boardService.fetchUserBoards({ currentUser, page });
   }
 
-  // @Query(() => [Board])
-  // async likeBoardsArray(
-  //   @Args('page', { type: () => Int, nullable: true }) page: number,
-  // ) {
-  //   return await this.boardService.likeBoardsArray({ page });
-  // }
-
-  @UseGuards(GqlAuthAccessGuard)
-  @Query(() => [BoardLikeCount])
-  async fetchUserLikeBoards(
-    @CurrentUser() currentUser: ICurrentUser, //
-    @Args({ name: 'page', nullable: true, type: () => Int }) page: number,
+  @Query(() => [Board])
+  async likeBoardsArray(
+    @Args('page', { type: () => Int, nullable: true }) page: number,
   ) {
-    if (page <= 0) page = 1;
-    return await this.boardService.fetchUserLikeBoards({ currentUser, page });
+    return await this.boardService.likeBoardsArray({ page });
   }
 
   @UseGuards(GqlAuthAccessGuard)
