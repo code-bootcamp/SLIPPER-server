@@ -28,12 +28,10 @@ export class BoardLikeCountResolver {
   @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => Int)
   async boardlikeCount(
-    @Args('boardId') boardId: string,
-    @CurrentUser() currentUser: ICurrentUser, //
+    @Args('boardId') boardId: string, //
   ) {
     const result = await this.boardLikeCountService.likeCountTotal({
       boardId,
-      currentUser,
     });
 
     return result;
