@@ -78,6 +78,10 @@ type Board {
   user: Join!
 }
 
+type BoardLikeCount {
+  board: Board
+}
+
 type BusinessBoard {
   id: String!
   title: String!
@@ -104,16 +108,8 @@ type BusinessBoardImage {
   businessImageUrl: String!
 }
 
-type BoardLike {
-  isLike: Boolean!
-  createAt: DateTime!
-  board: Board!
-  join: Join!
-}
-
 type Query {
-  fetchLikeBoards: [BoardLike!]!
-  fetchLikeBoardsCount(boardId: String!): String!
+  boardlikeCount(boardId: String!): Int!
   fetchBusinessBoard(businessBoardId: String!): BusinessBoard!
   fetchBusinessBoards: [BusinessBoard!]!
   fetchUser: Join!
@@ -126,7 +122,7 @@ type Query {
   fetchBoard(boardId: String!): Board!
   fetchBoardsPage(category: String, search: String, sortType: String, page: Int): [JSONObject!]!
   fetchUserBoards(page: Int): [Board!]!
-  likeBoardsArray(page: Int): [Board!]!
+  fetchUserLikeBoards(page: Int): [BoardLikeCount!]!
   fetchComments(boardId: String!): [Comment!]!
   fetchSubComment(commentId: String!): [SubComment!]!
 }
@@ -141,9 +137,7 @@ type Mutation {
   deleteAdiminBusinessBoard(businessBoardId: String!): String!
   deleteAdminUserComment(commentId: String!): String!
   deleteAdminUserSubComment(subCommentId: String!): String!
-  clickLike(boardId: String!): Int!
   boardlike(boardId: String!): String!
-  boardlikeCount(boardId: String!): Int!
   createBusinessBoard(createBusinessBoardInput: CreateBusinessBoardInput!): BusinessBoard!
   updateBusinessBoard(businessBoardId: String!, updateBusinessBoardInput: updateBusinessBoardInput!): BusinessBoard!
   deleteBusinessBoard(businessBoardId: String!): Boolean!
