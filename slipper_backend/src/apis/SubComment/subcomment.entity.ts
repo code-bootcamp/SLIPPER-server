@@ -10,15 +10,15 @@ export class SubComment {
   id: string;
 
   @Column()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   nickname: string;
 
   @Column()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   contents: string;
 
   @Column()
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   createdAt: Date;
 
   @Column({ nullable: true })

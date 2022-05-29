@@ -15,6 +15,19 @@ export class CommentService {
     private readonly joinRepository: Repository<Join>,
   ) {}
 
+  async findAll({ boardId, currentUser }) {
+    const user = await this.joinRepository.findOne({
+      id: currentUser,
+    });
+
+    const result = await this.commentRepository.find({
+      nickname: user.nickname,
+      board: boardId,
+    });
+
+    return result;
+  }
+
   async create({ boardId, contents, currentUser }) {
     const user = await this.joinRepository.findOne({
       where: { id: currentUser }, //

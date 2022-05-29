@@ -77,6 +77,14 @@ export class Board {
   @Field(() => String)
   place: string;
 
+  @Column({ default: null })
+  @Field(() => String, { nullable: true })
+  placePhone: string;
+
+  @Column({ default: null })
+  @Field(() => String, { nullable: true })
+  placeUrl: string;
+
   @Column({ default: 0 })
   @Field(() => Int)
   likeCount: number;
@@ -92,6 +100,6 @@ export class Board {
   @OneToMany(() => Comment, (comment) => comment.board, {
     cascade: true,
   })
-  @Field(() => [Comment], { nullable: true })
+  //@Field(() => [Comment], { nullable: true })
   comment: Comment[];
 }

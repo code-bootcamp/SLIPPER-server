@@ -17,15 +17,15 @@ export class Comment {
   id: string;
 
   @Column()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   nickname: string;
 
   @Column()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   contents: string;
 
   @Column()
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   createdAt: Date;
 
   @Column({ nullable: true })
@@ -41,6 +41,6 @@ export class Comment {
   @OneToMany(() => SubComment, (subComment) => subComment.comment, {
     cascade: true,
   })
-  //@Field(() => [SubComment], { nullable: true })
+  @Field(() => [SubComment], { nullable: true })
   subComment: SubComment[];
 }

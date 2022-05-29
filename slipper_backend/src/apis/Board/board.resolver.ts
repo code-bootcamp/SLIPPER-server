@@ -14,14 +14,13 @@ export class BoardResolver {
     private readonly boardService: BoardService, //
   ) {}
 
-  @Query(() => GraphQLJSONObject)
+  @Query(() => Board)
   async fetchBoard(
     @Args('boardId') boardId: string, //
   ) {
     return await this.boardService.findOne({ boardId });
   }
 
-  //검색 결과를 전달해주기 + 무한 스크롤
   @Query(() => [GraphQLJSONObject])
   async fetchBoardsPage(
     @Args('category', { nullable: true }) category: string,
@@ -61,8 +60,8 @@ export class BoardResolver {
   @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => Board)
   createBoard(
-    @Args('createBoardInput') createBoardInput: CreateBoardInput,
     @CurrentUser() currentUser: ICurrentUser,
+    @Args('createBoardInput') createBoardInput: CreateBoardInput,
   ) {
     return this.boardService.create({
       createBoardInput,
@@ -73,6 +72,7 @@ export class BoardResolver {
   @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => Board)
   async updateBoard(
+    @CurrentUser() currentUser: ICurrentUser,
     @Args('boardId') boardId: string,
     @Args('updateBoardInput') updateBoardInput: UpdateBoardInput,
   ) {
@@ -85,6 +85,7 @@ export class BoardResolver {
   @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => String)
   async deleteBoard(
+    @CurrentUser() currentUser: ICurrentUser,
     @Args('boardId') boardId: string, //
   ) {
     return await this.boardService.delete({ boardId });

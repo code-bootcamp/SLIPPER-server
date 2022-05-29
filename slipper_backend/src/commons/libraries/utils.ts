@@ -12,6 +12,7 @@ export const getToday = (add = 0) => {
   const h = String(date.getHours()).padStart(2, '0');
   const m = String(date.getMinutes()).padStart(2, '0');
   const s = String(date.getSeconds()).padStart(2, '0');
+  const ms = String(date.getMilliseconds()).padStart(3, '0');
 
-  return `${yyyy}-${mm}-${dd} ${h}:${m}:${s}`;
+  return `${yyyy}-${mm}-${dd} ${h}:${m}:${s}:${ms}`;
 };
