@@ -106,7 +106,7 @@ export class BoardLikeService {
       .getMany();
   }
 
-  // async fetchLikeBoardsLength({ boardId }) {
-  //   return await this.boardLikeRepository.count({ board: boardId });
-  // }
+  async fetchLikeBoardsLength({ boardId }) {
+    return await this.boardLikeRepository.count({ board: boardId });
+  }
 }

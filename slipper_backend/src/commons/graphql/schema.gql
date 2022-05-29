@@ -111,6 +111,7 @@ type BoardLike {
 
 type Query {
   fetchLikeBoards: [BoardLike!]!
+  fetchLikeBoardsCount(boardId: String!): String!
   fetchBusinessBoard(businessBoardId: String!): BusinessBoard!
   fetchBusinessBoards: [BusinessBoard!]!
   fetchUser: Join!
