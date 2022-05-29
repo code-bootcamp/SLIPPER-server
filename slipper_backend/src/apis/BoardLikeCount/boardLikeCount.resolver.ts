@@ -34,6 +34,8 @@ export class BoardLikeCountResolver {
       boardId,
     });
 
+    console.log(result);
+
     return result;
   }
 

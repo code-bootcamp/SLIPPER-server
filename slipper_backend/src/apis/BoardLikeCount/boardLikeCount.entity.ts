@@ -15,6 +15,9 @@ export class BoardLikeCount {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @CreateDateColumn()
+  createdAt: Date;
+
   @ManyToOne(() => Board, (board) => board.likeCount, {
     onDelete: 'CASCADE',
   })
