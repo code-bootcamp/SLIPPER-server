@@ -60,6 +60,7 @@ export class BoardLikeService {
         likeCount,
       });
 
+      console.log(likeCount);
       //return newBoard;
       return likeCount; // 성환 추가
     }
@@ -68,6 +69,7 @@ export class BoardLikeService {
         id: likeBoard.id,
       });
 
+      // 성환 추가
       const likeCount = await this.boardLikeRepository.count({
         board: boardId,
       });
