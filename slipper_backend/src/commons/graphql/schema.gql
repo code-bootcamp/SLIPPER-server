@@ -32,7 +32,18 @@ type Comment {
 }
 
 type Payment {
+  id: String!
+  paymentDate: DateTime!
+  paymentAmount: Int!
   impUid: String!
+  subType: PAYMENT_STATUS_ENUM!
+  user: Join
+}
+
+enum PAYMENT_STATUS_ENUM {
+  DAY7
+  DAY30
+  DAY90
 }
 
 type Join {
