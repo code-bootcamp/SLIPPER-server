@@ -144,7 +144,7 @@ type Query {
   fetchBoardLikeCount(boardId: String): Int!
   fetchUserBoards(page: Int): [Board!]!
   likeBoardsArray(page: Int): [Board!]!
-  fetchPayments: Payment!
+  fetchPayments: [Payment!]!
   fetchComments(boardId: String!): [Comment!]!
   fetchSubComment(commentId: String!): [SubComment!]!
 }
@@ -175,6 +175,7 @@ type Mutation {
   restoreAccessToken: String!
   logout: String!
   TEST_createBoard(createBoardInput: CreateBoardInput!, email: String!): Board!
+  TEST_payment(paymentAmount: Float!, impUid: String!, subStart: DateTime!, subEnd: DateTime!, userId: String!): String!
   createBoard(createBoardInput: CreateBoardInput!): Board!
   updateBoard(boardId: String!, updateBoardInput: UpdateBoardInput!): Board!
   deleteBoard(boardId: String!): String!

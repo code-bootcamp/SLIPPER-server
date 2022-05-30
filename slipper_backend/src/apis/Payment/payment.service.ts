@@ -118,8 +118,8 @@ export class PaymentService {
         impUid,
         subStart: today,
         subEnd: end,
-        paymentAmount: amount,
         subType: type,
+        paymentAmount: amount,
         user: currentUser,
       });
 
