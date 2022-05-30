@@ -43,7 +43,6 @@ export class BoardService {
     return result.likeCount;
   }
 
-  //검색 결과를 전달해주기 + (X 무한 스크롤)
   async loadPage({ category, search, sortType, page }) {
     const skip = (page - 1) * 10;
 
@@ -57,7 +56,6 @@ export class BoardService {
     let result: any;
     if (search === undefined || search === null || search === '') {
       //전체 글 기준으로 전달 (검색페이지 메인)
-      console.log(1);
       result = await this.elasticsearchService.search({
         index: 'slipper-elasticsearch',
         sort: type,
@@ -70,7 +68,6 @@ export class BoardService {
       });
     } else if (category === undefined || category === null || category === '') {
       // 검색결과를 기준으로 전달 = 검색키워드
-      console.log(2);
       result = await this.elasticsearchService.search({
         index: 'slipper-elasticsearch',
         sort: type,
@@ -83,7 +80,6 @@ export class BoardService {
       });
     } else {
       // 검색결과를 기준으로 전달 = 검색키워드 + 카테고리
-      console.log(3);
       result = await this.elasticsearchService.search({
         index: 'slipper-elasticsearch',
         sort: type,
@@ -146,7 +142,6 @@ export class BoardService {
               board: boardId,
             });
             returnImagelist.push(savedImage);
-
             console.log(returnImagelist);
 
             if (savedImage) resolve(savedImage);
@@ -164,7 +159,6 @@ export class BoardService {
 
   //게시글 수정
   async update({ boardId, updateBoardInput }) {
-    //----- 기존 데이터와 새로운 데이터를 분리해놓기
     const { images: newImages, ...newData } = updateBoardInput;
 
     const oldBoard = await this.boardRepository.findOne({
@@ -173,21 +167,18 @@ export class BoardService {
     });
     const { images: oldImages, user, ...oldData } = oldBoard;
 
-    // 첫번째 이미지가 수정되었을 때 썸네일용 이미지도 변경
     if (newImages[0] !== oldImages[0]) {
       newData.thumbnail = newImages[0];
     } else if (newImages.length === 0) {
       newData.thumbnail = null;
     }
 
-    //----- 수정된 내용 합치기
     const newBoard = {
       ...oldData,
       ...newData,
       updatedAt: new Date(getToday()),
     };
 
-    //----- 수정된 내용 게시글로 저장하기
     const result = await this.boardRepository.save({
       ...newBoard,
     });
@@ -231,7 +222,6 @@ export class BoardService {
       }
     }
 
-    //----- 수정된 내용 프론트에 전달하기
     const returnUser = {
       id: user.id,
       email: user.email,
@@ -245,7 +235,6 @@ export class BoardService {
     return result;
   }
 
-  //게시글 삭제
   async delete({ boardId }) {
     try {
       const findBoard = await this.boardRepository.findOne({

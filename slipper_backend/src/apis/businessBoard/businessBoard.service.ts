@@ -176,7 +176,6 @@ export class BusinessUserService {
     let result: any;
     if (search === undefined || search === null || search === '') {
       //전체 글 기준으로 전달 (검색페이지 메인)
-      console.log(1);
       result = await this.elasticsearchService.search({
         index: 'slipper-elasticsearch',
         sort: type,
@@ -189,7 +188,6 @@ export class BusinessUserService {
       });
     } else if (category === undefined || category === null || category === '') {
       // 검색결과를 기준으로 전달 = 검색키워드
-      console.log(2);
       result = await this.elasticsearchService.search({
         index: 'slipper-elasticsearch',
         sort: type,
@@ -202,7 +200,6 @@ export class BusinessUserService {
       });
     } else {
       // 검색결과를 기준으로 전달 = 검색키워드 + 카테고리
-      console.log(3);
       result = await this.elasticsearchService.search({
         index: 'slipper-elasticsearch',
         sort: type,
