@@ -16,11 +16,9 @@ export class CommentResolver {
   async fetchComments(
     @Args('boardId') boardId: string, //
   ) {
-    const result = await this.commentService.findAll({
+    return await this.commentService.findAll({
       boardId,
     });
-
-    return result;
   }
 
   @UseGuards(GqlAuthAccessGuard)
@@ -30,13 +28,11 @@ export class CommentResolver {
     @Args('boardId') boardId: string,
     @Args('content') contents: string,
   ) {
-    const result = await this.commentService.create({
+    return await this.commentService.create({
       boardId,
       contents,
       currentUser: currentUser.id,
     });
-
-    return result;
   }
 
   @UseGuards(GqlAuthAccessGuard)
@@ -46,12 +42,11 @@ export class CommentResolver {
     @Args('commentId') commentId: string,
     @Args('content') contents: string,
   ) {
-    const result = await this.commentService.update({
+    return await this.commentService.update({
       commentId,
       contents,
+      currentUser: currentUser.id,
     });
-
-    return result;
   }
 
   @UseGuards(GqlAuthAccessGuard)
@@ -60,10 +55,9 @@ export class CommentResolver {
     @CurrentUser() currentUser: ICurrentUser,
     @Args('commentId') commentId: string, //
   ) {
-    const result = await this.commentService.delete({
+    return await this.commentService.delete({
       commentId,
+      currentUser: currentUser.id,
     });
-
-    return result;
   }
 }

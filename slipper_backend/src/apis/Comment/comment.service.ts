@@ -42,11 +42,16 @@ export class CommentService {
     return result;
   }
 
-  async update({ commentId, contents }) {
-    const oldComment = await this.commentRepository.findOne({
-      where: { id: commentId }, //
+  async update({ commentId, contents, currentUser }) {
+    const user = await this.joinRepository.findOne({
+      where: { id: currentUser }, //
     });
 
+    const oldComment = await this.commentRepository.findOne({
+      where: { id: commentId, nickname: user.nickname }, //
+    });
+
+    console.log(oldComment);
     await this.commentRepository.save({
       ...oldComment,
       contents,
@@ -55,9 +60,14 @@ export class CommentService {
     return `수정 완료 - ${commentId} - ${contents}`;
   }
 
-  async delete({ commentId }) {
+  async delete({ commentId, currentUser }) {
+    const user = await this.joinRepository.findOne({
+      where: { id: currentUser }, //
+    });
+
     await this.commentRepository.delete({
       id: commentId,
+      nickname: user.nickname,
     });
 
     return `삭제 완료 - ${commentId}`;

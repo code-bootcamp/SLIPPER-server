@@ -11,8 +11,6 @@ interface IFile {
 @Injectable()
 export class FileService {
   async upload({ files, type }: IFile) {
-    console.log(files);
-    console.log(type);
     const storage = new Storage({
       keyFilename: process.env.STORAGE_KEY_FILENAME,
       projectId: process.env.STORAGE_PROJECT_ID,
@@ -22,8 +20,6 @@ export class FileService {
 
     const results = await Promise.all(
       waitedFiles.map((el) => {
-        console.log(`el`);
-        console.log(el);
         return new Promise((resolve, reject) => {
           const fname = `${type}/${uuidv4()}/${el.filename}`;
 
@@ -35,7 +31,7 @@ export class FileService {
               resolve(
                 `https://storage.googleapis.com/${process.env.STORAGE_BUCKET}/${fname}`,
               ),
-            ) // finish 결과는 프론트엔드로 리턴
+            )
             .on('error', (err) => reject(err));
         });
       }),

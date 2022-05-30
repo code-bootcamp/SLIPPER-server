@@ -3,6 +3,7 @@ import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { GqlAuthAccessGuard } from 'src/commons/auth/gql-auth.guard';
 import { RolesGuard } from 'src/commons/auth/gql-role.guard';
 import { Roles } from 'src/commons/auth/gql-role.param';
+import { CurrentUser, ICurrentUser } from 'src/commons/auth/gql-user.param';
 import { Board } from '../Board/board.entity';
 import { BoardService } from '../Board/board.service';
 import { BusinessUserService } from '../businessBoard/businessBoard.service';
@@ -28,8 +29,9 @@ export class AdminResolver {
   @Mutation(() => String)
   async deleteAdminUserBoard(
     @Args('boardId') boardId: string, //
+    @CurrentUser() currentUser: ICurrentUser, //성환 추가
   ) {
-    return this.boardService.delete({ boardId });
+    return this.boardService.delete({ boardId, currentUser: currentUser.id });
   }
   //@Roles(Role.ADMIN)
   //@UseGuards(GqlAuthAccessGuard, RolesGuard)
@@ -46,15 +48,25 @@ export class AdminResolver {
   @Mutation(() => String)
   async deleteAdminUserComment(
     @Args('commentId') commentId: string, //
+    @CurrentUser() currentUser: ICurrentUser, //성환 추가
   ) {
-    return this.commentService.delete({ commentId });
+    return this.commentService.delete({
+      commentId,
+      currentUser: currentUser.id,
+    });
   }
 
   //@Roles(Role.ADMIN)
   //@UseGuards(GqlAuthAccessGuard, RolesGuard)
   @Mutation(() => String)
   @UseGuards(GqlAuthAccessGuard)
-  async deleteAdminUserSubComment(@Args('subCommentId') subCommentId: string) {
-    return this.subCommentService.delete({ subCommentId });
+  async deleteAdminUserSubComment(
+    @Args('subCommentId') subCommentId: string, //
+    @CurrentUser() currentUser: ICurrentUser, //성환 추가
+  ) {
+    return this.subCommentService.delete({
+      subCommentId,
+      currentUser: currentUser.id,
+    });
   }
 }
