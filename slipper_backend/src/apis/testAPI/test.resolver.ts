@@ -32,12 +32,12 @@ export class TestAPIResolver {
     const data = {
       _index: 'slipper-elasticsearch',
       _type: '_doc',
-      _id: '19d1e9aa-ce47-474d-8590-bd618aa4e83a',
+      _id: '아이디예시 - bd618aa4e83a',
       _score: null,
       _source: {
         likecount: 0,
         place: '프레퍼스',
-        id: '19d1e9aa-ce47-474d-8590-bd618aa4e83a',
+        id: '아이디예시 - bd618aa4e83a',
         nickname: '최성환',
         address: `${search}`,
         createdat: '2022-05-21T11:43:15.000Z',

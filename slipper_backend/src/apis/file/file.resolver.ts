@@ -8,7 +8,6 @@ export class FileResolver {
     private readonly fileService: FileService, //
   ) {}
 
-  //게시판 이미지 업로드
   @Mutation(() => [String])
   uploadBoardImage(
     @Args({ name: 'files', type: () => [GraphQLUpload] }) files: FileUpload[],
@@ -17,7 +16,6 @@ export class FileResolver {
     return this.fileService.upload({ files, type });
   }
 
-  // 프로필 이미지 업로드
   @Mutation(() => [String])
   uploadProfileImage(
     @Args({ name: 'files', type: () => [GraphQLUpload] }) files: FileUpload[],
@@ -26,7 +24,6 @@ export class FileResolver {
     return this.fileService.upload({ files, type });
   }
 
-  // 사업자등록증 이미지 업로드
   @Mutation(() => [String])
   uploadBusinessImage(
     @Args({ name: 'files', type: () => [GraphQLUpload] }) files: FileUpload[],

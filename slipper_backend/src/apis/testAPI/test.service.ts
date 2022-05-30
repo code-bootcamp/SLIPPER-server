@@ -61,7 +61,6 @@ export class TestBoardService {
 
     console.log(new Date(getToday()));
     createBoardInput.createdAt = new Date(getToday());
-    //console.log(createBoardInput);
 
     let thumbnail;
     if (createBoardInput.images.length > 0) {
@@ -69,13 +68,6 @@ export class TestBoardService {
     } else {
       thumbnail = null;
     }
-
-    /*
-    나중에 교체해야할 코드
-    const findUserId = await this.joinRepository.findOne({
-      nickname: currentUser.nickname,
-    });
-    */
 
     const userId = {
       id: findUserId.id,
