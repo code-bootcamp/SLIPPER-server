@@ -4,6 +4,7 @@ import { CreateBoardInput } from '../Board/dto/create_board.input';
 import { TestBoardService } from './test.service';
 import { GraphQLJSONObject } from 'graphql-type-json';
 import { Join } from '../join/entities/join.entity';
+import { getToday } from 'src/commons/libraries/utils';
 
 @Resolver()
 export class TestAPIResolver {
@@ -13,7 +14,7 @@ export class TestAPIResolver {
 
   @Query(() => String)
   TEST_API() {
-    return '테스트 완료! 접속되었습니다 - slipper!';
+    return `${getToday()}  테스트 완료! 접속되었습니다 - slipper!`;
   }
 
   @Query(() => [Board])
