@@ -1,10 +1,12 @@
 export const getToday = (add = 0) => {
-  const time = new Date();
-  const UTC = time.getTime() + time.getTimezoneOffset() * 60 * 1000;
-  const nineHours = 9 * 60 * 60 * 1000;
+  // const time = new Date();
+  // const UTC = time.getTime() + time.getTimezoneOffset() * 60 * 1000;
+  // const nineHours = 9 * 60 * 60 * 1000;
 
-  const date = new Date(UTC + nineHours);
-  date.setDate(date.getDate() + add);
+  // const date = new Date(UTC + nineHours);
+  // date.setDate(date.getDate() + add);
+
+  const date = new Date();
 
   const yyyy = String(date.getFullYear());
   const mm = String(date.getMonth() + 1).padStart(2, '0');
