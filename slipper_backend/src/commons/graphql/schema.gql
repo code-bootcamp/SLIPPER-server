@@ -132,7 +132,7 @@ type Query {
   fetchBoardLikeCount(boardId: String): Int!
   fetchUserBoards(page: Int): [Board!]!
   likeBoardsArray(page: Int): [Board!]!
-  fetchPayments: String!
+  fetchPayments: Payment!
   fetchComments(boardId: String!): [Comment!]!
   fetchSubComment(commentId: String!): [SubComment!]!
 }
