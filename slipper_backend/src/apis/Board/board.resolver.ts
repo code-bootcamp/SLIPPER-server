@@ -54,6 +54,7 @@ export class BoardResolver {
   async likeBoardsArray(
     @Args('page', { type: () => Int, nullable: true }) page: number,
   ) {
+    if (page <= 0) page = 1;
     return await this.boardService.likeBoardsArray({ page });
   }
 
