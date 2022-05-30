@@ -110,4 +110,11 @@ export class BoardLikeService {
       .offset(4 * (page - 1))
       .getMany();
   }
+
+  async fetchUserLike({ boardId, currentUser }) {
+    return await this.boardLikeRepository.findOne({
+      where: { board: boardId, join: currentUser.id },
+      relations: ['board'],
+    });
+  }
 }

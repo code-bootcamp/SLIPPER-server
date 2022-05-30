@@ -30,4 +30,13 @@ export class BoardLikeResolver {
     if (page <= 0) page = 1;
     return await this.boardLikeService.fetchLikeBoards({ page, currentUser });
   }
+
+  @UseGuards(GqlAuthAccessGuard)
+  @Query(() => BoardLike)
+  async fetchUserLike(
+    @Args('boardId') boardId: string,
+    @CurrentUser() currentUser: ICurrentUser,
+  ) {
+    return await this.boardLikeService.fetchUserLike({ boardId, currentUser });
+  }
 }
