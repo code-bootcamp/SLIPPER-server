@@ -12,15 +12,10 @@ export class SubCommentResolver {
     private readonly subCommentService: SubCommentService, //
   ) {}
 
-  // @UseGuards(GqlAuthAccessGuard)
   @Query(() => [SubComment])
-  async fetchSubComment(
-    // @CurrentUser() currentUser: ICurrentUser,
-    @Args('commentId') commentId: string,
-  ) {
+  async fetchSubComment(@Args('commentId') commentId: string) {
     const result = await this.subCommentService.findAll({
       commentId,
-      //currentUser: currentUser.id,
     });
 
     return result;

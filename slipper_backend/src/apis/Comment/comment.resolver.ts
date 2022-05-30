@@ -12,15 +12,12 @@ export class CommentResolver {
     private readonly commentService: CommentService, //
   ) {}
 
-  //@UseGuards(GqlAuthAccessGuard)
   @Query(() => [Comment])
   async fetchComments(
-    //@CurrentUser() currentUser: ICurrentUser,
-    @Args('boardId') boardId: string,
+    @Args('boardId') boardId: string, //
   ) {
     const result = await this.commentService.findAll({
       boardId,
-      //currentUser: currentUser.id,
     });
 
     return result;
