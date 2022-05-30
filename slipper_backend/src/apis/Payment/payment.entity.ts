@@ -21,7 +21,11 @@ export class Payment {
 
   @Column()
   @Field(() => Date)
-  paymentDate: Date;
+  subStart: Date;
+
+  @Column()
+  @Field(() => Date)
+  subEnd: Date;
 
   @Column()
   @Field(() => Int)

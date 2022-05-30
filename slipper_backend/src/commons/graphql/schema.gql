@@ -33,7 +33,8 @@ type Comment {
 
 type Payment {
   id: String!
-  paymentDate: DateTime!
+  subStart: DateTime!
+  subEnd: DateTime!
   paymentAmount: Int!
   impUid: String!
   subType: PAYMENT_STATUS_ENUM!
