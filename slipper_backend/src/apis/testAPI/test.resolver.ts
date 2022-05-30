@@ -76,4 +76,21 @@ export class TestAPIResolver {
   ) {
     return await this.testBoardService.findUser({ email });
   }
+
+  @Mutation(() => String)
+  async TEST_payment(
+    @Args('paymentAmount') paymentAmount: number,
+    @Args('impUid') impUid: string,
+    @Args('subStart') subStart: Date,
+    @Args('subEnd') subEnd: Date,
+    @Args('userId') userId: string,
+  ) {
+    return await this.testBoardService.addPayment({
+      paymentAmount,
+      impUid,
+      subStart,
+      subEnd,
+      userId,
+    });
+  }
 }

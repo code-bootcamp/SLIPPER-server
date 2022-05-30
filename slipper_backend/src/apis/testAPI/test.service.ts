@@ -5,6 +5,7 @@ import { BoardImage } from '../BoardImage/boardImage.entity';
 import { Join } from '../join/entities/join.entity';
 import { getToday } from 'src/commons/libraries/utils';
 import { Board } from '../Board/board.entity';
+import { Payment } from '../Payment/payment.entity';
 
 @Injectable()
 export class TestBoardService {
@@ -17,7 +18,22 @@ export class TestBoardService {
 
     @InjectRepository(Join)
     private readonly joinRepository: Repository<Join>,
+
+    @InjectRepository(Payment)
+    private readonly paymentService: Repository<Payment>, //
   ) {}
+
+  async addPayment({ paymentAmount, impUid, subStart, subEnd, userId }) {
+    const result = await this.paymentService.save({
+      paymentAmount,
+      impUid,
+      subStart,
+      subEnd,
+      userId,
+    });
+
+    return result;
+  }
 
   async findAll() {
     const result = await this.boardRepository.find({
