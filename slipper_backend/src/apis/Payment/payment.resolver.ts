@@ -13,7 +13,7 @@ export class PaymentResolver {
 
   // 구독권 조회
   @UseGuards(GqlAuthAccessGuard)
-  @Query(() => String)
+  @Query(() => Payment)
   async fetchPayments(
     @CurrentUser() currentUser: ICurrentUser, //
   ) {
