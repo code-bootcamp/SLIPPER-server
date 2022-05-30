@@ -31,6 +31,7 @@ export class BoardLikeService {
     const likeBoard = await this.boardLikeRepository.findOne({
       where: { board: boardId, join: currentUser.id },
     });
+
     if (!likeBoard) {
       const newLikeBoard = await this.boardLikeRepository.save({
         isLike: true,
@@ -40,10 +41,12 @@ export class BoardLikeService {
 
       const likeCount = await this.boardLikeRepository.count({
         board: boardId,
+        isLike: true,
       });
 
       const userCount = await this.boardLikeRepository.count({
         join: currentUser.id,
+        isLike: true,
       });
 
       await this.joinRepository.save({
@@ -58,17 +61,20 @@ export class BoardLikeService {
 
       return newLikeBoard;
     }
-    if (likeBoard) {
-      const newLikeBoard = await this.boardLikeRepository.delete({
-        id: likeBoard.id,
+    if (likeBoard.isLike === false) {
+      const newLikeBoard = await this.boardLikeRepository.save({
+        ...likeBoard,
+        isLike: true,
       });
 
       const userCount = await this.boardLikeRepository.count({
         join: currentUser.id,
+        isLike: true,
       });
 
       const likeCount = await this.boardLikeRepository.count({
         board: boardId,
+        isLike: true,
       });
 
       await this.joinRepository.save({
@@ -76,28 +82,53 @@ export class BoardLikeService {
         likeList: userCount,
       });
 
-      newLikeBoard.affected
-        ? `[삭제 성공] ${likeBoard.id}`
-        : `[삭제실패] ${likeBoard.id}`;
       await this.boardRepository.save({
         ...board,
         likeCount: likeCount,
       });
+
+      return newLikeBoard;
+    }
+
+    if (likeBoard.isLike === true) {
+      const newLikeBoard = await this.boardLikeRepository.save({
+        ...likeBoard,
+        isLike: false,
+      });
+
+      const userCount = await this.boardLikeRepository.count({
+        join: currentUser.id,
+        isLike: true,
+      });
+
+      const likeCount = await this.boardLikeRepository.count({
+        board: boardId,
+        isLike: true,
+      });
+
+      await this.joinRepository.save({
+        ...user,
+        likeList: userCount,
+      });
+
+      await this.boardRepository.save({
+        ...board,
+        likeCount: likeCount,
+      });
+
       return newLikeBoard;
     }
   }
 
-  async fetchLikeBoards({ currentUser }) {
+  async fetchLikeBoards({ page, currentUser }) {
     return await getRepository(BoardLike)
       .createQueryBuilder('boardLike')
       .innerJoinAndSelect('boardLike.join', 'join')
       .innerJoinAndSelect('boardLike.board', 'board')
       .where('join.id = :userId', { userId: currentUser.id })
       .orderBy('boardLike.createAt', 'DESC')
+      .limit(4)
+      .offset(4 * (page - 1))
       .getMany();
-  }
-
-  async fetchLikeBoardsLength({ boardId }) {
-    return await this.boardLikeRepository.count({ board: boardId });
   }
 }

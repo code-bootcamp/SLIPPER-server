@@ -25,16 +25,9 @@ export class BoardLikeResolver {
   @Query(() => [BoardLike])
   async fetchLikeBoards(
     @CurrentUser() currentUser: ICurrentUser, //
+    @Args('page', { type: () => Int, nullable: true }) page: number,
   ) {
-    return await this.boardLikeService.fetchLikeBoards({ currentUser });
-  }
-
-  @Query(() => String)
-  async fetchLikeBoardsCount(@Args('boardId') boardId: string) {
-    const result = await this.boardLikeService.fetchLikeBoardsLength({
-      boardId,
-    });
-    console.log(result);
-    return result;
+    if (page <= 0) page = 1;
+    return await this.boardLikeService.fetchLikeBoards({ page, currentUser });
   }
 }
