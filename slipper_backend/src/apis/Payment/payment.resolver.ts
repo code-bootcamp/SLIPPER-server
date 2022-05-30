@@ -32,7 +32,6 @@ export class PaymentResolver {
     @Args('amount') amount: number,
     @CurrentUser() currentUser: ICurrentUser,
   ) {
-    //DB에 저장
     return await this.paymentService.create({
       impUid,
       amount,
@@ -49,8 +48,6 @@ export class PaymentResolver {
   ) {
     const result = await this.paymentService.update({
       userId,
-      //currentUser: currentUser.id,
-      //currentUser: '6a712267-e15e-4c4d-ba16-164aa41a3aa4',
     });
 
     return result;

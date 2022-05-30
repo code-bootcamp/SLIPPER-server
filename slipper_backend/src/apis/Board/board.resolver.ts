@@ -28,24 +28,21 @@ export class BoardResolver {
     @Args('sortType', { nullable: true }) sortType: string,
     @Args({ name: 'page', nullable: true, type: () => Int }) page: number,
   ) {
-    const result = await this.boardService.loadPage({
+    return await this.boardService.loadPage({
       category,
       search,
       sortType,
       page,
     });
-    console.log(result);
-    return result;
   }
 
   @Query(() => Int)
   async fetchBoardLikeCount(
     @Args('boardId', { nullable: true }) boardId: string,
   ) {
-    const result = await this.boardService.getLikeCount({
+    return await this.boardService.getLikeCount({
       boardId,
     });
-    return result;
   }
 
   // @Roles(Role.USER)
@@ -90,6 +87,7 @@ export class BoardResolver {
     return await this.boardService.update({
       boardId,
       updateBoardInput,
+      currentUser: currentUser.id,
     });
   }
 
@@ -99,6 +97,9 @@ export class BoardResolver {
     @CurrentUser() currentUser: ICurrentUser,
     @Args('boardId') boardId: string, //
   ) {
-    return await this.boardService.delete({ boardId });
+    return await this.boardService.delete({
+      boardId,
+      currentUser: currentUser.id,
+    });
   }
 }

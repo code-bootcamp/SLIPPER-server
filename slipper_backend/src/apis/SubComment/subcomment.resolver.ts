@@ -14,11 +14,9 @@ export class SubCommentResolver {
 
   @Query(() => [SubComment])
   async fetchSubComment(@Args('commentId') commentId: string) {
-    const result = await this.subCommentService.findAll({
+    return await this.subCommentService.findAll({
       commentId,
     });
-
-    return result;
   }
 
   @UseGuards(GqlAuthAccessGuard)
@@ -28,13 +26,11 @@ export class SubCommentResolver {
     @Args('commentId') commentId: string,
     @Args('content') contents: string,
   ) {
-    const result = await this.subCommentService.create({
+    return await this.subCommentService.create({
       commentId,
       contents,
       currentUser: currentUser.id,
     });
-
-    return result;
   }
 
   @UseGuards(GqlAuthAccessGuard)
@@ -44,12 +40,11 @@ export class SubCommentResolver {
     @Args('subCommentId') subCommentId: string,
     @Args('content') contents: string,
   ) {
-    const result = await this.subCommentService.update({
+    return await this.subCommentService.update({
       subCommentId,
       contents,
+      currentUser: currentUser.id,
     });
-
-    return result;
   }
 
   @UseGuards(GqlAuthAccessGuard)
@@ -58,10 +53,9 @@ export class SubCommentResolver {
     @CurrentUser() currentUser: ICurrentUser,
     @Args('subCommentId') subCommentId: string, //
   ) {
-    const result = await this.subCommentService.delete({
+    return await this.subCommentService.delete({
       subCommentId,
+      currentUser: currentUser.id,
     });
-
-    return result;
   }
 }

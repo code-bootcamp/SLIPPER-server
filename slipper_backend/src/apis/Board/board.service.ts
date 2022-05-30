@@ -142,7 +142,6 @@ export class BoardService {
               board: boardId,
             });
             returnImagelist.push(savedImage);
-            console.log(returnImagelist);
 
             if (savedImage) resolve(savedImage);
             else reject('에러');
@@ -158,11 +157,11 @@ export class BoardService {
   }
 
   //게시글 수정
-  async update({ boardId, updateBoardInput }) {
+  async update({ boardId, updateBoardInput, currentUser }) {
     const { images: newImages, ...newData } = updateBoardInput;
 
     const oldBoard = await this.boardRepository.findOne({
-      where: { id: boardId },
+      where: { id: boardId, user: currentUser },
       relations: ['images', 'user'],
     });
     const { images: oldImages, user, ...oldData } = oldBoard;
@@ -235,10 +234,10 @@ export class BoardService {
     return result;
   }
 
-  async delete({ boardId }) {
+  async delete({ boardId, currentUser }) {
     try {
       const findBoard = await this.boardRepository.findOne({
-        where: { id: boardId },
+        where: { id: boardId, user: currentUser },
       });
 
       await this.elasticsearchService.delete({

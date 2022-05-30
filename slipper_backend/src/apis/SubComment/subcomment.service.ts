@@ -42,9 +42,13 @@ export class SubCommentService {
     return result;
   }
 
-  async update({ subCommentId, contents }) {
+  async update({ subCommentId, contents, currentUser }) {
+    const user = await this.joinRepository.findOne({
+      where: { id: currentUser }, //
+    });
+
     const oldSubComment = await this.subCommentRepository.findOne({
-      where: { id: subCommentId }, //
+      where: { id: subCommentId, nickname: user.nickname }, //
     });
 
     await this.subCommentRepository.save({
@@ -55,9 +59,14 @@ export class SubCommentService {
     return `수정 완료 - ${subCommentId} - ${contents}`;
   }
 
-  async delete({ subCommentId }) {
+  async delete({ subCommentId, currentUser }) {
+    const user = await this.joinRepository.findOne({
+      where: { id: currentUser }, //
+    });
+
     await this.subCommentRepository.delete({
       id: subCommentId,
+      nickname: user.nickname,
     });
 
     return `삭제 완료 - ${subCommentId}}`;
