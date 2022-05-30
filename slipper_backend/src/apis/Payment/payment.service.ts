@@ -82,6 +82,14 @@ export class PaymentService {
 
   //----------------
 
+  async findPayment({ userId }) {
+    const result = await this.paymentRepository.find({
+      user: userId,
+    });
+
+    return result;
+  }
+
   // 구독권 내역 추가하기
   async create({ impUid, amount, currentUser }) {
     const queryRunner = this.connection.createQueryRunner();
