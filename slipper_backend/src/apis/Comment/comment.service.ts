@@ -21,8 +21,10 @@ export class CommentService {
     });
 
     const result = await this.commentRepository.find({
-      nickname: user.nickname,
-      board: boardId,
+      where: { nickname: user.nickname, board: boardId },
+      order: {
+        createdAt: 'ASC',
+      },
     });
 
     return result;

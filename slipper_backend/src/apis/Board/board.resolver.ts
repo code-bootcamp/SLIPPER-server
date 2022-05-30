@@ -38,6 +38,16 @@ export class BoardResolver {
     return result;
   }
 
+  @Query(() => Int)
+  async fetchBoardLikeCount(
+    @Args('boardId', { nullable: true }) boardId: string,
+  ) {
+    const result = await this.boardService.getLikeCount({
+      boardId,
+    });
+    return result;
+  }
+
   // @Roles(Role.USER)
   // @UseGuards(GqlAuthAccessGuard, RolesGuard)
   @UseGuards(GqlAuthAccessGuard)
