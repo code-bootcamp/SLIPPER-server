@@ -116,7 +116,8 @@ export class PaymentService {
       // 결제 내역에 기록
       const paymentHistory = this.paymentRepository.create({
         impUid,
-        paymentDate: today,
+        subStart: today,
+        subEnd: end,
         paymentAmount: amount,
         subType: type,
         user: currentUser,

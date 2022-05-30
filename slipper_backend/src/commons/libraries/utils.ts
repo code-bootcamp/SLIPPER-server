@@ -5,9 +5,9 @@ export const getToday = (add = 0) => {
 
   //const date = new Date(UTC + nineHours);
   const date = new Date();
-  console.log(date);
-  console.log(date);
   date.setDate(date.getDate() + add);
+
+  console.log(date);
 
   const yyyy = String(date.getFullYear());
   const mm = String(date.getMonth() + 1).padStart(2, '0');

@@ -51,7 +51,7 @@ export class JoinResolver {
     @Args('phone') phone: string, //
     @Args('mytoken') mytoken: string,
   ) {
-    await this.joinService.checkToken({ mytoken, phone });
+    return await this.joinService.checkToken({ mytoken, phone });
   }
 
   @UseGuards(GqlAuthAccessGuard)
