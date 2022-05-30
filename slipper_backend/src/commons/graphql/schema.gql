@@ -115,8 +115,7 @@ type BoardLike {
 }
 
 type Query {
-  fetchLikeBoards: [BoardLike!]!
-  fetchLikeBoardsCount(boardId: String!): String!
+  fetchLikeBoards(page: Int): [BoardLike!]!
   fetchBusinessBoard(businessBoardId: String!): BusinessBoard!
   fetchBusinessBoards: [BusinessBoard!]!
   fetchUser: Join!
@@ -128,6 +127,7 @@ type Query {
   TEST_fetchUser(email: String!): Join!
   fetchBoard(boardId: String!): Board!
   fetchBoardsPage(category: String, search: String, sortType: String, page: Int): [JSONObject!]!
+  fetchBoardLikeCount(boardId: String): Int!
   fetchUserBoards(page: Int): [Board!]!
   likeBoardsArray(page: Int): [Board!]!
   fetchComments(boardId: String!): [Comment!]!

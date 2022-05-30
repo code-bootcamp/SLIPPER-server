@@ -35,6 +35,14 @@ export class BoardService {
     return result;
   }
 
+  async getLikeCount({ boardId }) {
+    const result = await this.boardRepository.findOne({
+      id: boardId,
+    });
+
+    return result.likeCount;
+  }
+
   //검색 결과를 전달해주기 + (X 무한 스크롤)
   async loadPage({ category, search, sortType, page }) {
     const skip = (page - 1) * 10;

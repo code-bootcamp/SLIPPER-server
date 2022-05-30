@@ -21,8 +21,10 @@ export class SubCommentService {
     });
 
     const result = await this.subCommentRepository.find({
-      nickname: user.nickname,
-      comment: commentId,
+      where: { nickname: user.nickname, comment: commentId },
+      order: {
+        createdAt: 'ASC',
+      },
     });
 
     return result;
