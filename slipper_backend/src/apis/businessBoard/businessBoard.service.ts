@@ -4,6 +4,7 @@ import { getToday } from 'src/commons/libraries/utils';
 import { getRepository, Repository } from 'typeorm';
 import { BusinessBoardImage } from '../BusinessBoardImage/entities/BusinessBoardImage.entity';
 import { Join } from '../join/entities/join.entity';
+import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { BusinessBoard } from './entities/businessBoard.entity';
 
 @Injectable()
@@ -17,6 +18,8 @@ export class BusinessUserService {
 
     @InjectRepository(BusinessBoardImage)
     private readonly businessBoardImageRepository: Repository<BusinessBoardImage>,
+
+    private readonly elasticsearchService: ElasticsearchService,
   ) {}
 
   async create({ createBusinessBoardInput, email }) {
@@ -158,5 +161,65 @@ export class BusinessUserService {
       .where('user.id = :userId', { userId: currentUser.id })
       .orderBy('businessBoard.createdAt', 'DESC')
       .getMany();
+  }
+
+  async loadPage({ category, search, sortType, page }) {
+    const skip = (page - 1) * 10;
+
+    let type: any;
+    if (sortType === 'like') {
+      type = 'likecount:desc';
+    } else {
+      type = 'createdat:desc';
+    }
+
+    let result: any;
+    if (search === undefined || search === null || search === '') {
+      //전체 글 기준으로 전달 (검색페이지 메인)
+      console.log(1);
+      result = await this.elasticsearchService.search({
+        index: 'slipper-elasticsearch',
+        sort: type,
+        query: {
+          match_all: {},
+        },
+
+        from: skip,
+        size: 10,
+      });
+    } else if (category === undefined || category === null || category === '') {
+      // 검색결과를 기준으로 전달 = 검색키워드
+      console.log(2);
+      result = await this.elasticsearchService.search({
+        index: 'slipper-elasticsearch',
+        sort: type,
+        query: {
+          prefix: { address: search },
+        },
+
+        from: skip,
+        size: 10,
+      });
+    } else {
+      // 검색결과를 기준으로 전달 = 검색키워드 + 카테고리
+      console.log(3);
+      result = await this.elasticsearchService.search({
+        index: 'slipper-elasticsearch',
+        sort: type,
+        query: {
+          bool: {
+            must: [
+              { prefix: { address: search } },
+              { match: { category: category } },
+            ],
+          },
+        },
+
+        from: skip,
+        size: 10,
+      });
+    }
+
+    return result.hits.hits;
   }
 }

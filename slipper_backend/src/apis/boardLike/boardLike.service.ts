@@ -61,63 +61,41 @@ export class BoardLikeService {
 
       return newLikeBoard;
     }
+    let newLikeBoard;
     if (likeBoard.isLike === false) {
-      const newLikeBoard = await this.boardLikeRepository.save({
+      newLikeBoard = await this.boardLikeRepository.save({
         ...likeBoard,
         isLike: true,
       });
-
-      const userCount = await this.boardLikeRepository.count({
-        join: currentUser.id,
-        isLike: true,
-      });
-
-      const likeCount = await this.boardLikeRepository.count({
-        board: boardId,
-        isLike: true,
-      });
-
-      await this.joinRepository.save({
-        ...user,
-        likeList: userCount,
-      });
-
-      await this.boardRepository.save({
-        ...board,
-        likeCount: likeCount,
-      });
-
-      return newLikeBoard;
     }
 
     if (likeBoard.isLike === true) {
-      const newLikeBoard = await this.boardLikeRepository.save({
+      newLikeBoard = await this.boardLikeRepository.save({
         ...likeBoard,
         isLike: false,
       });
-
-      const userCount = await this.boardLikeRepository.count({
-        join: currentUser.id,
-        isLike: true,
-      });
-
-      const likeCount = await this.boardLikeRepository.count({
-        board: boardId,
-        isLike: true,
-      });
-
-      await this.joinRepository.save({
-        ...user,
-        likeList: userCount,
-      });
-
-      await this.boardRepository.save({
-        ...board,
-        likeCount: likeCount,
-      });
-
-      return newLikeBoard;
     }
+    const userCount = await this.boardLikeRepository.count({
+      join: currentUser.id,
+      isLike: true,
+    });
+
+    const likeCount = await this.boardLikeRepository.count({
+      board: boardId,
+      isLike: true,
+    });
+
+    await this.joinRepository.save({
+      ...user,
+      likeList: userCount,
+    });
+
+    await this.boardRepository.save({
+      ...board,
+      likeCount: likeCount,
+    });
+
+    return newLikeBoard;
   }
 
   async fetchLikeBoards({ page, currentUser }) {
@@ -126,6 +104,7 @@ export class BoardLikeService {
       .innerJoinAndSelect('boardLike.join', 'join')
       .innerJoinAndSelect('boardLike.board', 'board')
       .where('join.id = :userId', { userId: currentUser.id })
+      .andWhere('boardLike.isLike = :isLike', { isLike: true })
       .orderBy('boardLike.createAt', 'DESC')
       .limit(4)
       .offset(4 * (page - 1))

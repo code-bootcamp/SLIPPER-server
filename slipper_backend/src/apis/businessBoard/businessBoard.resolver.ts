@@ -1,5 +1,6 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { GraphQLJSONObject } from 'graphql-type-json';
 import { GqlAuthAccessGuard } from 'src/commons/auth/gql-auth.guard';
 import { RolesGuard } from 'src/commons/auth/gql-role.guard';
 import { Roles } from 'src/commons/auth/gql-role.param';
@@ -74,5 +75,22 @@ export class BusinessUserResolver {
     return await this.businessUserService.fetchBusinessBoards({
       currentUser,
     });
+  }
+
+  @Query(() => [GraphQLJSONObject])
+  async fetchBusinessBoardsPage(
+    @Args('category', { nullable: true }) category: string,
+    @Args('search', { nullable: true }) search: string,
+    @Args('sortType', { nullable: true }) sortType: string,
+    @Args({ name: 'page', nullable: true, type: () => Int }) page: number,
+  ) {
+    const result = await this.businessUserService.loadPage({
+      category,
+      search,
+      sortType,
+      page,
+    });
+    console.log(result);
+    return result;
   }
 }
