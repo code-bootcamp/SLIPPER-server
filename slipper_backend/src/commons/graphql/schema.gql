@@ -116,6 +116,7 @@ type BoardLike {
 
 type Query {
   fetchLikeBoards(page: Int): [BoardLike!]!
+  fetchUserLike(boardId: String!): BoardLike!
   fetchBusinessBoard(businessBoardId: String!): BusinessBoard!
   fetchBusinessBoards: [BusinessBoard!]!
   fetchBusinessBoardsPage(category: String, search: String, sortType: String, page: Int): [JSONObject!]!
