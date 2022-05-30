@@ -15,15 +15,15 @@ export class CommentService {
     private readonly joinRepository: Repository<Join>,
   ) {}
 
-  async findAll({ boardId, currentUser }) {
-    const user = await this.joinRepository.findOne({
-      id: currentUser,
-    });
+  async findAll({ boardId }) {
+    // const user = await this.joinRepository.findOne({
+    //   id: currentUser,
+    // });
 
     const result = await this.commentRepository.find({
-      where: { nickname: user.nickname, board: boardId },
+      where: { board: boardId },
       order: {
-        createdAt: 'ASC',
+        createdAt: 'DESC',
       },
     });
 
