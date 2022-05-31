@@ -250,7 +250,7 @@ input CreateBoardInput {
   lat: String!
   lng: String!
   address: String!
-  groupCode: String!
+  groupCode: String
   place: String!
   placePhone: String
   placeUrl: String

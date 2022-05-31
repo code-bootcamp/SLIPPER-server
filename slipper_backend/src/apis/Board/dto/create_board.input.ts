@@ -32,7 +32,7 @@ export class CreateBoardInput {
   @Field(() => String)
   address: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   groupCode: string;
 
   @Field(() => String)
