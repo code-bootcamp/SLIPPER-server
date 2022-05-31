@@ -75,6 +75,10 @@ export class Board {
 
   @Column()
   @Field(() => String)
+  groupCode: string;
+
+  @Column()
+  @Field(() => String)
   place: string;
 
   @Column({ default: null })
