@@ -12,7 +12,7 @@ import { CommentService } from '../Comment/comment.service';
 import { Join } from '../join/entities/join.entity';
 import { SubComment } from '../SubComment/subcomment.entity';
 import { SubCommentService } from '../SubComment/subcomment.service';
-import { AdminResolver } from './admin.resiolver';
+import { AdminResolver } from './admin.resolver';
 
 @Module({
   imports: [
