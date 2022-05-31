@@ -32,8 +32,8 @@ export class CreateBoardInput {
   @Field(() => String)
   address: string;
 
-  @Field(() => String, { nullable: true })
-  groupCode: string;
+  // @Field(() => String, { nullable: true })
+  // groupCode: string;
 
   @Field(() => String)
   place: string;
