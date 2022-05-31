@@ -85,6 +85,7 @@ type Board {
   lat: String!
   lng: String!
   address: String!
+  groupCode: String
   place: String!
   placePhone: String
   placeUrl: String
@@ -131,30 +132,16 @@ type Query {
   fetchUserLike(boardId: String!): BoardLike!
   fetchBusinessBoard(businessBoardId: String!): BusinessBoard!
   fetchBusinessBoards: [BusinessBoard!]!
-  fetchBusinessBoardsPage(
-    category: String
-    search: String
-    sortType: String
-    page: Int
-  ): [JSONObject!]!
+  fetchBusinessBoardsPage(category: String, search: String, sortType: String, page: Int): [JSONObject!]!
   fetchUser: Join!
   fetchUsers: [Join!]!
   fetchAllUser: [Join!]!
   TEST_API: String!
   TEST_fetchBoards: [Board!]!
-  TEST_fetchBoardsPage(
-    page: Float
-    category: String
-    search: String
-  ): [JSONObject!]!
+  TEST_fetchBoardsPage(page: Float, category: String, search: String): [JSONObject!]!
   TEST_fetchUser(email: String!): Join!
   fetchBoard(boardId: String!): Board!
-  fetchBoardsPage(
-    category: String
-    search: String
-    sortType: String
-    page: Int
-  ): [JSONObject!]!
+  fetchBoardsPage(category: String, search: String, sortType: String, page: Int): [JSONObject!]!
   fetchBoardLikeCount(boardId: String): Int!
   fetchUserBoards(page: Int): [Board!]!
   likeBoardsArray(page: Int): [Board!]!
@@ -174,13 +161,8 @@ type Mutation {
   deleteAdminUserComment(commentId: String!): String!
   deleteAdminUserSubComment(subCommentId: String!): String!
   clickLike(boardId: String!): BoardLike!
-  createBusinessBoard(
-    createBusinessBoardInput: CreateBusinessBoardInput!
-  ): BusinessBoard!
-  updateBusinessBoard(
-    businessBoardId: String!
-    updateBusinessBoardInput: updateBusinessBoardInput!
-  ): BusinessBoard!
+  createBusinessBoard(createBusinessBoardInput: CreateBusinessBoardInput!): BusinessBoard!
+  updateBusinessBoard(businessBoardId: String!, updateBusinessBoardInput: updateBusinessBoardInput!): BusinessBoard!
   deleteBusinessBoard(businessBoardId: String!): Boolean!
   createUser(createUserInput: CreateUserInput!): Join!
   getToken(phone: String!): String!
@@ -194,13 +176,7 @@ type Mutation {
   restoreAccessToken: String!
   logout: String!
   TEST_createBoard(createBoardInput: CreateBoardInput!, email: String!): Board!
-  TEST_payment(
-    paymentAmount: Float!
-    impUid: String!
-    subStart: DateTime!
-    subEnd: DateTime!
-    userId: String!
-  ): String!
+  TEST_payment(paymentAmount: Float!, impUid: String!, subStart: DateTime!, subEnd: DateTime!, userId: String!): String!
   createBoard(createBoardInput: CreateBoardInput!): Board!
   updateBoard(boardId: String!, updateBoardInput: UpdateBoardInput!): Board!
   deleteBoard(boardId: String!): String!
@@ -274,6 +250,7 @@ input CreateBoardInput {
   lat: String!
   lng: String!
   address: String!
+  groupCode: String
   place: String!
   placePhone: String
   placeUrl: String
@@ -291,13 +268,12 @@ input UpdateBoardInput {
   lat: String
   lng: String
   address: String
+  groupCode: String
   place: String
   placePhone: String
   placeUrl: String
   images: [String!]
 }
 
-"""
-The `Upload` scalar type represents a file upload.
-"""
+"""The `Upload` scalar type represents a file upload."""
 scalar Upload
