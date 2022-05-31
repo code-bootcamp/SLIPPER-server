@@ -79,6 +79,7 @@ export class JoinResolver {
     return '비밀번호 변경 완료성공';
   }
 
+  //@UseGuards(GqlAuthAccessGuard)
   @UseGuards(GqlAuthRefreshGuard)
   @Query(() => Join)
   async fetchUser(
