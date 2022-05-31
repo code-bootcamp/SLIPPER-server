@@ -24,7 +24,6 @@ export class JWtAccessStrategy extends PassportStrategy(Strategy, 'access') {
     const AccessToken = req.headers.authorization.replace('Bearer ', '');
     const redisAccessToken = await this.cachManager.get(AccessToken);
     if (redisAccessToken) throw new UnauthorizedException();
-    console.log(payload.role);
     return {
       id: payload.sub,
       email: payload.email,
