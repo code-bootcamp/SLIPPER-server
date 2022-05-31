@@ -5,6 +5,7 @@ import { GqlAuthAccessGuard } from 'src/commons/auth/gql-auth.guard';
 import { RolesGuard } from 'src/commons/auth/gql-role.guard';
 import { Roles } from 'src/commons/auth/gql-role.param';
 import { CurrentUser, ICurrentUser } from 'src/commons/auth/gql-user.param';
+import { Board } from '../Board/board.entity';
 import { Role } from '../join/entities/join.entity';
 import { BusinessUserService } from './businessBoard.service';
 import { CreateBusinessBoardInput } from './dto/create.businessBoard.input';
@@ -17,22 +18,23 @@ export class BusinessUserResolver {
     private readonly businessUserService: BusinessUserService, //
   ) {}
 
-  @Roles(Role.BUSINESS)
-  @UseGuards(GqlAuthAccessGuard, RolesGuard)
+  //@Roles(Role.BUSINESS)
+  //@UseGuards(GqlAuthAccessGuard, RolesGuard)
+  @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => BusinessBoard)
   async createBusinessBoard(
     @Args('createBusinessBoardInput')
     createBusinessBoardInput: CreateBusinessBoardInput,
-    @CurrentUser() currentUser: any,
+    @CurrentUser() currentUser: any, //성환 추가
   ) {
     return await this.businessUserService.create({
       createBusinessBoardInput,
-      email: currentUser.email,
+      email: currentUser.email, //성환 추가
     });
   }
 
-  @Roles(Role.BUSINESS)
-  @UseGuards(GqlAuthAccessGuard, RolesGuard)
+  // @Roles(Role.BUSINESS)
+  // @UseGuards(GqlAuthAccessGuard, RolesGuard)
   @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => BusinessBoard)
   async updateBusinessBoard(
@@ -46,8 +48,9 @@ export class BusinessUserResolver {
     });
   }
 
-  @Roles(Role.BUSINESS)
-  @UseGuards(GqlAuthAccessGuard, RolesGuard)
+  // @Roles(Role.BUSINESS)
+  // @UseGuards(GqlAuthAccessGuard, RolesGuard)
+  // @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => Boolean)
   async deleteBusinessBoard(
     @Args('businessBoardId') businessBoardId: string, //
@@ -62,8 +65,8 @@ export class BusinessUserResolver {
     return this.businessUserService.findOne({ businessBoardId });
   }
 
-  @Roles(Role.BUSINESS)
-  @UseGuards(GqlAuthAccessGuard, RolesGuard)
+  // @Roles(Role.BUSINESS)
+  // @UseGuards(GqlAuthAccessGuard, RolesGuard)
   @UseGuards(GqlAuthAccessGuard)
   @Query(() => [BusinessBoard])
   async fetchBusinessBoards(

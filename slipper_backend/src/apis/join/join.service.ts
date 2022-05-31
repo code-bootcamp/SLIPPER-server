@@ -19,6 +19,7 @@ export class JoinService {
     private readonly cacheManager: Cache,
   ) {}
 
+  // async create({ email, hashedPw: pw, phone, introduce, nickname, image })
   async create({ createUserInput }) {
     const userCheck = await this.joinRepository.findOne({
       where: { email: createUserInput.email },
@@ -72,7 +73,7 @@ export class JoinService {
     const redisToken = await this.cacheManager.get(phone);
     if (redisToken) await this.cacheManager.del(phone);
     await this.cacheManager.set(phone, token, { ttl: 180 });
-    await this.cacheManager.get(phone);
+    const aa = await this.cacheManager.get(phone);
     return '토큰 3분 타이머 시이작';
   }
 
