@@ -74,7 +74,7 @@ export class Board {
   address: string;
 
   @Column()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   groupCode: string;
 
   @Column()
