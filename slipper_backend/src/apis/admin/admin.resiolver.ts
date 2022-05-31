@@ -23,18 +23,17 @@ export class AdminResolver {
     private readonly businessUser: BusinessUserService,
   ) {}
 
-  //@Roles(Role.ADMIN)
-  //@UseGuards(GqlAuthAccessGuard, RolesGuard)
-  // @UseGuards(GqlAuthAccessGuard)
+  @Roles(Role.ADMIN)
+  @UseGuards(GqlAuthAccessGuard, RolesGuard)
   @Mutation(() => String)
   async deleteAdminUserBoard(
     @Args('boardId') boardId: string, //
-    @CurrentUser() currentUser: ICurrentUser, //성환 추가
+    @CurrentUser() currentUser: ICurrentUser,
   ) {
     return this.boardService.delete({ boardId, currentUser: currentUser.id });
   }
-  //@Roles(Role.ADMIN)
-  //@UseGuards(GqlAuthAccessGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  @UseGuards(GqlAuthAccessGuard, RolesGuard)
   @Mutation(() => String)
   async deleteAdiminBusinessBoard(
     @Args('businessBoardId') businessBoardId: string,
@@ -42,13 +41,12 @@ export class AdminResolver {
     return this.businessUser.delete({ businessBoardId });
   }
 
-  //@Roles(Role.ADMIN)
-  //@UseGuards(GqlAuthAccessGuard, RolesGuard)
-  // @UseGuards(GqlAuthAccessGuard)
+  @Roles(Role.ADMIN)
+  @UseGuards(GqlAuthAccessGuard, RolesGuard)
   @Mutation(() => String)
   async deleteAdminUserComment(
     @Args('commentId') commentId: string, //
-    @CurrentUser() currentUser: ICurrentUser, //성환 추가
+    @CurrentUser() currentUser: ICurrentUser,
   ) {
     return this.commentService.delete({
       commentId,
@@ -56,13 +54,13 @@ export class AdminResolver {
     });
   }
 
-  //@Roles(Role.ADMIN)
-  //@UseGuards(GqlAuthAccessGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  @UseGuards(GqlAuthAccessGuard, RolesGuard)
   @Mutation(() => String)
   @UseGuards(GqlAuthAccessGuard)
   async deleteAdminUserSubComment(
     @Args('subCommentId') subCommentId: string, //
-    @CurrentUser() currentUser: ICurrentUser, //성환 추가
+    @CurrentUser() currentUser: ICurrentUser,
   ) {
     return this.subCommentService.delete({
       subCommentId,

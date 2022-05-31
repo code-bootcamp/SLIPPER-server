@@ -18,14 +18,14 @@ export class BusinessUserResolver {
     private readonly businessUserService: BusinessUserService, //
   ) {}
 
-  //@Roles(Role.BUSINESS)
-  //@UseGuards(GqlAuthAccessGuard, RolesGuard)
+  @Roles(Role.BUSINESS)
+  @UseGuards(GqlAuthAccessGuard, RolesGuard)
   @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => BusinessBoard)
   async createBusinessBoard(
     @Args('createBusinessBoardInput')
     createBusinessBoardInput: CreateBusinessBoardInput,
-    @CurrentUser() currentUser: any, //성환 추가
+    @CurrentUser() currentUser: any,
   ) {
     return await this.businessUserService.create({
       createBusinessBoardInput,
@@ -33,9 +33,8 @@ export class BusinessUserResolver {
     });
   }
 
-  // @Roles(Role.BUSINESS)
-  // @UseGuards(GqlAuthAccessGuard, RolesGuard)
-  @UseGuards(GqlAuthAccessGuard)
+  @Roles(Role.BUSINESS)
+  @UseGuards(GqlAuthAccessGuard, RolesGuard)
   @Mutation(() => BusinessBoard)
   async updateBusinessBoard(
     @Args('businessBoardId') businessBoardId: string,
@@ -48,9 +47,8 @@ export class BusinessUserResolver {
     });
   }
 
-  // @Roles(Role.BUSINESS)
-  // @UseGuards(GqlAuthAccessGuard, RolesGuard)
-  // @UseGuards(GqlAuthAccessGuard)
+  @Roles(Role.BUSINESS)
+  @UseGuards(GqlAuthAccessGuard, RolesGuard)
   @Mutation(() => Boolean)
   async deleteBusinessBoard(
     @Args('businessBoardId') businessBoardId: string, //
@@ -65,8 +63,8 @@ export class BusinessUserResolver {
     return this.businessUserService.findOne({ businessBoardId });
   }
 
-  // @Roles(Role.BUSINESS)
-  // @UseGuards(GqlAuthAccessGuard, RolesGuard)
+  @Roles(Role.BUSINESS)
+  @UseGuards(GqlAuthAccessGuard, RolesGuard)
   @UseGuards(GqlAuthAccessGuard)
   @Query(() => [BusinessBoard])
   async fetchBusinessBoards(
