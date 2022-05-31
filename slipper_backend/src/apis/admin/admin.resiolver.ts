@@ -25,7 +25,6 @@ export class AdminResolver {
 
   //@Roles(Role.ADMIN)
   //@UseGuards(GqlAuthAccessGuard, RolesGuard)
-  // @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => String)
   async deleteAdminUserBoard(
     @Args('boardId') boardId: string, //
@@ -44,7 +43,6 @@ export class AdminResolver {
 
   //@Roles(Role.ADMIN)
   //@UseGuards(GqlAuthAccessGuard, RolesGuard)
-  // @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => String)
   async deleteAdminUserComment(
     @Args('commentId') commentId: string, //

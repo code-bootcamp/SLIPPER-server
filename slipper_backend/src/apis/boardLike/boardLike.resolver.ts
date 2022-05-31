@@ -2,7 +2,6 @@ import { UseGuards } from '@nestjs/common';
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { GqlAuthAccessGuard } from 'src/commons/auth/gql-auth.guard';
 import { CurrentUser, ICurrentUser } from 'src/commons/auth/gql-user.param';
-import { Board } from '../Board/board.entity';
 import { BoardLikeService } from './boardLike.service';
 import { BoardLike } from './entities/boardLike.entity';
 
