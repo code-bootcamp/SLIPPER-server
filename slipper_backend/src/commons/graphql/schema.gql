@@ -85,6 +85,7 @@ type Board {
   lat: String!
   lng: String!
   address: String!
+  groupCode: String!
   place: String!
   placePhone: String
   placeUrl: String
@@ -249,6 +250,7 @@ input CreateBoardInput {
   lat: String!
   lng: String!
   address: String!
+  groupCode: String!
   place: String!
   placePhone: String
   placeUrl: String
@@ -266,6 +268,7 @@ input UpdateBoardInput {
   lat: String
   lng: String
   address: String
+  groupCode: String
   place: String
   placePhone: String
   placeUrl: String
