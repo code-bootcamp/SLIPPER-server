@@ -30,7 +30,7 @@ export class JoinService {
     if (nicknameCheck) throw new ConflictException('이미 등록된 닉네임입니다.');
     if (userCheck) throw new ConflictException('이미 등록된 메일 입니다.');
     if (!createUserInput.email.includes('@'))
-      throw new ConflictException('email을 확인해주세여');
+      throw new ConflictException('email을 확인해주세요');
     return await this.joinRepository.save({
       ...createUserInput,
     });
@@ -73,13 +73,13 @@ export class JoinService {
     const redisToken = await this.cacheManager.get(phone);
     if (redisToken) await this.cacheManager.del(phone);
     await this.cacheManager.set(phone, token, { ttl: 180 });
-    const aa = await this.cacheManager.get(phone);
-    return '토큰 3분 타이머 시이작';
+    await this.cacheManager.get(phone);
+    return '토큰 3분 타이머 시작';
   }
 
   async userRedisToken({ phone, token }) {
     const checkPhone = await this.joinRepository.findOne({ where: { phone } });
-    if (!checkPhone) throw new ConflictException('회원이 아니무니다.');
+    if (!checkPhone) throw new ConflictException('회원이 아닙니다.');
     const redisToken = await this.cacheManager.get(phone);
     if (redisToken) await this.cacheManager.del(phone);
     await this.cacheManager.set(phone, token, { ttl: 180 });
@@ -91,7 +91,7 @@ export class JoinService {
     if (mytoken === redisToken) {
       return '인증성공';
     } else {
-      return '인증번호 확인해주세여.';
+      return '인증번호 확인해주세요.';
     }
   }
 
@@ -137,7 +137,7 @@ export class JoinService {
       },
     );
 
-    return '이메일이 갔데?';
+    return '이메일이 갔습니다.?';
   }
 
   async findOne({ email }) {
@@ -157,7 +157,7 @@ export class JoinService {
   async checkNickname({ nickname }) {
     const checkNickname = await this.joinRepository.findOne({ nickname });
     if (checkNickname) throw new ConflictException('존재하는 닉네임이다.');
-    return '이상무';
+    return '등록 가능한 닉네임입니다.';
   }
 
   async update({ email, updateUserInput }) {
@@ -177,7 +177,7 @@ export class JoinService {
 
   async updatePw({ email, pw }) {
     const user = await this.joinRepository.findOne({ where: { email } });
-    if (!user) throw new ConflictException('회원없다.');
+    if (!user) throw new ConflictException('회원이 없습니다.');
     const newPw = {
       ...user,
       pw,

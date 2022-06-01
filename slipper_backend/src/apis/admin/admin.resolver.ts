@@ -4,14 +4,10 @@ import { GqlAuthAccessGuard } from 'src/commons/auth/gql-auth.guard';
 import { RolesGuard } from 'src/commons/auth/gql-role.guard';
 import { Roles } from 'src/commons/auth/gql-role.param';
 import { CurrentUser, ICurrentUser } from 'src/commons/auth/gql-user.param';
-import { Board } from '../Board/board.entity';
 import { BoardService } from '../Board/board.service';
 import { BusinessUserService } from '../businessBoard/businessBoard.service';
-import { BusinessBoard } from '../businessBoard/entities/businessBoard.entity';
-import { Comment } from '../Comment/comment.entity';
 import { CommentService } from '../Comment/comment.service';
 import { Role } from '../join/entities/join.entity';
-import { SubComment } from '../SubComment/subcomment.entity';
 import { SubCommentService } from '../SubComment/subcomment.service';
 
 @Resolver()

@@ -62,8 +62,8 @@ export class AuthResolver {
       '',
     );
     try {
-      jwt.verify(accessToken, 'myAccessKey');
-      jwt.verify(refreshToken, 'myRefreshKey');
+      jwt.verify(accessToken, process.env.LOGIN_ACCESS_TOKEN);
+      jwt.verify(refreshToken, process.env.LOGIN_REFRESH_TOKEN);
     } catch {
       throw new UnprocessableEntityException();
     }
