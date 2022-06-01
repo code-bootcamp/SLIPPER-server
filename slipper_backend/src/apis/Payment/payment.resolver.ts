@@ -39,6 +39,19 @@ export class PaymentResolver {
     });
   }
 
+  // 구독권 환불
+  @UseGuards(GqlAuthAccessGuard)
+  @Mutation(() => Payment)
+  async refundPayment(
+    @Args('impUid') impUid: string,
+    @CurrentUser() currentUser: ICurrentUser,
+  ) {
+    return await this.paymentService.refund({
+      impUid,
+      currentUser: currentUser.id,
+    });
+  }
+
   // 구독권 내역 만료시키기
   //@UseGuards(GqlAuthAccessGuard)
   @Mutation(() => String)
