@@ -20,12 +20,20 @@ export class Payment {
   id: string;
 
   @Column()
+  @Field(() => String)
+  paymentStatus: string;
+
+  @Column()
   @Field(() => Date)
   subStart: Date;
 
   @Column()
   @Field(() => Date)
   subEnd: Date;
+
+  @Column()
+  @Field(() => Date)
+  subRefund: Date;
 
   @Column()
   @Field(() => Int)

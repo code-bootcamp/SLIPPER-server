@@ -33,8 +33,10 @@ type Comment {
 
 type Payment {
   id: String!
+  paymentStatus: String!
   subStart: DateTime!
   subEnd: DateTime!
+  subRefund: DateTime!
   paymentAmount: Int!
   impUid: String!
   subType: PAYMENT_STATUS_ENUM!
@@ -184,6 +186,7 @@ type Mutation {
   uploadProfileImage(files: [Upload!]!): [String!]!
   uploadBusinessImage(files: [Upload!]!): [String!]!
   createPayment(impUid: String!, amount: Float!): Payment!
+  refundPayment(impUid: String!): Payment!
   updatePayment(userId: String!): String!
   createComment(boardId: String!, content: String!): JSONObject!
   updateComment(commentId: String!, content: String!): String!

@@ -106,6 +106,7 @@ export class PaymentService {
 
       const paymentHistory = this.paymentRepository.create({
         impUid,
+        paymentStatus: '결제',
         subStart: today,
         subEnd: end,
         subType: type,
@@ -114,10 +115,45 @@ export class PaymentService {
       });
 
       const paymentData = this.joinRepository.create({
+        id: currentUser,
         subStart: today,
         subEnd: end,
         subType: type,
+      });
+
+      await queryRunner.manager.save(paymentData);
+      await queryRunner.manager.save(paymentHistory);
+      await queryRunner.commitTransaction();
+
+      return paymentHistory;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async refund({ impUid, currentUser }) {
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction('SERIALIZABLE');
+
+    try {
+      const result = this.paymentRepository.findOne({
+        impUid,
+        user: currentUser,
+      });
+
+      const paymentHistory = this.paymentRepository.create({
+        ...result,
+        paymentStatus: '환불',
+      });
+
+      const paymentData = this.joinRepository.create({
         id: currentUser,
+        subStart: null,
+        subEnd: null,
+        subType: null,
       });
 
       await queryRunner.manager.save(paymentData);
@@ -133,7 +169,6 @@ export class PaymentService {
   }
 
   async update({ userId }) {
-    console.log(userId);
     await this.joinRepository.save({
       id: userId,
       subStart: null,
